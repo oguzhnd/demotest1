@@ -1,7 +1,9 @@
 import {
   Button,
+  Checkbox,
   Grid,
   Group,
+  Image,
   Paper,
   Select,
   Stack,
@@ -9,7 +11,11 @@ import {
   TextInput,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { IconUsers } from "@tabler/icons-react";
+import {
+  IconBriefcase2,
+  IconBriefcase2Filled,
+  IconUsers,
+} from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 
@@ -24,7 +30,11 @@ const PassengerInformations = () => {
             {t("Adult")}
           </Text>
 
-          <Button size="compact-sm" variant="subtle" leftSection={<IconUsers size={14}/>}>
+          <Button
+            size="compact-sm"
+            variant="subtle"
+            leftSection={<IconUsers size={14} />}
+          >
             {t("Choose From My Passengers")}
           </Button>
         </Group>
@@ -63,7 +73,27 @@ const PassengerInformations = () => {
               ]}
             />
           </Grid.Col>
+          <Grid.Col span={2}>
+            <Stack gap={2}>
+              <Text size="sm" fw={500}>
+                {t("Luggage allowance")}
+              </Text>
+              <Group gap={4}>
+                <Image
+                  src="https://cdn.enuygun.com/ucak-bileti/v-18aac/assets/images/airline-icon/PC.png"
+                  w={16}
+                  h={16}
+                />
+                <Text size="xs">Gidiş (İstanbul-Düsseldorf)</Text>
+              </Group>
+              <Group gap={4}>
+                <IconBriefcase2Filled size={16} />
+                <Text size="xs">1 parça el çantası (40x30x15 cm)</Text>
+              </Group>
+            </Stack>
+          </Grid.Col>
         </Grid>
+        <Checkbox label={t("Add to My Passengers")} />
       </Stack>
     </Paper>
   );

@@ -9,7 +9,7 @@ import React from "react";
 
 const FlightReservation = () => {
   return (
-    <Container w="100%" size="xl">
+    <Container w="100%" size="xl" py={20}>
       <Stack>
         <FlightInformations />
         <ContactInformations />
