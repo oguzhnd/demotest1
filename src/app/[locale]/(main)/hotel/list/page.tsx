@@ -1,6 +1,5 @@
 "use client";
 
-import Filter from "@/components/Filter";
 import HotelListCard from "@/components/HotelPageElements/HotelListCard";
 import ShowOnMap from "@/components/HotelPageElements/ShowOnMap";
 import SearchArea from "@/components/SearchArea";
@@ -16,50 +15,6 @@ const HotelList = () => {
           <Grid.Col span={3}>
             <Stack gap="xs">
               <ShowOnMap />
-              <Filter
-                schema={[
-                  {
-                    formKey: "roomType",
-                    icon: IconBed,
-                    label: "Room Types",
-                    type: "checkbox",
-                    options: [
-                      "Bungalov",
-                      "Deluxe",
-                      "Standart",
-                      "Suit",
-                      "Aile",
-                      "King",
-                    ],
-                  },
-                  {
-                    formKey: "accomodationType",
-                    icon: IconBuilding,
-                    label: "Accomodation Type",
-                    type: "checkbox",
-                    options: [
-                      "Deniz Kenarında",
-                      "Şehir Merkezinde",
-                      "Toplantı Oteli",
-                      "Tatil Köyü",
-                      "Termal Otel",
-                      "Aile Oteli",
-                      "Golf Otel",
-                      "Bungalov Kompleksi",
-                      "Apart Otel",
-                      "Tarihi Otel",
-                      "Hostel",
-                      "Hotel de Charme",
-                      "Köyevi",
-                      "Eco Otel",
-                      "Havaalanı Oteli",
-                      "Business Otel",
-                      "Konukevi",
-                      "Çiftlikevi",
-                    ],
-                  },
-                ]}
-              />
             </Stack>
           </Grid.Col>
           <Grid.Col span={9}>

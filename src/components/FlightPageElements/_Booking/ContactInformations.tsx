@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   Divider,
   Grid,
@@ -26,7 +27,7 @@ const ContactInformations = () => {
             {t("Contact Informations")}
           </Text>
         </Group>
-        <Grid>
+        <Grid gutter="xs">
           <Grid.Col span={3}>
             <TextInput label={t("E-Mail")} />
           </Grid.Col>
