@@ -1,0 +1,37 @@
+.showOnMap {
+  background-color: var(--mantine-color-green-1);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--mantine-color-green-2);
+  }
+}
+
+.selectedHotelCard {
+  cursor: pointer;
+  user-select: none;
+  transition: width 0.2s ease;
+}
+
+.mostVisitedTab {
+  font-weight: 500;
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-xl);
+
+  &[data-active="true"] {
+    background: var(--mantine-color-blue-7);
+    border-color: var(--mantine-color-blue-7);
+  }
+}
+
+.destinationCard {
+  cursor: pointer;
+  overflow: hidden;
+  /* box-shadow: inset 0px 0px 70px 0px;
+  transition: box-shadow .2s ease;
+
+  &:hover {
+  box-shadow: inset 0px 0px 50px 0px;
+
+  } */
+}

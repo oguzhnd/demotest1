@@ -1,0 +1,21 @@
+.locationCard {
+  cursor: pointer;
+  user-select: none;
+  transition: width 0.2s ease;
+}
+
+.mostVisitedTab {
+  font-weight: 500;
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-xl);
+
+  &[data-active="true"] {
+    background: var(--mantine-color-blue-7);
+    border-color: var(--mantine-color-blue-7);
+  }
+}
+
+.flightTicket {
+  cursor: pointer;
+  overflow: hidden;
+}

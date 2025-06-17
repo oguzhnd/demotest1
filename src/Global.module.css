@@ -1,0 +1,23 @@
+.buttonSection {
+  &[data-position="left"] {
+    margin-right: 6px;
+  }
+
+  &[data-position="right"] {
+    margin-left: 6px;
+  }
+}
+
+.radioLabel {
+  padding-left: 8px;
+}
+
+.checkboxLabel {
+  padding-left: 8px;
+}
+
+.listItem {
+  &::marker {
+    margin-right: 4px !important;
+  }
+}

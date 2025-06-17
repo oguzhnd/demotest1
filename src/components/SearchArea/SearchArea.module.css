@@ -1,0 +1,94 @@
+.tab {
+  position: relative;
+  color: var(--mantine-color-gray-7);
+
+  &:hover {
+    background-color: transparent;
+  }
+
+  &[data-active="true"] {
+    background-color: transparent;
+    color: var(--mantine-color-blue-7);
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    .tabLabel {
+      text-shadow: 0px 0px 1px var(--mantine-color-blue-7);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 3px;
+      background: var(--mantine-color-blue-7);
+      border-radius: 4px;
+    }
+  }
+}
+
+.searchTabs {
+  position: absolute;
+  top: -112px;
+  /* transform: translate(8px, -40px); */
+  z-index: 10;
+}
+
+.searchAreaInput {
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  transition: background-color 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: var(--mantine-color-blue-0);
+  }
+}
+
+.searchAreaLabel {
+  display: none;
+}
+
+.flightTypeRadio {
+  padding: 4px;
+  padding-right: 8px;
+  border-radius: 20px;
+
+  &[data-checked="true"] {
+    background: var(--mantine-color-blue-1);
+    color: var(--mantine-color-blue-9) !important;
+  }
+}
+
+.searchInputTarget {
+  cursor: pointer;
+  transition: background-color .2s ease;
+
+  &:hover,
+  &[data-focused="true"] {
+    background-color: var(--mantine-color-blue-0);
+  }
+
+  &[data-compact="true"] {
+    background: #1e2c39;
+
+    &:hover,
+    &[data-focused="true"] {
+      background-color: #293b4d;
+    }
+  }
+}
+
+.airportOption {
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--mantine-color-gray-1);
+  }
+}

@@ -1,0 +1,26 @@
+.tab {
+  font-weight: 500;
+}
+
+.tabLabel {
+  text-align: left;
+}
+
+.inputRoot {
+  position: relative;
+  margin-top: 7px;
+}
+
+.inputLabel {
+  position: absolute;
+  z-index: 2;
+  top: 7px;
+  left: var(--mantine-spacing-sm);
+  pointer-events: none;
+  padding: 0 2px;
+  background: #fff;
+  transform: translate(-2px, -17px);
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 500;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
