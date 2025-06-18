@@ -6,8 +6,9 @@ import React, { FC } from "react";
 const FilterWrapper: FC<{
   icon?: TablerIcon;
   label: string;
+  alwaysOn?: boolean;
   children: React.ReactNode;
-}> = ({ label, icon: Icon, children }) => {
+}> = ({ label, icon: Icon, alwaysOn = false, children }) => {
   const [opened, { toggle }] = useDisclosure(true);
 
   return (
@@ -15,8 +16,8 @@ const FilterWrapper: FC<{
       <Group
         p="sm"
         justify="space-between"
-        onClick={toggle}
-        style={{ cursor: "pointer" }}
+        onClick={() => (alwaysOn ? {} : toggle())}
+        style={{ cursor: alwaysOn ? undefined : "pointer" }}
       >
         <Group gap={8}>
           {Icon && <Icon size={16} />}
@@ -25,13 +26,15 @@ const FilterWrapper: FC<{
           </Text>
         </Group>
 
-        <IconChevronDown
-          size={16}
-          style={{
-            transform: !opened ? "rotate(0deg)" : "rotate(180deg)",
-            transition: "transform .2s ease",
-          }}
-        />
+        {!alwaysOn && (
+          <IconChevronDown
+            size={16}
+            style={{
+              transform: !opened ? "rotate(0deg)" : "rotate(180deg)",
+              transition: "transform .2s ease",
+            }}
+          />
+        )}
       </Group>
 
       <Collapse in={opened}>

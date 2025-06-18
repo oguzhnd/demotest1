@@ -4,6 +4,7 @@ import ContactInformations from "@/components/FlightPageElements/_Booking/Contac
 import FlightInformations from "@/components/FlightPageElements/_Booking/FlightInformations";
 import InvoiceInformations from "@/components/FlightPageElements/_Booking/InvoiceInformations";
 import PassengerInformations from "@/components/FlightPageElements/_Booking/PassengerInformations";
+import Payment from "@/components/FlightPageElements/_Booking/Payment";
 import { Container, Grid, Paper, Stack } from "@mantine/core";
 import React from "react";
 
@@ -15,6 +16,7 @@ const FlightReservation = () => {
         <ContactInformations />
         <PassengerInformations />
         <InvoiceInformations />
+        <Payment />
       </Stack>
     </Container>
   );

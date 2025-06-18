@@ -5,6 +5,7 @@ import React, { FC } from "react";
 
 const HotelListCard: FC<{
   id: string;
+  onSelect: () => void
 }> = ({ id }) => {
   const { push } = useRouter();
 
