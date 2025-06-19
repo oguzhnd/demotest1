@@ -100,6 +100,7 @@ const HotelDetail = () => {
             <Grid gutter="xs">
               <Grid.Col span={6}>
                 <Image
+                  alt="hotel-1"
                   h={500}
                   radius="md"
                   src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
@@ -108,16 +109,19 @@ const HotelDetail = () => {
               <Grid.Col span={3}>
                 <Stack gap="xs">
                   <Image
+                  alt="hotel-1"
                     h={160}
                     radius="md"
                     src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
                   />
                   <Image
+                  alt="hotel-1"
                     h={160}
                     radius="md"
                     src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
                   />
                   <Image
+                  alt="hotel-1"
                     h={160}
                     radius="md"
                     src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"

@@ -148,7 +148,7 @@ const Rooms = () => {
                       },
                     }}
                   >
-                    Ücretsiz Erken Giriş (09.00 Sonrası) - Geç Çıkış (14.00'a
+                    Ücretsiz Erken Giriş (09.00 Sonrası) - Geç Çıkış (14.00&apos;a
                     Kadar)
                   </Badge>
                 </Tooltip>

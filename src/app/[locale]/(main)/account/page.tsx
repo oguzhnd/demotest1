@@ -114,7 +114,7 @@ const MyAccount = () => {
       "passports",
       concat(form.getValues().passports, passport)
     );
-  }, []);
+  }, [form]);
 
   const removePassport = useCallback((index: number) => {
     const clonedValue = cloneDeep(form.getValues().passports);
@@ -122,11 +122,11 @@ const MyAccount = () => {
     clonedValue.splice(index, 1);
 
     form.setFieldValue("passports", clonedValue);
-  }, []);
+  }, [form]);
 
   const addMileCard = useCallback((value: MileCardType) => {
     form.setFieldValue("mileCards", concat(form.getValues().mileCards, value));
-  }, []);
+  }, [form]);
 
   const removeMileCard = useCallback((index: number) => {
     const clonedValue = cloneDeep(form.getValues().mileCards);
@@ -134,14 +134,14 @@ const MyAccount = () => {
     clonedValue.splice(index, 1);
 
     form.setFieldValue("mileCards", clonedValue);
-  }, []);
+  }, [form]);
 
   const addBillingInformation = useCallback((value: BillingInformationType) => {
     form.setFieldValue(
       "billingInformations",
       concat(form.getValues().billingInformations, value)
     );
-  }, []);
+  }, [form]);
 
   const removeBillingInformation = useCallback((index: number) => {
     const clonedValue = cloneDeep(form.getValues().billingInformations);
@@ -149,7 +149,7 @@ const MyAccount = () => {
     clonedValue.splice(index, 1);
 
     form.setFieldValue("billingInformations", clonedValue);
-  }, []);
+  }, [form]);
 
   return (
     <Stack>
