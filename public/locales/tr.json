@@ -201,5 +201,22 @@
   "I approve the text of Explicit Consent": "Açık Rıza Metnini onaylıyorum",
   "Price Details": "Fiyat Detayları",
   "Cancellation Penalty Schedule": "İptal Cezası Takvimi",
-  "If you cancel today": "Bugün iptal ederseniz"
+  "If you cancel today": "Bugün iptal ederseniz",
+  "Gear Type": "Vites Tipi",
+  "Rental Company": "Kiralama Şirketi",
+  "Fuel Type": "Yakıt Tipi",
+  "Vehicle Brand": "Araç Markası",
+  "Vehicle Model": "Araç Modeli",
+  "Total Kilometer Limit": "Toplam Kilometre Limiti",
+  "Price Range": "Fiyat Aralığı",
+  "Seat Count": "Koltuk Sayısı",
+  "Vehicle Delivery Method": "Araç Teslim Şekli",
+  "Deposit": "Depozito",
+  "I have permission to receive my reservation by FREE SMS and to receive information about campaigns via E-Mail and SMS": "Rezervasyonumu ÜCRETSİZ SMS ile alıp, kampanyalardan E-Mail ve SMS yoluyla bilgi almak için iznim vardır.",
+  "Identity Information": "Kimlik Bilgisi",
+  "Driver Informations": "Sürücü Bilgileri",
+  "Rental Evaluation Analysis": "Araç Kiralama Değerlendirme Analizi",
+  "TC Identity": "TC Kimlik",
+  "Passport": "Pasaport",
+  "Driver's License Issuance Date": "Ehliyet Veriliş Tarihi"
 }

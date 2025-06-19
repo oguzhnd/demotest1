@@ -41,10 +41,10 @@ const RentalList = () => {
                 .fill("")
                 .map((flight, i) => (
                   <RentalListCard
-                    key={`flight-${i}`}
+                    key={`rental-${i}`}
                     id={`${i + 1}`}
                     onSelect={() => {
-                      push(`/flight/reservation/${1}`);
+                      push(`/rental/reservation/${1}`);
                     }}
                   />
                 ))}

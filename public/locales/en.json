@@ -201,5 +201,22 @@
   "I approve the text of Explicit Consent": "I approve the text of Explicit Consent",
   "Price Details": "Price Details",
   "Cancellation Penalty Schedule": "Cancellation Penalty Schedule",
-  "If you cancel today": "If you cancel today"
+  "If you cancel today": "If you cancel today",
+  "Gear Type": "Gear Type",
+  "Rental Company": "Rental Company",
+  "Fuel Type": "Fuel Type",
+  "Vehicle Brand": "Vehicle Brand",
+  "Vehicle Model": "Vehicle Model",
+  "Total Kilometer Limit": "Total Kilometer Limit",
+  "Price Range": "Price Range",
+  "Seat Count": "Seat Count",
+  "Vehicle Delivery Method": "Vehicle Delivery Method",
+  "Deposit": "Deposit",
+  "I have permission to receive my reservation by FREE SMS and to receive information about campaigns via E-Mail and SMS": "I have permission to receive my reservation by FREE SMS and to receive information about campaigns via E-Mail and SMS.",
+  "Identity Information": "Identity Information",
+  "Driver Informations": "Driver Informations",
+  "Rental Evaluation Analysis": "Rental Evaluation Analysis",
+  "TC Identity": "TC Identity",
+  "Passport": "Passport",
+  "Driver's License Issuance Date": "Driver's License Issuance Date"
 }

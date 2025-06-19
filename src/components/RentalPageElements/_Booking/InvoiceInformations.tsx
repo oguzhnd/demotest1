@@ -45,7 +45,7 @@ const InvoiceInformations = () => {
         </Group>
 
         <Grid gutter="xs">
-          <Grid.Col span={6}>
+          <Grid.Col span={4}>
             <Group wrap="nowrap" align="flex-end">
               <TextInput label={t("Company Name")} />
               <Stack h={36} justify="center">
@@ -53,24 +53,24 @@ const InvoiceInformations = () => {
               </Stack>
             </Group>
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <TextInput label={t("Tax Office")} />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <TextInput label={t("Tax Number")} />
           </Grid.Col>
         </Grid>
         <Grid gutter="xs">
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <Select label={t("Country")} />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <Select label={t("Province")} />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <Select label={t("District")} />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={2}>
             <TextInput label={t("Billing Address")} />
           </Grid.Col>
         </Grid>
