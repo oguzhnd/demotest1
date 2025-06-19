@@ -44,10 +44,10 @@ const HotelList = () => {
                 .fill("")
                 .map((flight, i) => (
                   <HotelListCard
-                    key={`flight-${i}`}
+                    key={`hotel-${i}`}
                     id={`${i + 1}`}
                     onSelect={() => {
-                      push(`/flight/reservation/${1}`);
+                      push(`/hotel/detail/${1}`);
                     }}
                   />
                 ))}

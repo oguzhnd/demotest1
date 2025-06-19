@@ -12,10 +12,12 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { IMaskInput } from "react-imask";
 
-const Payment = () => {
+const Payment: FC<{
+  onSubmit?: () => void;
+}> = ({ onSubmit }) => {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -66,7 +68,9 @@ const Payment = () => {
             </Text>
           </Stack>
 
-          <Button color="green">{t("Make Payment")}</Button>
+          <Button color="green" onClick={onSubmit}>
+            {t("Make Payment")}
+          </Button>
         </Group>
         <Text size="sm">
           Kişisel verileriniz Aydınlatma Metni kapsamında işleniyor. Butona
@@ -74,13 +78,36 @@ const Payment = () => {
           onaylamış olursunuz.
         </Text>
         <Group>
-          <Image w={65} h={40} src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-troy.10fa69f0.png" />
-          <Image w={65} h={40} src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-mastercard.de04295d.png" />
-          <Image w={65} h={40} src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-digicert.400452eb.png" />
-          <Image w={65} h={40} src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-safe-trade.7697087c.png" />
-          <Image w={65} h={40} src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-visa.d9a751f1.png" />
+          <Image
+            w={65}
+            h={40}
+            src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-troy.10fa69f0.png"
+          />
+          <Image
+            w={65}
+            h={40}
+            src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-mastercard.de04295d.png"
+          />
+          <Image
+            w={65}
+            h={40}
+            src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-digicert.400452eb.png"
+          />
+          <Image
+            w={65}
+            h={40}
+            src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-safe-trade.7697087c.png"
+          />
+          <Image
+            w={65}
+            h={40}
+            src="https://cdn.enuygun.com/otobus-bileti/build/images/payment-visa.d9a751f1.png"
+          />
         </Group>
-        <Text size="sm">Tüm ödeme işlemleriniz, dünyanın önde gelen güvenlik sertifikası şirketi DigiCert koruması altındadır.</Text>
+        <Text size="sm">
+          Tüm ödeme işlemleriniz, dünyanın önde gelen güvenlik sertifikası
+          şirketi DigiCert koruması altındadır.
+        </Text>
       </Stack>
     </Paper>
   );
