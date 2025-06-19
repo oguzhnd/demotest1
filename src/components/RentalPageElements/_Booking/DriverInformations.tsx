@@ -97,7 +97,7 @@ const DriverInformations = () => {
               https://www.kkb.com.tr/gizlilik-politikasi adresindeki
               bilgilendirmeyi okuyup anladığınızı kabul ve beyan etmektesiniz.
               KKB tarafından işbu sorgulama neticesinde işlenen üye bilgilerinin
-              gizliliğini sağlanması hususunda Yolcu360 Bilişim A.Ş. 'nin
+              gizliliğini sağlanması hususunda Yolcu360 Bilişim A.Ş. `&apos;nin
               herhangi bir sorumluluğu bulunmamaktadır. Bu bölümdeki Analiz
               süreci Yolcu360 Bilişim A.Ş.`&apos;nin inisiyatifinde hazırlanmamış/
               zorunlu tutulmamış olup Analiz sürecinde işlenecek kişisel
