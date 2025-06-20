@@ -23,6 +23,7 @@ import { useLocale } from "next-intl";
 import React, { FC } from "react";
 
 import classes from "../Rental.module.css";
+import { useMediaQuery } from "@mantine/hooks";
 
 const RentalListCard: FC<{
   id: string;
@@ -32,9 +33,12 @@ const RentalListCard: FC<{
 
   const { push } = useRouter();
 
+  const matchesXs = useMediaQuery("(max-width: 36em)")
+  const matchesMd = useMediaQuery("(max-width: 62em)")
+
   return (
     <Paper p="md" withBorder className={classes.rentalListCard}>
-      <Group justify="space-between" align="stretch">
+      <Group wrap={matchesMd ? "wrap" : "nowrap"} justify="space-between" align="stretch">
         <Stack>
           <Text fw={500}>Fiat Egea</Text>
           <Group>
@@ -136,9 +140,9 @@ const RentalListCard: FC<{
           </Group>
         </Stack>
 
-        <Stack gap={6}>
+        <Stack w={matchesXs ? "100%" : undefined} gap={6}>
           <Paper h="100%" bg="gray.1" radius="sm" p="sm">
-            <Stack gap={6} h="100%" justify="center" align="flex-end">
+            <Stack gap={6} h="100%" justify="center" align={matchesXs ? "center" : "flex-end"}>
               <Group gap={4}>
                 <Text size="xs" c="gray.7">
                   Toplam Fiyat:{" "}

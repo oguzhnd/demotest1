@@ -6,7 +6,17 @@ import RentalLoading from "@/components/RentalPageElements/RentalLoading";
 import SearchArea from "@/components/SearchArea";
 import { useRouter } from "@/i18n/navigation";
 import { useLoading } from "@/utils/hooks/useLoading";
-import { Container, Divider, Grid, Stack } from "@mantine/core";
+import {
+  Button,
+  Container,
+  Divider,
+  Drawer,
+  Grid,
+  Group,
+  ScrollArea,
+  Stack,
+} from "@mantine/core";
+import { IconFilter } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
@@ -14,6 +24,7 @@ const RentalList = () => {
   const t = useTranslations();
 
   const { push } = useRouter();
+  const [opened, setOpened] = useState(false);
 
   const [loading, startLoading, stopLoading] = useLoading(true);
 
@@ -28,15 +39,42 @@ const RentalList = () => {
       <SearchArea type="rental" />
       {loading && <RentalLoading />}
 
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title={t("Filters")}
+        position="left"
+        size="sm"
+      >
+        <RentalListFilters />
+      </Drawer>
+
       <Container w="100%" size="xl">
         <Grid w="100%" gutter="xs">
-          <Grid.Col span={3}>
+          <Grid.Col span={3} visibleFrom="md">
             <Stack gap="xs">
               <RentalListFilters />
             </Stack>
           </Grid.Col>
-          <Grid.Col span={9}>
+          <Grid.Col
+            span={{
+              base: 12,
+              md: 9,
+            }}
+          >
             <Stack gap="xs">
+              <ScrollArea offsetScrollbars scrollbarSize={7} hiddenFrom="md">
+                <Group gap="xs" wrap="nowrap">
+                  <Button
+                    onClick={() => setOpened(true)}
+                    leftSection={<IconFilter size={16} />}
+                    hiddenFrom="md"
+                    variant="default"
+                  >
+                    {t("Filters")}
+                  </Button>
+                </Group>
+              </ScrollArea>
               {Array(9)
                 .fill("")
                 .map((flight, i) => (
