@@ -48,10 +48,6 @@ const HotelListMap = () => {
   const [activeHotel, setActiveHotel] = useState<null | string>(null);
 
   useEffect(() => {
-    console.log(activeHotel);
-  }, [activeHotel]);
-
-  useEffect(() => {
     void loadCastlesGeojson().then((data) => setGeojson(data));
   }, []);
 

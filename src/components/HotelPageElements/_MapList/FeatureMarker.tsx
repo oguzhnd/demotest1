@@ -18,13 +18,15 @@ type TreeMarkerProps = {
     featureId: string
   ) => void;
   active: boolean
+  selected?: boolean
 };
 
 export const FeatureMarker = ({
   position,
   featureId,
   onMarkerClick,
-  active
+  active,
+  selected
 }: TreeMarkerProps) => {
   const locale = useLocale();
 
@@ -42,7 +44,7 @@ export const FeatureMarker = ({
       anchorPoint={AdvancedMarkerAnchorPoint.CENTER}
       className={"marker feature"}
     >
-      <Paper px="md" py={8} radius="xl" className={classes.hotelMarker} data-arrow data-active={active}>
+      <Paper px="md" py={8} radius="xl" className={classes.hotelMarker} data-arrow data-active={active} data-selected={selected}>
         <Text size="sm" fw={500} lh={1} truncate>
           {(16077).toLocaleString(locale)} TRY
         </Text>

@@ -17,6 +17,9 @@ export const useModalManager = create<ModalManager>((set, get) => ({
     accountModal: {
       opened: false,
     },
+    hotelMapDetail: {
+      opened: false,
+    }
   },
 
   openModal: (name) => {

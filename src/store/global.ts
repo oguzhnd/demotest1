@@ -25,11 +25,11 @@ export const useGlobalStore = create(
       bearerToken: undefined,
 
       makeSignin: async (data) => {
-        // const res = await xiorInstance.post("/authentication", data)
-        // console.log(res)
+        const res = await xiorInstance.post("/authentication", data)
+        console.log(res)
 
         const rawResponse = await fetch(
-          "https://api.nttreservation.com/services/v1",
+          "https://api.nttreservation.com/services/v1/authentication",
           {
             method: "POST",
             headers: {

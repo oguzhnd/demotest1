@@ -2,11 +2,14 @@
 
 import Rooms from "@/components/HotelPageElements/HotelDetails/Rooms";
 import { facilities } from "@/components/HotelPageElements/HotelListFilters/Elements/FacilitiesAndFeatures";
+import HotelMapDetail from "@/components/HotelPageElements/HotelMapDetail";
 import SearchArea from "@/components/SearchArea";
 import { useRouter } from "@/i18n/navigation";
+import { useModalManager } from "@/store/managers/modal";
 import {
   Anchor,
   Button,
+  Center,
   Container,
   Grid,
   Group,
@@ -20,7 +23,12 @@ import {
   Text,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { IconChevronRight, IconSpeakerphone } from "@tabler/icons-react";
+import {
+  IconChevronRight,
+  IconMapPin,
+  IconMapPinFilled,
+  IconSpeakerphone,
+} from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -32,12 +40,16 @@ const HotelDetail = () => {
   const params = useParams();
   const { push } = useRouter();
 
+  const { openModal } = useModalManager()
+
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
-  const Parent = matchesSm ? Stack : Group
+  const Parent = matchesSm ? Stack : Group;
 
   return (
     <Stack>
+      <HotelMapDetail />
+
       <SearchArea type="hotel" />
       <Container w="100%" size="xl" py={20}>
         <Stack gap="xs">
@@ -69,28 +81,40 @@ const HotelDetail = () => {
 
           <Tabs mt="md" defaultValue="Ana Sayfa">
             <Tabs.List>
-              <Parent w="100%" justify="space-between" align={matchesSm ? undefined : "flex-end"}>
-                <ScrollArea offsetScrollbars scrollbarSize={7}>
+              <Parent
+                w="100%"
+                justify="space-between"
+                align={matchesSm ? undefined : "flex-end"}
+              >
+                <ScrollArea scrollbarSize={7}>
                   <Group gap={0} wrap="nowrap">
-                  {["Ana Sayfa", "Odalar", "Detaylar", "Olanaklar"].map(
-                    (tab, i) => (
-                      <Tabs.Tab
-                        key={`tab-${i}`}
-                        value={tab}
-                        py="sm"
-                        px="lg"
-                        fw={500}
-                        style={{ borderBottomWidth: 3 }}
-                      >
-                        {tab}
-                      </Tabs.Tab>
-                    )
-                  )}
-                </Group>
+                    {["Ana Sayfa", "Odalar", "Detaylar", "Olanaklar"].map(
+                      (tab, i) => (
+                        <Tabs.Tab
+                          key={`tab-${i}`}
+                          value={tab}
+                          py="sm"
+                          px="lg"
+                          fw={500}
+                          style={{ borderBottomWidth: 3 }}
+                        >
+                          {tab}
+                        </Tabs.Tab>
+                      )
+                    )}
+                  </Group>
                 </ScrollArea>
 
-                <Parent gap={matchesSm ? 0 : undefined} align={matchesSm ? "center" : undefined} mb={matchesSm ? 8 : 0}>
-                  <Stack gap={0} align={matchesSm ? "center" : "flex-end"} mb={4}>
+                <Parent
+                  gap={matchesSm ? 0 : undefined}
+                  align={matchesSm ? "center" : undefined}
+                  mb={matchesSm ? 8 : 0}
+                >
+                  <Stack
+                    gap={0}
+                    align={matchesSm ? "center" : "flex-end"}
+                    mb={4}
+                  >
                     <Text size="lg" fw={500}>
                       {(85930).toLocaleString(locale)} TRY
                     </Text>
@@ -119,14 +143,19 @@ const HotelDetail = () => {
                   src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
                 />
               </Grid.Col>
-              <Grid.Col span={{
-                base: 12,
-                sm: 3
-              }}>
-                <SimpleGrid cols={{
-                  base: 3,
-                  sm: 1
-                }} spacing="xs">
+              <Grid.Col
+                span={{
+                  base: 12,
+                  sm: 3,
+                }}
+              >
+                <SimpleGrid
+                  cols={{
+                    base: 3,
+                    sm: 1,
+                  }}
+                  spacing="xs"
+                >
                   <Image
                     alt="hotel-1"
                     h={matchesSm ? 100 : 160}
@@ -147,10 +176,12 @@ const HotelDetail = () => {
                   />
                 </SimpleGrid>
               </Grid.Col>
-              <Grid.Col span={{
-                base: 12,
-                sm: 3
-              }}>
+              <Grid.Col
+                span={{
+                  base: 12,
+                  sm: 3,
+                }}
+              >
                 <Stack h="100%" gap="xs">
                   <Paper
                     radius="md"
@@ -179,7 +210,35 @@ const HotelDetail = () => {
                       </Anchor>
                     </Group>
                   </Paper>
-                  <Paper h="100%" bg="gray.2" mih={100}></Paper>
+                  <Paper
+                    pos="relative"
+                    h="100%"
+                    bg="gray.2"
+                    mih={100}
+                    radius="md"
+                    style={{ overflow: "hidden", cursor: "pointer" }}
+                    onClick={() => openModal("hotelMapDetail")}
+                  >
+                    <Image
+                      h="100%"
+                      src={`https://maps.googleapis.com/maps/api/staticmap?key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API}&center=36.8643,30.726517&size=400x400&zoom=13`}
+                    />
+                    <Stack
+                      pos="absolute"
+                      w="100%"
+                      h="100%"
+                      justify="center"
+                      align="center"
+                      top={0}
+                      left={0}
+                    >
+                      <IconMapPinFilled
+                        size={30}
+                        color="var(--mantine-color-dark-7)"
+                      />
+                      <Button size="xs">{t("Show on Map")}</Button>
+                    </Stack>
+                  </Paper>
                 </Stack>
               </Grid.Col>
             </Grid>

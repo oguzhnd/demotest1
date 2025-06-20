@@ -8,6 +8,7 @@ import { FeatureMarker } from "./FeatureMarker";
 type ClusteredMarkersProps = {
   geojson: FeatureCollection<Point>;
   activeHotel: string | null
+  selectedHotel?: string
   onClick: (hotelId: string) => void;
 };
 
@@ -20,6 +21,7 @@ const superclusterOptions: Supercluster.Options<any, ClusterProperties> = {
 export const ClusteredMarkers = ({
   geojson,
   activeHotel,
+  selectedHotel,
   onClick,
 }: ClusteredMarkersProps) => {
   const { clusters, getLeaves } = useSupercluster(geojson, superclusterOptions);
@@ -45,6 +47,7 @@ export const ClusteredMarkers = ({
             key={feature.id}
             featureId={feature.id as string}
             position={{ lat, lng }}
+            selected={selectedHotel === feature.id}
             active={activeHotel === feature.id}
             onMarkerClick={(_, featureId) => onClick(featureId)}
           />
