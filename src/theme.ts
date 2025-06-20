@@ -61,6 +61,11 @@ export const theme = createTheme({
       classNames: {
         item: classes.listItem
       }
+    },
+    Loader: {
+      defaultProps: {
+        type: "dots"
+      }
     }
   },
 });

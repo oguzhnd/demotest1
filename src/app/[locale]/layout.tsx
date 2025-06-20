@@ -1,6 +1,6 @@
 import "@mantine/core/styles.css";
-import '@mantine/carousel/styles.css';
-import '@mantine/dates/styles.css';
+import "@mantine/carousel/styles.css";
+import "@mantine/dates/styles.css";
 
 import { routing } from "@/i18n/routing";
 import {
@@ -16,6 +16,7 @@ import CustomDatesProvider from "@/utils/providers/DatesProvider";
 import CustomModalsProvider from "@/utils/providers/ModalsProvider";
 
 import { Geist } from "next/font/google";
+import GoogleMapProvider from "@/utils/providers/GoogleMapProvider";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -52,7 +53,9 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <MantineProvider theme={theme}>
             <CustomDatesProvider>
-              <CustomModalsProvider>{children}</CustomModalsProvider>
+              <CustomModalsProvider>
+                <GoogleMapProvider>{children}</GoogleMapProvider>
+              </CustomModalsProvider>
             </CustomDatesProvider>
           </MantineProvider>
         </NextIntlClientProvider>

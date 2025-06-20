@@ -1,10 +1,7 @@
 .showOnMap {
-  background-color: var(--mantine-color-green-1);
   cursor: pointer;
-
-  &:hover {
-    background-color: var(--mantine-color-green-2);
-  }
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
 }
 
 .selectedHotelCard {
@@ -38,9 +35,9 @@
 
 .featureCard {
   cursor: pointer;
-  transition: background-color .05s ease, border-color .05s ease;
+  transition: background-color 0.05s ease, border-color 0.05s ease;
   user-select: none;
-    border-color: var(--mantine-color-gray-5);
+  border-color: var(--mantine-color-gray-5);
 
   &:hover {
     background-color: var(--mantine-color-gray-0);
@@ -54,9 +51,52 @@
 
 .hotelListCard {
   cursor: pointer;
-  transition: box-shadow .2s ease;
+  transition: box-shadow 0.2s ease;
+  overflow: hidden;
 
   &:hover {
     box-shadow: var(--mantine-shadow-md);
+  }
+}
+
+.hotelMarker {
+  background: var(--mantine-color-blue-7);
+  border: 2px solid var(--mantine-color-white);
+  color: var(--mantine-color-white);
+  transition: background-color 0.1s ease;
+
+  &:hover {
+    background-color: var(--mantine-color-blue-9);
+
+    &[data-arrow="true"]::before {
+      border-left-color: var(--mantine-color-blue-9);
+      border-top-color: var(--mantine-color-blue-9);
+      background-color: var(--mantine-color-blue-9);
+    }
+  }
+
+  &[data-active="true"] {
+    background-color: var(--mantine-color-dark-8);
+
+    &[data-arrow="true"]::before {
+      border-left-color: var(--mantine-color-dark-8);
+      border-top-color: var(--mantine-color-dark-8);
+      background-color: var(--mantine-color-dark-8);
+    }
+  }
+
+  &[data-arrow="true"]::before {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translate(-50%, -7px) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: var(--mantine-color-blue-7);
+    border: 2px solid var(--mantine-color-white);
+    border-left-color: var(--mantine-color-blue-7);
+    border-top-color: var(--mantine-color-blue-7);
+    transition: background-color 0.1s ease, border-color 0.1s ease;
   }
 }

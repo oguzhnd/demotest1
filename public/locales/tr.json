@@ -66,7 +66,7 @@
   "Adults": "Yetişkinler",
   "Childrens": "Çocuklar",
   "Infants": "Bebekler",
-  "Travel Class": "Seyehat Sınıfı",
+  "Travel Class": "Seyahat Sınıfı",
   "Business": "Business",
   "Economy": "Ekonomi",
   "Special discounted prices for members": "Üyelere özel indirimli fiyatlar",
@@ -77,7 +77,7 @@
   "Password": "Şifre",
   "I would like to be informed about discounts and campaigns within the scope of the Consent Text and I give my explicit consent to the processing of my personal data for marketing purposes": "İndirimler ve kampanyalardan Rıza Metni kapsamında haberdar olmak istiyorum ve kişisel verilerimin pazarlama amacıyla işlenmesine açık rıza veriyorum.",
   "My Profile": "Profilim",
-  "My Travels": "Seyehatlerim",
+  "My Travels": "Seyahatlerim",
   "My Passengers": "Yolcularım",
   "Name": "Ad",
   "Surname": "Soyad",
@@ -218,5 +218,7 @@
   "Rental Evaluation Analysis": "Araç Kiralama Değerlendirme Analizi",
   "TC Identity": "TC Kimlik",
   "Passport": "Pasaport",
-  "Driver's License Issuance Date": "Ehliyet Veriliş Tarihi"
+  "Driver's License Issuance Date": "Ehliyet Veriliş Tarihi",
+  "Filters": "Filtreler",
+  "Show on Map": "Haritada Göster"
 }
