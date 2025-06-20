@@ -220,5 +220,11 @@
   "Passport": "Passport",
   "Driver's License Issuance Date": "Driver's License Issuance Date",
   "Filters": "Filters",
-  "Show on Map": "Show on Map"
+  "Show on Map": "Show on Map",
+  "With Food": "With Food",
+  "Without Food": "Without Food",
+  "Cancelable": "Cancelable",
+  "Non-Cancellable": "Non-Cancellable",
+  "Low to High": "Low to High",
+  "High to Low": "High to Low"
 }

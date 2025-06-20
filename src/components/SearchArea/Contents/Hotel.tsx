@@ -10,6 +10,7 @@ import HotelSeachInput from "../Inputs/HotelSearch";
 import CheckDatePicker from "../Inputs/CheckDatePicker";
 import RoomsAndGuestsInput from "../Inputs/RoomsAndGuests";
 import CountrySelect from "../Inputs/Country";
+import { useMediaQuery } from "@mantine/hooks";
 
 const HotelSearch: FC<{
   compact?: boolean;
@@ -17,6 +18,8 @@ const HotelSearch: FC<{
   const t = useTranslations();
 
   const { push } = useRouter();
+  
+    const matchesSm = useMediaQuery("(max-width: 48em)");
 
   const form = useForm<{
     checkIn: Date | null;
@@ -42,7 +45,7 @@ const HotelSearch: FC<{
 
   const handleSubmit = useCallback(() => {}, []);
 
-  const Parent = compact ? Group : Stack;
+  const Parent = matchesSm ? Stack : compact ? Group : Stack;
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -51,7 +54,7 @@ const HotelSearch: FC<{
         wrap="nowrap"
         pb={compact ? 0 : 8}
         gap={8}
-        align={compact ? "flex-end" : undefined}
+        align={compact ? matchesSm ? "stretch" : "flex-end" : undefined}
       >
         <Stack w="100%" gap={8}>
           <Grid
@@ -64,13 +67,21 @@ const HotelSearch: FC<{
               overflow: "hidden",
             }}
           >
-            <Grid.Col span={2}>
+            <Grid.Col
+              span={{
+                base: 12,
+                sm: 2,
+              }}
+            >
               <HotelSeachInput
                 compact={compact}
                 label="City, Hotel name or Location"
               />
             </Grid.Col>
-            <Grid.Col span={4}>
+            <Grid.Col span={{
+              base: 12,
+              sm: 4
+            }}>
               <CheckDatePicker
                 compact={compact}
                 checkIn={form.getValues().checkIn}
@@ -81,10 +92,16 @@ const HotelSearch: FC<{
                 }}
               />
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col span={{
+              base: 12,
+              sm: 2
+            }}>
               <RoomsAndGuestsInput compact={compact} />
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col span={{
+              base: 12,
+              sm: 2
+            }}>
               <CountrySelect compact={compact} label="Country" />
             </Grid.Col>
           </Grid>

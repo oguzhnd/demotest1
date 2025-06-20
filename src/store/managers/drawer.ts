@@ -16,7 +16,7 @@ export interface DrawerManager {
 
 export const useDrawerManager = create<DrawerManager>((set, get) => ({
   drawers: {
-    mobileHeader: {
+    mobileDrawer: {
       opened: false,
     },
     passengerDrawer: {

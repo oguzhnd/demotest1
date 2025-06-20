@@ -28,16 +28,36 @@ const ReservationInformations = () => {
           </Text>
         </Group>
         <Grid gutter="xs">
-          <Grid.Col span={2}>
+          <Grid.Col
+            span={{
+              base: 12,
+              xs: 6,
+              sm: 2,
+            }}
+          >
             <TextInput label={t("Name")} />
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col
+            span={{
+              base: 12,
+              xs: 6,
+              sm: 2,
+            }}
+          >
             <TextInput label={t("Surname")} />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={{
+            base: 12,
+            xs: 6,
+            sm: 3
+          }}>
             <TextInput label={t("E-Mail")} />
           </Grid.Col>
-          <Grid.Col span={5}>
+          <Grid.Col span={{
+            base: 12,
+            xs: 6,
+            sm: 5
+          }}>
             <Group wrap="nowrap" gap={4} align="flex-start">
               <Select
                 w={100}

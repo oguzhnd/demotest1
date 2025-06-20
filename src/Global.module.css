@@ -1,3 +1,7 @@
+.buttonRoot {
+  flex-shrink: 0;
+}
+
 .buttonSection {
   &[data-position="left"] {
     margin-right: 6px;

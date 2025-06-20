@@ -8,7 +8,7 @@ export interface NavLinkProps {
   anchorProps?: AnchorProps
 }
 
-const navLinks: NavLinkProps[] = [
+export const navLinks: NavLinkProps[] = [
   {
     label: "Hotel",
     path: "/",

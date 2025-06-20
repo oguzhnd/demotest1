@@ -220,5 +220,11 @@
   "Passport": "Pasaport",
   "Driver's License Issuance Date": "Ehliyet Veriliş Tarihi",
   "Filters": "Filtreler",
-  "Show on Map": "Haritada Göster"
+  "Show on Map": "Haritada Göster",
+  "With Food": "Yemekli",
+  "Without Food": "Yemeksiz",
+  "Cancelable": "İptal Edilebilir",
+  "Non-Cancellable": "İptal Edilemez",
+  "Low to High": "Düşükten Yükseğe",
+  "High to Low": "Yüksekten Düşüğe"
 }

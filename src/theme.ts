@@ -18,6 +18,7 @@ export const theme = createTheme({
         fw: 500
       },
       classNames: {
+        root: classes.buttonRoot,
         section: classes.buttonSection,
       },
     },

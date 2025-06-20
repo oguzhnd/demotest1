@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import React from "react";
 import { useTranslations } from "use-intl";
 
@@ -40,6 +41,8 @@ const blogs = [
 const Blogs = () => {
   const t = useTranslations();
 
+  const matchesSm = useMediaQuery("(max-width: 48em)");
+
   return (
     <Container size="xl" w="100%" py={20}>
       <Stack gap={0}>
@@ -53,7 +56,12 @@ const Blogs = () => {
         </Text>
 
         <Grid mt="lg">
-          <Grid.Col span={8}>
+          <Grid.Col
+            span={{
+              base: 12,
+              md: 8,
+            }}
+          >
             <Carousel withIndicators height={316}>
               {blogs.map((blog, i) => (
                 <Carousel.Slide key={`blog-${i}`}>
@@ -74,14 +82,24 @@ const Blogs = () => {
                         py={60}
                       >
                         <Stack gap={4}>
-                          <Text size="xl" c="white" fw={500}>
+                          <Text
+                            size="xl"
+                            c="white"
+                            fw={500}
+                            lineClamp={matchesSm ? 2 : undefined}
+                          >
                             {blog.title}
                           </Text>
                           <Text c="gray.2" lineClamp={2}>
                             {blog.content}
                           </Text>
                         </Stack>
-                        <Button variant="white" size="compact-lg" radius="xl" px="md">
+                        <Button
+                          variant="white"
+                          size="compact-lg"
+                          radius="xl"
+                          px="md"
+                        >
                           {t("Review")}
                         </Button>
                       </Stack>
@@ -91,8 +109,19 @@ const Blogs = () => {
               ))}
             </Carousel>
           </Grid.Col>
-          <Grid.Col span={4}>
-            <Stack>
+          <Grid.Col
+            span={{
+              base: 12,
+              md: 4,
+            }}
+          >
+            <SimpleGrid
+              cols={{
+                base: 1,
+                sm: 2,
+                md: 1,
+              }}
+            >
               <Paper
                 h={150}
                 withBorder
@@ -151,7 +180,7 @@ const Blogs = () => {
                   </Stack>
                 </SimpleGrid>
               </Paper>
-            </Stack>
+            </SimpleGrid>
           </Grid.Col>
         </Grid>
       </Stack>

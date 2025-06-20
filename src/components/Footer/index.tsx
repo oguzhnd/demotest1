@@ -12,6 +12,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   IconBrandInstagram,
   IconBrandMeta,
@@ -88,11 +89,16 @@ const footerLinks = [
 const Footer = () => {
   const t = useTranslations();
 
+  const matchesSm = useMediaQuery("(max-width: 48em)")
+
   return (
     <Paper bg="black" py={40} radius={0}>
       <Container size="xl">
         <Grid w="100%" gutter={0}>
-          <Grid.Col span={4}>
+          <Grid.Col span={{
+            base: 12,
+            sm: 4
+          }}>
             <Stack justify="space-between">
               <Stack gap={4}>
                 <Text size="xl" c="white" fw={500} mb="md">
@@ -150,8 +156,12 @@ const Footer = () => {
             </Stack>
           </Grid.Col>
           {footerLinks.map((links, i) => (
-            <Grid.Col key={`links-${i}`} span={2}>
-              <Stack>
+            <Grid.Col key={`links-${i}`} span={{
+              base: 12,
+              xs: 6,
+              sm: 2
+            }}>
+              <Stack mt={matchesSm ? 20 :0}>
                 <Text fw={500} c="white">
                   {t(links.label)}
                 </Text>

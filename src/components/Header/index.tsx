@@ -23,12 +23,16 @@ import {
 import classes from "./Header.module.css";
 import HelpMenu from "./HelpMenu";
 import { useModalManager } from "@/store/managers/modal";
+import { useMediaQuery } from "@mantine/hooks";
+import MobileDrawer from "./Drawer";
 
 const Header = () => {
   const t = useTranslations();
 
   const { openDrawer } = useDrawerManager();
   const { openModal } = useModalManager();
+
+  const matchesSm = useMediaQuery("(max-width: 48em)")
 
   return (
     <Container size="xl" w="100%" h="100%">
@@ -37,9 +41,14 @@ const Header = () => {
           LOGO
         </Anchor>
 
-        <NavLinks />
+        {!matchesSm && <NavLinks />}
 
-        <Stack h="100%" gap={6} align="center">
+        <MobileDrawer  />
+        <ActionIcon size="lg" hiddenFrom="md" variant="subtle" color="dark" onClick={() => openDrawer("mobileDrawer")}>
+          <IconMenu2 size={20} />
+        </ActionIcon>
+
+        <Stack visibleFrom="md" h="100%" gap={6} align="center">
           <Group gap={0} wrap="nowrap">
             <svg
               width="40"
@@ -88,6 +97,7 @@ const Header = () => {
               />
             </svg>
           </Group>
+
           <Group gap={4}>
             <LanguageSelector />
             <CurrencySelector />

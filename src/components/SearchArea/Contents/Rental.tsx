@@ -8,6 +8,7 @@ import AirportInput from "../Inputs/AirportInput";
 import PickupLocation from "../Inputs/PickupLocation";
 import RentalDatesPicker from "../Inputs/RentalDates";
 import { useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
 
 export interface RentalSearchForm {
   pickupDate: Date | null;
@@ -22,6 +23,7 @@ const RentalSearch: FC<{
   const t = useTranslations();
 
   const { push } = useRouter();
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   const form = useForm<RentalSearchForm>({
     initialValues: {
@@ -34,7 +36,7 @@ const RentalSearch: FC<{
 
   const handleSubmit = useCallback(() => {}, []);
 
-  const Parent = compact ? Group : Stack;
+  const Parent = matchesSm ? Stack : compact ? Group : Stack;
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -43,7 +45,7 @@ const RentalSearch: FC<{
         wrap="nowrap"
         pb={compact ? 0 : 8}
         gap={8}
-        align={compact ? "flex-end" : undefined}
+        align={compact ? matchesSm ? "stretch" :  "flex-end" : undefined}
       >
         <Grid
           w="100%"
@@ -55,10 +57,20 @@ const RentalSearch: FC<{
             overflow: "hidden",
           }}
         >
-          <Grid.Col span={4}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 4,
+            }}
+          >
             <PickupLocation compact={compact} label="Pickup Location" />
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 6,
+            }}
+          >
             <RentalDatesPicker compact={compact} form={form} />
           </Grid.Col>
         </Grid>

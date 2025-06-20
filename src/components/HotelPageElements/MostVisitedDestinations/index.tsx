@@ -107,7 +107,11 @@ const MostVisitedDestinations = () => {
 
           {keys(items).map((tab, i) => (
             <Tabs.Panel key={`tab-${i}`} value={tab}>
-              <SimpleGrid cols={3}>
+              <SimpleGrid cols={{
+                base: 1,
+                xs: 2,
+                sm: 3
+              }}>
                 {items[tab].map((destination, j) => (
                   <DestinationCard key={`destination-${j}`} {...destination} />
                 ))}

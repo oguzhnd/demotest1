@@ -17,6 +17,7 @@ import AirportInput from "../Inputs/AirportInput";
 import { useForm } from "@mantine/form";
 import FlightDatePicker from "../Inputs/FlightDatePicker";
 import FlightPassengersInput from "../Inputs/FlightPassengersInput";
+import { useMediaQuery } from "@mantine/hooks";
 
 export interface FlightSearchFormProps {
   type: "one-way" | "round-trip";
@@ -36,6 +37,7 @@ const FlightSearch: FC<{
   const t = useTranslations();
 
   const { push } = useRouter();
+    const matchesSm = useMediaQuery("(max-width: 48em)");
 
   const form = useForm<FlightSearchFormProps>({
     initialValues: {
@@ -52,10 +54,10 @@ const FlightSearch: FC<{
   });
 
   const handleSubmit = useCallback((values: FlightSearchFormProps) => {
-    console.log(values)
+    console.log(values);
   }, []);
 
-  const Parent = compact ? Group : Stack;
+  const Parent = matchesSm ? Stack : compact ? Group : Stack;
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -64,7 +66,7 @@ const FlightSearch: FC<{
         wrap="nowrap"
         pb={compact ? 0 : 8}
         gap={8}
-        align={compact ? "flex-end" : undefined}
+        align={compact ? matchesSm ? "stretch" :  "flex-end" : undefined}
       >
         <Stack w="100%" gap={8}>
           <Radio.Group {...form.getInputProps("type")}>
@@ -97,16 +99,36 @@ const FlightSearch: FC<{
               overflow: "hidden",
             }}
           >
-            <Grid.Col span={2}>
+            <Grid.Col
+              span={{
+                base: 12,
+                sm: 2,
+              }}
+            >
               <AirportInput compact={compact} label="From" form={form} />
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col
+              span={{
+                base: 12,
+                sm: 2,
+              }}
+            >
               <AirportInput compact={compact} label="To" form={form} />
             </Grid.Col>
-            <Grid.Col span={4}>
+            <Grid.Col
+              span={{
+                base: 12,
+                sm: 4,
+              }}
+            >
               <FlightDatePicker compact={compact} form={form} />
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col
+              span={{
+                base: 12,
+                sm: 2,
+              }}
+            >
               <FlightPassengersInput compact={compact} form={form} />
             </Grid.Col>
           </Grid>

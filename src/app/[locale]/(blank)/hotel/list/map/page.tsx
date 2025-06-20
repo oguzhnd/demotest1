@@ -10,7 +10,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { CastlesGeojson, loadCastlesGeojson } from "./hotels";
 import { Feature, Point } from "geojson";
 import { ClusteredMarkers } from "@/components/HotelPageElements/_MapList/ClusteredMarkers";
-import { InfoWindowContent } from "@/components/HotelPageElements/_MapList/InfoWindowContent";
 import HotelListCard from "@/components/HotelPageElements/HotelListCard";
 
 const defaultMapProps = {

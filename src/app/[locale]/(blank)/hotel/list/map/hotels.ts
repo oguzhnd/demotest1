@@ -6,6 +6,7 @@ export type CastleFeatureProps = {
   wikidata: string;
 };
 
+// @ts-ignore
 export type CastlesGeojson = FeatureCollection<Point, CastleFeatureProps>;
 
 export async function loadCastlesGeojson(): Promise<CastlesGeojson> {

@@ -20,6 +20,7 @@ import { locale } from "dayjs";
 import { getValidDate } from "@/utils/tools";
 import { UseFormReturnType } from "@mantine/form";
 import { FlightSearchFormProps } from "../Contents/Flight";
+import { useMediaQuery } from "@mantine/hooks";
 
 const FlightDatePicker: FC<{
   compact?: boolean;
@@ -29,12 +30,18 @@ const FlightDatePicker: FC<{
   const locale = useLocale();
 
   const [opened, setOpened] = useState(false);
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   return (
     <Popover shadow="lg" opened={opened} onChange={setOpened}>
       <Popover.Target>
         <Grid gutter={0}>
-          <Grid.Col span={6}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 6,
+            }}
+          >
             <Stack
               className={classes.searchInputTarget}
               data-compact={compact}
@@ -42,7 +49,10 @@ const FlightDatePicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+              style={{
+                [matchesSm ? "borderBottom" : "borderRight"]:
+                  "1px solid var(--mantine-color-gray-3)",
+              }}
               onClick={() => setOpened((o) => !o)}
             >
               <Text size="sm" c={compact ? "blue.7" : undefined}>
@@ -70,7 +80,13 @@ const FlightDatePicker: FC<{
               </Text>
             </Stack>
           </Grid.Col>
-          <Grid.Col h="100%" span={6}>
+          <Grid.Col
+            h="100%"
+            span={{
+              base: 12,
+              sm: 6,
+            }}
+          >
             <Stack
               h={compact ? 60.59 : 93.59}
               className={classes.searchInputTarget}
@@ -79,7 +95,10 @@ const FlightDatePicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+              style={{
+                [matchesSm ? "borderBottom" : "borderRight"]:
+                  "1px solid var(--mantine-color-gray-3)",
+              }}
               onClick={() => {
                 if (form.getValues().type === "one-way") {
                   form.setFieldValue("type", "round-trip");

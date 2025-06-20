@@ -14,6 +14,7 @@ import React, { FC, useState } from "react";
 import classes from "../SearchArea.module.css";
 import { useTranslations } from "next-intl";
 import { IconSearch } from "@tabler/icons-react";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface PopularCityType {
   city: string;
@@ -42,11 +43,13 @@ const AirportOption: FC<PopularCityType> = ({ city, code, country, name }) => {
 
 const HotelSeachInput: FC<{
   label: string;
-  compact?: boolean
+  compact?: boolean;
 }> = ({ label, compact = false }) => {
   const t = useTranslations();
 
   const [opened, setOpened] = useState(false);
+
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   const popularCities: PopularCityType[] = [
     {
@@ -79,13 +82,20 @@ const HotelSeachInput: FC<{
           gap={0}
           px="sm"
           py="xs"
-          style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+          style={{
+            [matchesSm ? "borderBottom" : "borderRight"]:
+              "1px solid var(--mantine-color-gray-3)",
+          }}
           onClick={() => setOpened((o) => !o)}
         >
-          <Text size="sm" c={compact ? "blue.7" : undefined}>{label && t(label)}</Text>
-          {!compact && <Text size="xl" fw={700} truncate>
-            Granada Luxury Resort Okurcalar
-          </Text>}
+          <Text size="sm" c={compact ? "blue.7" : undefined} truncate>
+            {label && t(label)}
+          </Text>
+          {!compact && (
+            <Text size="xl" fw={700} truncate>
+              Granada Luxury Resort Okurcalar
+            </Text>
+          )}
           <Text size="sm" c={compact ? "white" : "gray.7"}>
             Antalya
           </Text>

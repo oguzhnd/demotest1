@@ -21,6 +21,7 @@ import { useLocale } from "next-intl";
 import React, { FC } from "react";
 
 import classes from "../Hotel.module.css";
+import { useMediaQuery } from "@mantine/hooks";
 
 const HotelListCard: FC<{
   id: string;
@@ -32,6 +33,11 @@ const HotelListCard: FC<{
 
   const { push } = useRouter();
 
+  const matchesSm = useMediaQuery("(max-width: 48em)")
+  const matchesXs = useMediaQuery("(max-width: 36em)")
+
+  const Parent = matchesSm ? Stack : Group
+
   return (
     <Paper
       withBorder
@@ -39,14 +45,14 @@ const HotelListCard: FC<{
       className={classes.hotelListCard}
       style={style}
     >
-      <Group gap={0} wrap="nowrap">
-        <Carousel w={300}>
+      <Parent gap={0} wrap="nowrap">
+        <Carousel w={matchesSm ? "100%" : 300}>
           {Array(3)
             .fill("")
             .map((img, i) => (
               <Carousel.Slide key={`slide-${i}`}>
                 <Image
-                  w={300}
+                  w={matchesSm ? "100%" : 300}
                   h={200}
                   src={
                     "https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
@@ -57,7 +63,7 @@ const HotelListCard: FC<{
         </Carousel>
         <Stack
           w="100%"
-          h={200}
+          h={matchesSm ? undefined : 200}
           p="md"
           justify="space-between"
           onClick={(e) => {
@@ -126,7 +132,7 @@ const HotelListCard: FC<{
               </Group>
             </Stack>
 
-            <Stack gap={0} align="flex-end">
+            <Stack gap={0} align={matchesXs ? "flex-start" : "flex-end"}>
               <Text size="xl" fw={600}>
                 {(31249).toLocaleString(locale)} TRY
               </Text>
@@ -139,7 +145,7 @@ const HotelListCard: FC<{
             </Stack>
           </Group>
         </Stack>
-      </Group>
+      </Parent>
     </Paper>
   );
 };

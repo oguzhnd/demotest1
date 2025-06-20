@@ -1,4 +1,5 @@
-import { Button, Container, Group, Paper, Text } from "@mantine/core";
+import { Button, Container, Group, Paper, Stack, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconUser } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import React from "react";
@@ -6,19 +7,24 @@ import React from "react";
 const LoginWarning = () => {
   const t = useTranslations();
 
+  const matchesSm = useMediaQuery("(max-width: 48em)");
+
+  const Parent = matchesSm ? Stack : Group
+
   return (
     <Container size="xl" w="100%" pb={20}>
       <Paper p="sm" bg="yellow.1" radius="md">
-        <Group justify="space-between">
-          <Group gap="xs">
+        <Parent justify="space-between" align={matchesSm ? "center" : "stretch"}>
+          <Parent gap="xs" align="center">
             <IconUser size={20} />
-            <Text size="sm" fw={500} lh={1}>
+            <Text size="sm" fw={500} lh={1} ta={matchesSm ? "center" : "left"}>
               {t("Special discounted prices for members")}
             </Text>
-            <Text size="xs" c="gray.7" lh={1} ml="xs">
+            <Text size="xs" c="gray.7" lh={1} ml="xs" ta={matchesSm ? "center" : "left"}>
               {t("You will see lower prices when you log in")}
             </Text>
-          </Group>
+          </Parent>
+
           <Button
             color="gray.5"
             c="dark"
@@ -28,7 +34,7 @@ const LoginWarning = () => {
           >
             {t("Sign In")}
           </Button>
-        </Group>
+        </Parent>
       </Paper>
     </Container>
   );

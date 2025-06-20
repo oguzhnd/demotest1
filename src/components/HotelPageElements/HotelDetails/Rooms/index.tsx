@@ -20,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import React from "react";
+import Room from "./Room";
 
 const Rooms = () => {
   const t = useTranslations();
@@ -31,6 +32,7 @@ const Rooms = () => {
     <Group w="100%">
       <Stack w="100%">
         <Grid
+          visibleFrom="sm"
           styles={{
             inner: {
               borderRadius: "var(--mantine-radius-md)",
@@ -87,7 +89,10 @@ const Rooms = () => {
           }}
         >
           <Grid.Col
-            span={3}
+            span={{
+              base: 12,
+              sm: 3,
+            }}
             style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
           >
             <Stack gap="xs">
@@ -148,245 +153,23 @@ const Rooms = () => {
                       },
                     }}
                   >
-                    Ücretsiz Erken Giriş (09.00 Sonrası) - Geç Çıkış (14.00&apos;a
-                    Kadar)
+                    Ücretsiz Erken Giriş (09.00 Sonrası) - Geç Çıkış
+                    (14.00&apos;a Kadar)
                   </Badge>
                 </Tooltip>
               </Group>
             </Stack>
           </Grid.Col>
-          <Grid.Col span={9}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 9,
+            }}
+          >
             <Stack>
-              <Grid
-                columns={9}
-                styles={{
-                  col: {
-                    padding: "8px 10px",
-                  },
-                }}
-              >
-                <Grid.Col
-                  span={3}
-                  style={{
-                    borderRight: "1px solid var(--mantine-color-gray-3)",
-                  }}
-                >
-                  <Stack>
-                    <Group gap={4}>
-                      <Badge
-                        variant="light"
-                        tt="capitalize"
-                        fw={500}
-                        radius="sm"
-                      >
-                        Kahvaltı dahil
-                      </Badge>
-                      <HoverCard width={250}>
-                        <HoverCard.Target>
-                          <Badge
-                            color="gray"
-                            tt="capitalize"
-                            fw={500}
-                            radius="sm"
-                          >
-                            İade Yapılamaz
-                          </Badge>
-                        </HoverCard.Target>
-                        <HoverCard.Dropdown>
-                          <Stack gap={0}>
-                            <Text size="sm" fw={500}>
-                              İade Yapılamaz
-                            </Text>
-                            <Text size="xs">
-                              Rezervasyonun iptali, değiştirilmesi veya
-                              kullanılmaması durumunda, toplam tutar sizden
-                              alınacaktır.
-                            </Text>
-                          </Stack>
-                        </HoverCard.Dropdown>
-                      </HoverCard>
-                      <Badge
-                        color="yellow"
-                        variant="light"
-                        tt="capitalize"
-                        fw={500}
-                        radius="sm"
-                      >
-                        Erken rezervasyon fırsatı
-                      </Badge>
-                    </Group>
-                  </Stack>
-                </Grid.Col>
-                <Grid.Col
-                  span={1}
-                  style={{
-                    borderRight: "1px solid var(--mantine-color-gray-3)",
-                  }}
-                >
-                  <IconUserFilled
-                    size={14}
-                    color="var(--mantine-color-gray-7)"
-                  />
-                  <IconUserFilled
-                    size={14}
-                    color="var(--mantine-color-gray-7)"
-                  />
-                </Grid.Col>
-                <Grid.Col
-                  span={2}
-                  style={{
-                    borderRight: "1px solid var(--mantine-color-gray-3)",
-                  }}
-                >
-                  <Group c="blue" gap={4}>
-                    <IconCurrencyLira size={16} />
-                    <Text fw={500} lh={1}>
-                      {(14351).toLocaleString(locale)}
-                    </Text>
-                  </Group>
-                </Grid.Col>
-                <Grid.Col
-                  span={1}
-                  style={{
-                    borderRight: "1px solid var(--mantine-color-gray-3)",
-                  }}
-                >
-                  <Text fw={500}>1</Text>
-                </Grid.Col>
-                <Grid.Col span={2}>
-                  <Stack gap={0} align="flex-end">
-                    <Text size="xs" c="gray.7">
-                      1 Oda 2 Yetişkin
-                    </Text>
-                    <Text size="sm">Toplam Fiyat</Text>
-                    <Group c="blue" gap={4}>
-                      <IconCurrencyLira size={16} />
-                      <Text fw={500} lh={1}>
-                        {(14351).toLocaleString(locale)}
-                      </Text>
-                    </Group>
-                    <Button mt={8} onClick={() => push("/hotel/reservation/1")}>Rezervasyon yap</Button>
-                  </Stack>
-                </Grid.Col>
-              </Grid>
-
+              <Room />
               <Divider />
-
-              <Grid
-                columns={9}
-                styles={{
-                  col: {
-                    padding: "8px 10px",
-                  },
-                }}
-              >
-                <Grid.Col
-                  span={3}
-                  style={{
-                    borderRight: "1px solid var(--mantine-color-gray-3)",
-                  }}
-                >
-                  <Stack>
-                    <Group gap={4}>
-                      <Badge
-                        variant="light"
-                        tt="capitalize"
-                        fw={500}
-                        radius="sm"
-                      >
-                        Kahvaltı dahil
-                      </Badge>
-
-                      <HoverCard width={250}>
-                        <HoverCard.Target>
-                          <Badge
-                            color="gray"
-                            tt="capitalize"
-                            fw={500}
-                            radius="sm"
-                          >
-                            İade Yapılamaz
-                          </Badge>
-                        </HoverCard.Target>
-                        <HoverCard.Dropdown>
-                          <Stack gap={0}>
-                            <Text size="sm" fw={500}>
-                              İade Yapılamaz
-                            </Text>
-                            <Text size="xs">
-                              Rezervasyonun iptali, değiştirilmesi veya
-                              kullanılmaması durumunda, toplam tutar sizden
-                              alınacaktır.
-                            </Text>
-                          </Stack>
-                        </HoverCard.Dropdown>
-                      </HoverCard>
-                      <Badge
-                        color="yellow"
-                        variant="light"
-                        tt="capitalize"
-                        fw={500}
-                        radius="sm"
-                      >
-                        Erken rezervasyon fırsatı
-                      </Badge>
-                    </Group>
-                  </Stack>
-                </Grid.Col>
-                <Grid.Col
-                  span={1}
-                  style={{
-                    borderRight: "1px solid var(--mantine-color-gray-3)",
-                  }}
-                >
-                  <IconUserFilled
-                    size={14}
-                    color="var(--mantine-color-gray-7)"
-                  />
-                  <IconUserFilled
-                    size={14}
-                    color="var(--mantine-color-gray-7)"
-                  />
-                </Grid.Col>
-                <Grid.Col
-                  span={2}
-                  style={{
-                    borderRight: "1px solid var(--mantine-color-gray-3)",
-                  }}
-                >
-                  <Group c="blue" gap={4}>
-                    <IconCurrencyLira size={16} />
-                    <Text fw={500} lh={1}>
-                      {(14351).toLocaleString(locale)}
-                    </Text>
-                  </Group>
-                </Grid.Col>
-                <Grid.Col
-                  span={1}
-                  style={{
-                    borderRight: "1px solid var(--mantine-color-gray-3)",
-                  }}
-                >
-                  <Text fw={500}>1</Text>
-                </Grid.Col>
-                <Grid.Col span={2}>
-                  <Stack gap={0} align="flex-end">
-                    <Text size="xs" c="gray.7">
-                      1 Oda 2 Yetişkin
-                    </Text>
-                    <Text size="sm">Toplam Fiyat</Text>
-                    <Group c="blue" gap={4}>
-                      <IconCurrencyLira size={16} />
-                      <Text fw={500} lh={1}>
-                        {(14351).toLocaleString(locale)}
-                      </Text>
-                    </Group>
-                    <Button mt={8} onClick={() => push("/hotel/reservation/1")}>
-                      Rezervasyon yap
-                    </Button>
-                  </Stack>
-                </Grid.Col>
-              </Grid>
+              <Room />
             </Stack>
           </Grid.Col>
         </Grid>

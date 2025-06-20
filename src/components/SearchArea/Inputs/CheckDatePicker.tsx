@@ -18,6 +18,7 @@ import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { DatePicker } from "@mantine/dates";
 import { locale } from "dayjs";
 import { getValidDate } from "@/utils/tools";
+import { useMediaQuery } from "@mantine/hooks";
 
 const CheckDatePicker: FC<{
   compact?: boolean;
@@ -29,14 +30,18 @@ const CheckDatePicker: FC<{
   const locale = useLocale();
 
   const [opened, setOpened] = useState(false);
-
-  console.log(checkIn, checkOut);
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   return (
     <Popover shadow="lg" opened={opened} onChange={setOpened}>
       <Popover.Target>
         <Grid gutter={0}>
-          <Grid.Col span={6}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 6,
+            }}
+          >
             <Stack
               className={classes.searchInputTarget}
               data-compact={compact}
@@ -44,7 +49,10 @@ const CheckDatePicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+              style={{
+                [matchesSm ? "borderBottom" : "borderRight"]:
+                  "1px solid var(--mantine-color-gray-3)",
+              }}
               onClick={() => setOpened((o) => !o)}
             >
               <Text size="sm" c={compact ? "blue.7" : undefined}>
@@ -72,7 +80,13 @@ const CheckDatePicker: FC<{
               </Text>
             </Stack>
           </Grid.Col>
-          <Grid.Col h="100%" span={6}>
+          <Grid.Col
+            h="100%"
+            span={{
+              base: 12,
+              sm: 6,
+            }}
+          >
             <Stack
               h={compact ? 60.59 : 93.59}
               className={classes.searchInputTarget}
@@ -81,7 +95,10 @@ const CheckDatePicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+              style={{
+                [matchesSm ? "borderBottom" : "borderRight"]:
+                  "1px solid var(--mantine-color-gray-3)",
+              }}
               onClick={() => {
                 setOpened((o) => !o);
               }}

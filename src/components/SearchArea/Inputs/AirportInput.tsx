@@ -16,6 +16,7 @@ import { useTranslations } from "next-intl";
 import { IconSearch } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 import { FlightSearchFormProps } from "../Contents/Flight";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface PopularCityType {
   city: string;
@@ -57,6 +58,7 @@ const AirportInput: FC<{
   const t = useTranslations();
 
   const [opened, setOpened] = useState(false);
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   const popularCities: Omit<PopularCityType, "onClick">[] = [
     {
@@ -89,7 +91,10 @@ const AirportInput: FC<{
           gap={0}
           px="sm"
           py="xs"
-          style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+          style={{
+            [matchesSm ? "borderBottom" : "borderRight"]:
+              "1px solid var(--mantine-color-gray-3)",
+          }}
           onClick={() => setOpened((o) => !o)}
         >
           <Text size="sm" c={compact ? "blue.7" : undefined}>

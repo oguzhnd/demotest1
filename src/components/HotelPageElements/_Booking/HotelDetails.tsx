@@ -6,14 +6,14 @@ const HotelDetails = () => {
   return (
     <Paper p="sm" withBorder>
       <Stack gap="xs">
-        <Group wrap="nowrap">
+        <Group wrap="nowrap" align="flex-start">
           <Image
             w={100}
             h={100}
             radius="md"
             src="https://imgkit.otelz.com/turkey/antalya/kas/villatamarahotel805b7d81.jpg?tr=w-100,h-100,fo-auto,q-80"
           />
-          <Stack h={100} gap={0}>
+          <Stack mih={100} gap={0}>
             <Text size="sm" fw={500}>Villa Tamara Hotel</Text>
             <Rating value={5} readOnly size="xs" />
             <Group gap={4} c="gray.7">

@@ -13,11 +13,13 @@ import {
   Image,
   Paper,
   Rating,
+  ScrollArea,
   SimpleGrid,
   Stack,
   Tabs,
   Text,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconChevronRight, IconSpeakerphone } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
@@ -29,6 +31,10 @@ const HotelDetail = () => {
 
   const params = useParams();
   const { push } = useRouter();
+
+  const matchesSm = useMediaQuery("(max-width: 48em)");
+
+  const Parent = matchesSm ? Stack : Group
 
   return (
     <Stack>
@@ -63,8 +69,9 @@ const HotelDetail = () => {
 
           <Tabs mt="md" defaultValue="Ana Sayfa">
             <Tabs.List>
-              <Group w="100%" justify="space-between" align="flex-end">
-                <Group gap={0}>
+              <Parent w="100%" justify="space-between" align={matchesSm ? undefined : "flex-end"}>
+                <ScrollArea offsetScrollbars scrollbarSize={7}>
+                  <Group gap={0} wrap="nowrap">
                   {["Ana Sayfa", "Odalar", "Detaylar", "Olanaklar"].map(
                     (tab, i) => (
                       <Tabs.Tab
@@ -80,9 +87,10 @@ const HotelDetail = () => {
                     )
                   )}
                 </Group>
+                </ScrollArea>
 
-                <Group>
-                  <Stack gap={0} align="flex-end" mb={4}>
+                <Parent gap={matchesSm ? 0 : undefined} align={matchesSm ? "center" : undefined} mb={matchesSm ? 8 : 0}>
+                  <Stack gap={0} align={matchesSm ? "center" : "flex-end"} mb={4}>
                     <Text size="lg" fw={500}>
                       {(85930).toLocaleString(locale)} TRY
                     </Text>
@@ -91,44 +99,58 @@ const HotelDetail = () => {
                     </Text>
                   </Stack>
                   <Button radius="xl">Tekliflere Bak</Button>
-                </Group>
-              </Group>
+                </Parent>
+              </Parent>
             </Tabs.List>
           </Tabs>
 
           <Stack gap="xl">
             <Grid gutter="xs">
-              <Grid.Col span={6}>
+              <Grid.Col
+                span={{
+                  base: 12,
+                  sm: 6,
+                }}
+              >
                 <Image
                   alt="hotel-1"
-                  h={500}
+                  h={matchesSm ? 200 : 500}
                   radius="md"
                   src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
                 />
               </Grid.Col>
-              <Grid.Col span={3}>
-                <Stack gap="xs">
+              <Grid.Col span={{
+                base: 12,
+                sm: 3
+              }}>
+                <SimpleGrid cols={{
+                  base: 3,
+                  sm: 1
+                }} spacing="xs">
                   <Image
-                  alt="hotel-1"
-                    h={160}
+                    alt="hotel-1"
+                    h={matchesSm ? 100 : 160}
                     radius="md"
                     src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
                   />
                   <Image
-                  alt="hotel-1"
-                    h={160}
+                    alt="hotel-1"
+                    h={matchesSm ? 100 : 160}
                     radius="md"
                     src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
                   />
                   <Image
-                  alt="hotel-1"
-                    h={160}
+                    alt="hotel-1"
+                    h={matchesSm ? 100 : 160}
                     radius="md"
                     src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
                   />
-                </Stack>
+                </SimpleGrid>
               </Grid.Col>
-              <Grid.Col span={3}>
+              <Grid.Col span={{
+                base: 12,
+                sm: 3
+              }}>
                 <Stack h="100%" gap="xs">
                   <Paper
                     radius="md"
@@ -157,7 +179,7 @@ const HotelDetail = () => {
                       </Anchor>
                     </Group>
                   </Paper>
-                  <Paper h="100%" bg="gray.2"></Paper>
+                  <Paper h="100%" bg="gray.2" mih={100}></Paper>
                 </Stack>
               </Grid.Col>
             </Grid>
@@ -194,7 +216,15 @@ const HotelDetail = () => {
               <Text size="lg" fw={500}>
                 Olanaklar
               </Text>
-              <SimpleGrid cols={8} spacing={8}>
+              <SimpleGrid
+                cols={{
+                  base: 3,
+                  xs: 4,
+                  sm: 5,
+                  md: 8,
+                }}
+                spacing={8}
+              >
                 {facilities.map(({ icon: Icon, label }, i) => (
                   <Paper key={`item-${i}`} withBorder p="xs">
                     <Stack gap={4} align="center ">

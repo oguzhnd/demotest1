@@ -32,15 +32,29 @@ const Payment: FC<{
           </Text>
         </Group>
         <Grid gutter="xs">
-          <Grid.Col span={3}>
+          <Grid.Col
+            span={{
+              base: 12,
+              xs: 6,
+              sm: 3,
+            }}
+          >
             <Input.Wrapper label={t("Card Number")}>
               <Input component={IMaskInput} mask="0000 0000 0000 0000" />
             </Input.Wrapper>
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col span={{
+              base: 12,
+              xs: 4,
+              sm: 3,
+            }}>
             <DatePickerInput label={t("Expiration Date")} />
           </Grid.Col>
-          <Grid.Col span={1}>
+          <Grid.Col span={{
+              base: 12,
+              xs: 2,
+              sm: 2,
+            }}>
             <Input.Wrapper label={t("CVV")}>
               <Input component={IMaskInput} mask="0000" />
             </Input.Wrapper>

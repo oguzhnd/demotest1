@@ -20,6 +20,7 @@ import { locale } from "dayjs";
 import { getValidDate } from "@/utils/tools";
 import { UseFormReturnType } from "@mantine/form";
 import { RentalSearchForm } from "../Contents/Rental";
+import { useMediaQuery } from "@mantine/hooks";
 
 const RentalDatesPicker: FC<{
   compact?: boolean;
@@ -29,12 +30,18 @@ const RentalDatesPicker: FC<{
   const locale = useLocale();
 
   const [opened, setOpened] = useState(false);
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   return (
     <Popover shadow="lg" opened={opened} onChange={setOpened}>
       <Popover.Target>
         <Grid gutter={0}>
-          <Grid.Col span={3}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 3,
+            }}
+          >
             <Stack
               className={classes.searchInputTarget}
               data-compact={compact}
@@ -42,7 +49,8 @@ const RentalDatesPicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+              style={{ [matchesSm ? "borderBottom" : "borderRight"]:
+              "1px solid var(--mantine-color-gray-3)", }}
               onClick={() => setOpened((o) => !o)}
             >
               <Text size="sm" c={compact ? "blue.7" : undefined}>
@@ -70,7 +78,12 @@ const RentalDatesPicker: FC<{
               </Text>
             </Stack>
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 3,
+            }}
+          >
             <Stack
               h="100%"
               className={classes.searchInputTarget}
@@ -79,7 +92,8 @@ const RentalDatesPicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+              style={{ [matchesSm ? "borderBottom" : "borderRight"]:
+              "1px solid var(--mantine-color-gray-3)", }}
               onClick={() => setOpened((o) => !o)}
             >
               <Text size="sm" c={compact ? "blue.7" : undefined}>
@@ -96,7 +110,13 @@ const RentalDatesPicker: FC<{
               )}
             </Stack>
           </Grid.Col>
-          <Grid.Col h="100%" span={3}>
+          <Grid.Col
+            h="100%"
+            span={{
+              base: 12,
+              sm: 3,
+            }}
+          >
             <Stack
               h={compact ? 60.59 : 93.59}
               className={classes.searchInputTarget}
@@ -105,7 +125,8 @@ const RentalDatesPicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+              style={{ [matchesSm ? "borderBottom" : "borderRight"]:
+              "1px solid var(--mantine-color-gray-3)", }}
               onClick={() => {
                 setOpened((o) => !o);
               }}
@@ -136,7 +157,12 @@ const RentalDatesPicker: FC<{
               </Text>
             </Stack>
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 3,
+            }}
+          >
             <Stack
               h="100%"
               className={classes.searchInputTarget}
@@ -145,7 +171,8 @@ const RentalDatesPicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+              style={{ [matchesSm ? "borderBottom" : "borderRight"]:
+              "1px solid var(--mantine-color-gray-3)", }}
               onClick={() => setOpened((o) => !o)}
             >
               <Text size="sm" c={compact ? "blue.7" : undefined}>

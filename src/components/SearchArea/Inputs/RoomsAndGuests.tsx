@@ -15,6 +15,7 @@ import { IconSearch } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { FC, useState } from "react";
 import classes from "../SearchArea.module.css";
+import { useMediaQuery } from "@mantine/hooks";
 
 const RoomsAndGuestsInput: FC<{
   compact?: boolean;
@@ -22,6 +23,8 @@ const RoomsAndGuestsInput: FC<{
   const t = useTranslations();
 
   const [opened, setOpened] = useState(false);
+
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   return (
     <Popover shadow="lg" opened={opened} onChange={setOpened}>
@@ -35,7 +38,10 @@ const RoomsAndGuestsInput: FC<{
           px="sm"
           py="xs"
           onClick={() => setOpened((o) => !o)}
-          style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
+          style={{
+            [matchesSm ? "borderBottom" : "borderRight"]:
+              "1px solid var(--mantine-color-gray-3)",
+          }}
         >
           <Text size="sm" c={compact ? "blue.7" : undefined}>
             {t("Rooms & Guests")}

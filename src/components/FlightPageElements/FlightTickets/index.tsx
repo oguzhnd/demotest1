@@ -231,7 +231,11 @@ const FlightTickets = () => {
 
           {keys(flightTickets).map((tab, i) => (
             <Tabs.Panel key={`tab-${i}`} value={tab}>
-              <SimpleGrid cols={4}>
+              <SimpleGrid cols={{
+                base: 1,
+                xs: 2,
+                sm: 4
+              }}>
                 {flightTickets[tab].map((destination, j) => (
                   <TicketCard key={`destination-${j}`} {...destination} />
                 ))}

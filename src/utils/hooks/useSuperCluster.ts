@@ -4,6 +4,7 @@ import {useCallback, useEffect, useMemo, useReducer} from 'react';
 import { useMapViewport } from './useMapViewport';
 
 export function useSupercluster<T extends any>(
+  // @ts-ignore
   geojson: FeatureCollection<Point, T>,
   superclusterOptions: Supercluster.Options<T, ClusterProperties>
 ) {

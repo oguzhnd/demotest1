@@ -9,18 +9,27 @@ import RoomGuestInformations from "@/components/HotelPageElements/_Booking/RoomG
 import SpecialRequests from "@/components/HotelPageElements/_Booking/SpecialRequests";
 import { useRouter } from "@/i18n/navigation";
 import { Checkbox, Container, Grid, Paper, Stack } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useTranslations } from "next-intl";
 import React from "react";
 
 const HotelReservation = () => {
   const t = useTranslations();
 
-  const { push } = useRouter()
+  const { push } = useRouter();
+
+  const matchesMd = useMediaQuery("(max-width: 62em)")
 
   return (
     <Container w="100%" size="xl" py={20}>
       <Grid gutter="xs">
-        <Grid.Col span={9}>
+        <Grid.Col
+          span={{
+            base: 12,
+            md: 9,
+          }}
+          order={matchesMd ? 2 : 1}
+        >
           <Stack>
             <ReservationInformations />
             <RoomGuestInformations />
@@ -30,10 +39,16 @@ const HotelReservation = () => {
               <Checkbox label={t("I approve the Clarification Text")} />
               <Checkbox label={t("I approve the text of Explicit Consent")} />
             </Stack>
-            <Payment onSubmit={() => push("/hotel/reservation/completed")}/>
+            <Payment onSubmit={() => push("/hotel/reservation/completed")} />
           </Stack>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col
+          span={{
+            base: 12,
+            md: 3,
+          }}
+          order={matchesMd ? 1 : 2}
+        >
           <Stack>
             <HotelDetails />
             <PriceDetails />
