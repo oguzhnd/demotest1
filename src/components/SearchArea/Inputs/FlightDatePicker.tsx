@@ -18,28 +18,17 @@ import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { DatePicker } from "@mantine/dates";
 import { locale } from "dayjs";
 import { getValidDate } from "@/utils/tools";
+import { UseFormReturnType } from "@mantine/form";
+import { FlightSearchFormProps } from "../Contents/Flight";
 
 const FlightDatePicker: FC<{
   compact?: boolean;
-  type: "one-way" | "round-trip";
-  setType: (type: "one-way" | "round-trip") => void;
-  departureDate: Date | null;
-  returnDate: Date | null;
-  onChange: (dates: [Date | null, Date | null]) => void;
-}> = ({
-  compact = false,
-  type,
-  setType,
-  departureDate,
-  returnDate,
-  onChange,
-}) => {
+  form: UseFormReturnType<FlightSearchFormProps>;
+}> = ({ compact = false, form }) => {
   const t = useTranslations();
   const locale = useLocale();
 
   const [opened, setOpened] = useState(false);
-
-  console.log(departureDate, returnDate);
 
   return (
     <Popover shadow="lg" opened={opened} onChange={setOpened}>
@@ -61,7 +50,7 @@ const FlightDatePicker: FC<{
               </Text>
               {!compact && (
                 <Text size="xl" fw={700}>
-                  {departureDate?.toLocaleDateString(locale, {
+                  {form.getValues().departureDate?.toLocaleDateString(locale, {
                     day: "2-digit",
                     month: "short",
                     year: "2-digit",
@@ -70,12 +59,12 @@ const FlightDatePicker: FC<{
               )}
               <Text size="sm" c={compact ? "white" : "gray.7"}>
                 {compact
-                  ? departureDate?.toLocaleDateString(locale, {
+                  ? form.getValues().departureDate?.toLocaleDateString(locale, {
                       day: "2-digit",
                       month: "short",
                       year: "2-digit",
                     })
-                  : departureDate?.toLocaleDateString(locale, {
+                  : form.getValues().departureDate?.toLocaleDateString(locale, {
                       weekday: "long",
                     })}
               </Text>
@@ -92,20 +81,25 @@ const FlightDatePicker: FC<{
               py="xs"
               style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
               onClick={() => {
-                if (type === "one-way") {
-                  setType("round-trip");
+                if (form.getValues().type === "one-way") {
+                  form.setFieldValue("type", "round-trip");
                 }
                 setOpened((o) => !o);
               }}
             >
-              {type === "round-trip" && (
+              {form.getValues().type === "round-trip" && (
                 <Text size="sm" c={compact ? "blue.9" : undefined}>
                   {t("Return")}
                 </Text>
               )}
-              {type === "one-way" ? (
+              {form.getValues().type === "one-way" ? (
                 <>
-                  <Group h="100%" align="center" gap="sm" c={compact ? "gray.3" : "gray.7"}>
+                  <Group
+                    h="100%"
+                    align="center"
+                    gap="sm"
+                    c={compact ? "gray.3" : "gray.7"}
+                  >
                     <IconPlus size={20} />
                     <Text size="md" fw={500} lh={1}>
                       {t("Add Return")}
@@ -116,7 +110,7 @@ const FlightDatePicker: FC<{
                 <>
                   {!compact && (
                     <Text size="xl" fw={700}>
-                      {returnDate?.toLocaleDateString(locale, {
+                      {form.getValues().returnDate?.toLocaleDateString(locale, {
                         day: "2-digit",
                         month: "short",
                         year: "2-digit",
@@ -126,14 +120,18 @@ const FlightDatePicker: FC<{
 
                   <Text size="sm" c={compact ? "white" : "gray.7"}>
                     {compact
-                      ? returnDate?.toLocaleDateString(locale, {
-                          day: "2-digit",
-                          month: "short",
-                          year: "2-digit",
-                        })
-                      : returnDate?.toLocaleDateString(locale, {
-                          weekday: "long",
-                        })}
+                      ? form
+                          .getValues()
+                          .returnDate?.toLocaleDateString(locale, {
+                            day: "2-digit",
+                            month: "short",
+                            year: "2-digit",
+                          })
+                      : form
+                          .getValues()
+                          .returnDate?.toLocaleDateString(locale, {
+                            weekday: "long",
+                          })}
                   </Text>
                 </>
               )}
@@ -144,15 +142,24 @@ const FlightDatePicker: FC<{
       <Popover.Dropdown>
         <DatePicker
           numberOfColumns={2}
-          type={type === "one-way" ? "default" : "range"}
+          type={form.getValues().type === "one-way" ? "default" : "range"}
           value={
-            type === "one-way" ? departureDate : [departureDate, returnDate]
+            form.getValues().type === "one-way"
+              ? form.getValues().departureDate
+              : [form.getValues().departureDate, form.getValues().returnDate]
           }
-          onChange={(dates) =>
-            type === "one-way"
-              ? onChange([getValidDate(dates as string), null])
-              : onChange([getValidDate(dates[0]), getValidDate(dates[1])])
-          }
+          onChange={(dates) => {
+            if (form.getValues().type === "one-way") {
+              form.setFieldValue(
+                "departureDate",
+                getValidDate(dates as string)
+              );
+              form.setFieldValue("returnDate", null);
+            } else {
+              form.setFieldValue("departureDate", getValidDate(dates[0]));
+              form.setFieldValue("returnDate", getValidDate(dates[1]));
+            }
+          }}
         />
       </Popover.Dropdown>
     </Popover>

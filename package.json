@@ -36,6 +36,7 @@
     "react-imask": "^7.6.1",
     "recharts": "2",
     "supercluster": "^8.0.1",
+    "xior": "^0.7.8",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

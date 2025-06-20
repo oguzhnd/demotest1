@@ -3854,6 +3854,7 @@ __metadata:
     recharts: "npm:2"
     supercluster: "npm:^8.0.1"
     typescript: "npm:5.8.3"
+    xior: "npm:^0.7.8"
     zustand: "npm:^5.0.5"
   languageName: unknown
   linkType: soft
@@ -5407,6 +5408,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tiny-lru@npm:^11.2.11":
+  version: 11.3.3
+  resolution: "tiny-lru@npm:11.3.3"
+  checksum: 10c0/9e73857424abdc24988234a6e5fd6549cb8aa88a94d2dfa6547187c14bda96b46cdc2fc10dbf665fb5a3118439d3ad0dc90264f3c90ceaf0c7259cc55c70a477
+  languageName: node
+  linkType: hard
+
 "to-regex-range@npm:^5.0.1":
   version: 5.0.1
   resolution: "to-regex-range@npm:5.0.1"
@@ -5850,6 +5858,15 @@ __metadata:
   bin:
     node-which: ./bin/node-which
   checksum: 10c0/66522872a768b60c2a65a57e8ad184e5372f5b6a9ca6d5f033d4b0dc98aff63995655a7503b9c0a2598936f532120e81dd8cc155e2e92ed662a2b9377cc4374f
+  languageName: node
+  linkType: hard
+
+"xior@npm:^0.7.8":
+  version: 0.7.8
+  resolution: "xior@npm:0.7.8"
+  dependencies:
+    tiny-lru: "npm:^11.2.11"
+  checksum: 10c0/eb360eec43ebd5cfbe575e6edc9dbf8c8210f0ddb70a9142c9911e6eb7dca373ad476a2252cc0a63d82bc05b67682e3819148e08c67958a78d025a60cc2cfe65
   languageName: node
   linkType: hard
 

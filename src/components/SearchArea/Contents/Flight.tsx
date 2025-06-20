@@ -18,6 +18,18 @@ import { useForm } from "@mantine/form";
 import FlightDatePicker from "../Inputs/FlightDatePicker";
 import FlightPassengersInput from "../Inputs/FlightPassengersInput";
 
+export interface FlightSearchFormProps {
+  type: "one-way" | "round-trip";
+  departureDate: Date | null;
+  returnDate: Date | null;
+  passengers: {
+    adult: number;
+    child: number;
+    baby: number;
+  };
+  class: "economy" | "business";
+}
+
 const FlightSearch: FC<{
   compact?: boolean;
 }> = ({ compact = false }) => {
@@ -25,31 +37,23 @@ const FlightSearch: FC<{
 
   const { push } = useRouter();
 
-  const form = useForm<{
-    type: "one-way" | "round-trip";
-    departureDate: Date | null;
-    returnDate: Date | null;
-    passengers: {
-      adult: number
-      child: number
-      baby: number
-    }
-    class: "economy" | "business"
-  }>({
+  const form = useForm<FlightSearchFormProps>({
     initialValues: {
       type: "one-way",
       departureDate: new Date(),
       returnDate: null,
       passengers: {
         adult: 1,
-        child: 0,
-        baby: 0
+        child: 1,
+        baby: 0,
       },
-      class: "economy"
+      class: "economy",
     },
   });
 
-  const handleSubmit = useCallback(() => {}, []);
+  const handleSubmit = useCallback((values: FlightSearchFormProps) => {
+    console.log(values)
+  }, []);
 
   const Parent = compact ? Group : Stack;
 
@@ -94,31 +98,16 @@ const FlightSearch: FC<{
             }}
           >
             <Grid.Col span={2}>
-              <AirportInput compact={compact} label="From" />
+              <AirportInput compact={compact} label="From" form={form} />
             </Grid.Col>
             <Grid.Col span={2}>
-              <AirportInput compact={compact} label="To" />
+              <AirportInput compact={compact} label="To" form={form} />
             </Grid.Col>
             <Grid.Col span={4}>
-              <FlightDatePicker
-                compact={compact}
-                type={form.getValues().type}
-                setType={(type) => form.setFieldValue("type", type)}
-                departureDate={form.getValues().departureDate}
-                returnDate={form.getValues().returnDate}
-                onChange={(dates) => {
-                  form.setFieldValue("departureDate", dates[0]);
-
-                  if (form.getValues().type === "round-trip") {
-                    form.setFieldValue("returnDate", dates[1]);
-                  } else {
-                    form.setFieldValue("returnDate", null);
-                  }
-                }}
-              />
+              <FlightDatePicker compact={compact} form={form} />
             </Grid.Col>
             <Grid.Col span={2}>
-              <FlightPassengersInput compact={compact} />
+              <FlightPassengersInput compact={compact} form={form} />
             </Grid.Col>
           </Grid>
         </Stack>
