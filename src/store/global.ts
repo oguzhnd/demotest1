@@ -1,10 +1,10 @@
-import { xiorInstance } from "@/utils/xior";
+import { setAccessToken, xiorInstance } from "@/utils/xior";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface GlobalStore {
   isLogin: boolean;
-  bearerToken: string | undefined;
+  token: string | undefined
 
   currency: string;
 
@@ -22,26 +22,19 @@ export const useGlobalStore = create(
   persist<GlobalStore>(
     (set) => ({
       isLogin: false,
-      bearerToken: undefined,
+      token: undefined,
 
       makeSignin: async (data) => {
-        const res = await xiorInstance.post("/authentication", data)
-        console.log(res)
+        const res = await xiorInstance.post("/authentication", data);
 
-        const rawResponse = await fetch(
-          "https://api.nttreservation.com/services/v1/authentication",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        const content = await rawResponse.json();
+        if (!res.data.error) {
+          set({
+            isLogin: true,
+            token: res.data.accessToken
+          });
 
-        console.log(content);
+          setAccessToken(res.data.accessToken);
+        }
       },
       makeSignout: async () => {},
 

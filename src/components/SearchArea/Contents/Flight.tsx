@@ -13,14 +13,19 @@ import { useTranslations } from "next-intl";
 import React, { FC, useCallback } from "react";
 
 import classes from "../SearchArea.module.css";
-import AirportInput from "../Inputs/AirportInput";
+import AirportInput, { AirportType } from "../Inputs/AirportInput";
 import { useForm } from "@mantine/form";
 import FlightDatePicker from "../Inputs/FlightDatePicker";
 import FlightPassengersInput from "../Inputs/FlightPassengersInput";
 import { useMediaQuery } from "@mantine/hooks";
+import { xiorInstance } from "@/utils/xior";
+import { isDate } from "lodash";
+import { useLoading } from "@/utils/hooks/useLoading";
 
 export interface FlightSearchFormProps {
   type: "one-way" | "round-trip";
+  dep: AirportType | undefined;
+  arr: AirportType | undefined;
   departureDate: Date | null;
   returnDate: Date | null;
   passengers: {
@@ -31,17 +36,48 @@ export interface FlightSearchFormProps {
   class: "economy" | "business";
 }
 
+const convertDate = (date: Date | null) => {
+  return isDate(date)
+    ? [date.getFullYear(), date.getMonth(), date.getDate()].join("-")
+    : null;
+};
+
 const FlightSearch: FC<{
   compact?: boolean;
 }> = ({ compact = false }) => {
   const t = useTranslations();
 
   const { push } = useRouter();
-    const matchesSm = useMediaQuery("(max-width: 48em)");
+  const matchesSm = useMediaQuery("(max-width: 48em)");
+
+  const [loading, startLoading, stopLoading] = useLoading();
 
   const form = useForm<FlightSearchFormProps>({
     initialValues: {
       type: "one-way",
+      dep: {
+        type: 1,
+        geolocation: {
+          longitude: "28.9783589",
+          latitude: "41.0082376",
+        },
+        city: {
+          id: "IST",
+          name: "Istanbul, Turkey (All Airports)",
+        },
+      },
+      arr: {
+        type: 3,
+        geolocation: {
+          longitude: "32.995083",
+          latitude: "40.128082",
+        },
+        airport: {
+          name: "Ankara, Esenboga International Airport, Turkey (ESB)",
+          id: "ESB",
+          code: "ESB",
+        },
+      },
       departureDate: new Date(),
       returnDate: null,
       passengers: {
@@ -53,8 +89,36 @@ const FlightSearch: FC<{
     },
   });
 
-  const handleSubmit = useCallback((values: FlightSearchFormProps) => {
-    console.log(values);
+  const handleSubmit = useCallback(async (values: FlightSearchFormProps) => {
+    try {
+      startLoading();
+
+      const res = await xiorInstance.post("/searchFlight", {
+        dep:
+          values.dep?.type === 1
+            ? values.dep.city?.id
+            : values.dep?.airport?.id,
+        arr:
+          values.arr?.type === 1
+            ? values.arr.city?.id
+            : values.arr?.airport?.id,
+        dDate: convertDate(values.departureDate),
+        aDate: convertDate(values.returnDate),
+        adt: values.passengers.adult + "",
+        chd: values.passengers.child + "",
+        inf: values.passengers.baby + "",
+        serviceTypes: "",
+        nonStop: "0",
+      });
+
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      stopLoading();
+
+      push("/flight/list");
+    }
   }, []);
 
   const Parent = matchesSm ? Stack : compact ? Group : Stack;
@@ -66,7 +130,7 @@ const FlightSearch: FC<{
         wrap="nowrap"
         pb={compact ? 0 : 8}
         gap={8}
-        align={compact ? matchesSm ? "stretch" :  "flex-end" : undefined}
+        align={compact ? (matchesSm ? "stretch" : "flex-end") : undefined}
       >
         <Stack w="100%" gap={8}>
           <Radio.Group {...form.getInputProps("type")}>
@@ -105,7 +169,21 @@ const FlightSearch: FC<{
                 sm: 2,
               }}
             >
-              <AirportInput compact={compact} label="From" form={form} />
+              <AirportInput
+                compact={compact}
+                title={
+                  form.getValues().dep?.type === 1
+                    ? form.getValues().dep?.city?.id
+                    : form.getValues().dep?.airport?.id
+                }
+                description={
+                  form.getValues().dep?.type === 1
+                    ? form.getValues().dep?.city?.name
+                    : form.getValues().dep?.airport?.name
+                }
+                label="From"
+                form={form}
+              />
             </Grid.Col>
             <Grid.Col
               span={{
@@ -113,7 +191,21 @@ const FlightSearch: FC<{
                 sm: 2,
               }}
             >
-              <AirportInput compact={compact} label="To" form={form} />
+              <AirportInput
+                compact={compact}
+                title={
+                  form.getValues().arr?.type === 1
+                    ? form.getValues().arr?.city?.id
+                    : form.getValues().arr?.airport?.id
+                }
+                description={
+                  form.getValues().arr?.type === 1
+                    ? form.getValues().arr?.city?.name
+                    : form.getValues().arr?.airport?.name
+                }
+                label="To"
+                form={form}
+              />
             </Grid.Col>
             <Grid.Col
               span={{
@@ -141,13 +233,13 @@ const FlightSearch: FC<{
             bottom={compact ? undefined : -40}
           >
             <Button
+              loading={loading}
               type="submit"
               size="compact-lg"
               px="xl"
               h={40}
               radius="xl"
               style={{ flexShrink: 0 }}
-              onClick={() => push("/flight/list")}
             >
               {t("Search Flight")}
             </Button>

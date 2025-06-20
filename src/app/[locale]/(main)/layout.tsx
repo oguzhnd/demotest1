@@ -7,6 +7,8 @@ import Header from "@/components/Header";
 import MobileHeader from "@/components/Header/Drawer";
 import PromoBanner from "@/components/Header/PromoBanner";
 import { useGeneralStore } from "@/store/general";
+import { useGlobalStore } from "@/store/global";
+import { setAccessToken } from "@/utils/xior";
 import { ActionIcon, Affix, AppShell, Stack, Transition } from "@mantine/core";
 import { useHeadroom, useWindowScroll } from "@mantine/hooks";
 import { IconChevronUp } from "@tabler/icons-react";
@@ -26,6 +28,14 @@ const MainLayout: FC<{
   useEffect(() => {
     setHeaderPinned(pinned);
   }, [pinned]);
+
+  const { isLogin, token } = useGlobalStore();
+
+  useEffect(() => {
+    if (isLogin && token) {
+      setAccessToken(token);
+    }
+  }, []);
 
   return (
     <AppShell header={{ height: 80 + 46, collapsed: !pinned, offset: false }}>
