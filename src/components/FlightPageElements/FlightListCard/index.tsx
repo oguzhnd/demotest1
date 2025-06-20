@@ -1,10 +1,12 @@
 import { useRouter } from "@/i18n/navigation";
 import {
   ActionIcon,
+  Box,
   Button,
   Collapse,
   Divider,
   Group,
+  Image,
   Paper,
   SimpleGrid,
   Stack,
@@ -14,12 +16,13 @@ import {
   IconChevronDown,
   IconChevronRight,
   IconInfoCircle,
+  IconPlane,
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import React, { FC, useState } from "react";
 
 import classes from "../Flight.module.css";
-import { useHover } from "@mantine/hooks";
+import { useHover, useMediaQuery } from "@mantine/hooks";
 import FlightPacket, { FlightPacketType } from "./FlightPacket";
 
 const FlightListCard: FC<{
@@ -32,6 +35,8 @@ const FlightListCard: FC<{
   const { push } = useRouter();
 
   const [expanded, setExpanded] = useState(false);
+
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   const packets: FlightPacketType[] = [
     {
@@ -105,6 +110,8 @@ const FlightListCard: FC<{
     },
   ];
 
+  const Parent = matchesSm ? Stack : Group;
+
   return (
     <Paper
       className={classes.flightListCard}
@@ -117,8 +124,14 @@ const FlightListCard: FC<{
         style={{ cursor: "pointer" }}
         onClick={() => setExpanded(!expanded)}
       >
-        <Group wrap="nowrap" gap="xl" py="lg" px="xl">
-          <Stack gap={0}>
+        <Parent
+          wrap={matchesSm ? "wrap" : "nowrap"}
+          align="center"
+          gap={matchesSm ? "xs" : "xl"}
+          py="lg"
+          px="xl"
+        >
+          <Stack gap={0} align={matchesSm ? "center" : "left"}>
             <Text size="lg" fw={500}>
               12:40
             </Text>
@@ -132,10 +145,49 @@ const FlightListCard: FC<{
               Sabiha Gökçen Havalimanı
             </Text>
           </Stack>
-          <Group w="100%">
+
+          {matchesSm && <IconChevronDown size={16} />}
+
+          <Stack pos="relative" w="100%" align="center" visibleFrom="sm">
+            <Text size="xs" c="gray.7">
+              {t("Direct")}
+            </Text>
             <Divider w="100%" />
-          </Group>
-          <Stack gap={0}>
+            <Box
+              p={6}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                background: "white",
+                border: "1px solid var(--mantine-color-gray-3)",
+                borderRadius: "50%",
+              }}
+            >
+              <Image
+                w={12}
+                h={12}
+                src="https://images.ucuzabilet.com/resources/img/flights-logo/logo25x19/25px-PC.png"
+              />
+            </Box>
+            <Text size="xs" c="gray.7">
+              3s 20d
+            </Text>
+
+            <IconPlane
+              size={16}
+              color="var(--mantine-color-blue-7)"
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: 0,
+                transform: "translateY(-50%)",
+              }}
+            />
+          </Stack>
+
+          <Stack gap={0} align={matchesSm ? "center" : "right"}>
             <Text ta="right" size="lg" fw={500}>
               18:00
             </Text>
@@ -171,12 +223,24 @@ const FlightListCard: FC<{
               }}
             />
           </ActionIcon>
-        </Group>
+        </Parent>
 
         <Collapse in={expanded}>
-          <SimpleGrid cols={3} spacing="xs" px="lg" pb="lg">
+          <SimpleGrid
+            cols={{
+              base: 1,
+              sm: 3,
+            }}
+            spacing="xs"
+            px="lg"
+            pb="lg"
+          >
             {packets.map((packet, i) => (
-              <FlightPacket key={`packet-${i}`} {...packet} onSelect={onSelect} />
+              <FlightPacket
+                key={`packet-${i}`}
+                {...packet}
+                onSelect={onSelect}
+              />
             ))}
           </SimpleGrid>
         </Collapse>

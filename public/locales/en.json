@@ -237,5 +237,8 @@
   "Address": "Address",
   "Working Hours": "Working Hours",
   "Fax": "Fax",
-  "Our Location": "Our Location"
+  "Our Location": "Our Location",
+  "Direct": "Direct",
+  "Departure Flight": "Departure Flight",
+  "Return Flight": "Return Flight"
 }

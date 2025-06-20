@@ -237,5 +237,8 @@
   "Address": "Adres",
   "Working Hours": "Çalışma Saatleri",
   "Fax": "Faks",
-  "Our Location": "Konumumuz"
+  "Our Location": "Konumumuz",
+  "Direct": "Direkt",
+  "Departure Flight": "Gidiş Uçuşu",
+  "Return Flight": "Dönüş Uçuşu"
 }
