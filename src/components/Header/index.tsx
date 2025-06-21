@@ -25,14 +25,20 @@ import HelpMenu from "./HelpMenu";
 import { useModalManager } from "@/store/managers/modal";
 import { useMediaQuery } from "@mantine/hooks";
 import MobileDrawer from "./Drawer";
+import { useGlobalStore } from "@/store/global";
+import { useRouter } from "@/i18n/navigation";
 
 const Header = () => {
   const t = useTranslations();
 
+  const { push } = useRouter();
+
+  const { isLogin } = useGlobalStore();
+
   const { openDrawer } = useDrawerManager();
   const { openModal } = useModalManager();
 
-  const matchesSm = useMediaQuery("(max-width: 48em)")
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   return (
     <Container size="xl" w="100%" h="100%">
@@ -43,8 +49,14 @@ const Header = () => {
 
         {!matchesSm && <NavLinks />}
 
-        <MobileDrawer  />
-        <ActionIcon size="lg" hiddenFrom="md" variant="subtle" color="dark" onClick={() => openDrawer("mobileDrawer")}>
+        <MobileDrawer />
+        <ActionIcon
+          size="lg"
+          hiddenFrom="md"
+          variant="subtle"
+          color="dark"
+          onClick={() => openDrawer("mobileDrawer")}
+        >
           <IconMenu2 size={20} />
         </ActionIcon>
 
@@ -70,7 +82,9 @@ const Header = () => {
                 size="compact-sm"
                 fw={400}
                 leftSection={<IconUser size={16} />}
-                onClick={() => openModal("accountModal")}
+                onClick={() =>
+                  isLogin ? push("/account") : openModal("accountModal")
+                }
               >
                 {t("My Account")}
               </Button>

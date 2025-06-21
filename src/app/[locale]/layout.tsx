@@ -17,6 +17,7 @@ import CustomModalsProvider from "@/utils/providers/ModalsProvider";
 
 import { Geist } from "next/font/google";
 import GoogleMapProvider from "@/utils/providers/GoogleMapProvider";
+import AppGuardProvider from "@/utils/providers/AppGuard";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -51,13 +52,15 @@ export default async function LocaleLayout({
       </head>
       <body>
         <NextIntlClientProvider>
-          <MantineProvider theme={theme}>
-            <CustomDatesProvider>
-              <CustomModalsProvider>
-                <GoogleMapProvider>{children}</GoogleMapProvider>
-              </CustomModalsProvider>
-            </CustomDatesProvider>
-          </MantineProvider>
+          <AppGuardProvider>
+            <MantineProvider theme={theme}>
+              <CustomDatesProvider>
+                <CustomModalsProvider>
+                  <GoogleMapProvider>{children}</GoogleMapProvider>
+                </CustomModalsProvider>
+              </CustomDatesProvider>
+            </MantineProvider>
+          </AppGuardProvider>
         </NextIntlClientProvider>
       </body>
     </html>

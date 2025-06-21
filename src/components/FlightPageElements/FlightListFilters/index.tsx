@@ -1,20 +1,26 @@
 import CheckboxFilter from "@/components/Filter/Elements/Checkbox";
-import FilterWrapper from "@/components/Filter/FilterWrapper";
-import { ActionIcon, Divider, Group, Stack, Text } from "@mantine/core";
-import {
-  IconBriefcase,
-  IconLuggage,
-  IconMinus,
-  IconPlus,
-} from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
-import React from "react";
-import LuggageFilter from "./Elements/Luggage";
-import HoursFilter from "./Elements/Hours";
 import PriceFilter from "@/components/Filter/Elements/Price";
+import { useFlightStore } from "@/store/products/flight";
+import { Divider, Stack } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { useTranslations } from "next-intl";
+import HoursFilter from "./Elements/Hours";
+import LuggageFilter from "./Elements/Luggage";
+
+export interface FlightListFiltersForm {
+  transfers: string[];
+}
 
 const FlightListFilters = () => {
   const t = useTranslations();
+
+  const { filterOpt } = useFlightStore();
+
+  const form = useForm<FlightListFiltersForm>({
+    initialValues: {
+      transfers: [],
+    },
+  });
 
   return (
     <Stack gap={0}>
@@ -22,15 +28,15 @@ const FlightListFilters = () => {
         label={t("Transfers")}
         options={[
           {
-            value: "Direkt",
+            value: "0",
             label: "Direkt",
           },
           {
-            value: "1 Aktarma",
+            value: "1",
             label: "1 Aktarma",
           },
           {
-            value: "2+ Aktarma",
+            value: "2+",
             label: "2+ Aktarma",
           },
         ]}
@@ -38,59 +44,44 @@ const FlightListFilters = () => {
       <Divider />
       <LuggageFilter />
       <Divider />
-      <CheckboxFilter
-        label={t("Cabin")}
-        options={[
-          {
-            value: "Ekonomi",
-            label: "Ekonomi",
-          },
-          {
-            value: "Business",
-            label: "Business",
-          },
-        ]}
-      />
+      {filterOpt.classes && (
+        <CheckboxFilter
+          label={t("Cabin")}
+          options={filterOpt?.classes.map((e: any) => ({
+            value: e,
+            label: t(e),
+          }))}
+        />
+      )}
       <Divider />
       <HoursFilter />
       <Divider />
-      <CheckboxFilter
-        label={t("Airline Companies")}
-        options={[
-          {
-            value: "AJet",
-            label: "AJet",
-          },
-          {
-            value: "Pegasus Airlines",
-            label: "Pegasus Airlines",
-          },
-          {
-            value: "Turkish Airlines",
-            label: "Turkish Airlines",
-          },
-        ]}
-      />
+      {filterOpt.airlines && (
+        <CheckboxFilter
+          label={t("Airline Companies")}
+          options={filterOpt?.airlines.map((e: any) => ({
+            value: e.code,
+            label: e.name,
+          }))}
+        />
+      )}
       <Divider />
-      <CheckboxFilter
-        label={t("Airline Companies")}
-        options={[
-          {
-            value: "SAW: Sabiha Gökçen",
-            label: "SAW: Sabiha Gökçen",
-          },
-          {
-            value: "IST: İstanbul",
-            label: "IST: İstanbul",
-          },
-          {
-            value: "AYT: Antalya",
-            label: "AYT: Antalya",
-          },
-        ]}
-      />
+      {filterOpt.airports && (
+        <CheckboxFilter
+          label={t("Airports")}
+          options={filterOpt?.airports.map((e: any) => ({
+            value: e.code,
+            label: e.name,
+          }))}
+        />
+      )}
       <Divider />
-      <PriceFilter />
+      {filterOpt.departureFilters?.price && (
+        <PriceFilter
+          max={filterOpt.departureFilters.price.max}
+          min={filterOpt.departureFilters.price.min}
+        />
+      )}
       <Divider />
       <CheckboxFilter
         label={t("Transfer Airports")}

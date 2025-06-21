@@ -56,6 +56,7 @@ const FlightPassengersInput: FC<{
             </Text>
           )}
           <Text size="sm" c={compact ? "white" : "gray.7"}>
+            {compact && `${totalPassengers} Yolcu, `}
             {form.getValues().class === "business"
               ? t("Business")
               : t("Economy")}

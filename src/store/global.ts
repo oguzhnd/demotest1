@@ -1,10 +1,10 @@
-import { setAccessToken, xiorInstance } from "@/utils/xior";
+import { removeUserToken, setAccessToken, xiorInstance } from "@/utils/xior";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface GlobalStore {
   isLogin: boolean;
-  token: string | undefined
+  token: string | undefined;
 
   currency: string;
 
@@ -30,13 +30,20 @@ export const useGlobalStore = create(
         if (!res.data.error) {
           set({
             isLogin: true,
-            token: res.data.accessToken
+            token: res.data.accessToken,
           });
 
           setAccessToken(res.data.accessToken);
         }
       },
-      makeSignout: async () => {},
+      makeSignout: async () => {
+        set({
+          isLogin: false,
+          token: undefined,
+        });
+
+        removeUserToken()
+      },
 
       currency: "TRY",
       setCurrency: (currency) => {

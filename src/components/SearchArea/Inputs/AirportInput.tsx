@@ -67,12 +67,13 @@ const AirportOption: FC<AirportType> = ({ type, city, airport, onClick }) => {
 };
 
 const AirportInput: FC<{
+  disabled?: boolean
   label: string;
   title?: string;
   description?: string;
   compact?: boolean;
   form: UseFormReturnType<FlightSearchFormProps>;
-}> = ({ label, title, description, compact = false, form }) => {
+}> = ({ disabled, label, title, description, compact = false, form }) => {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -109,12 +110,13 @@ const AirportInput: FC<{
   }, [searchValue]);
 
   return (
-    <Popover width={270} shadow="lg" opened={opened} onChange={setOpened}>
+    <Popover width={300} shadow="lg" opened={opened} onChange={setOpened}>
       <Popover.Target>
         <Stack
           className={classes.searchInputTarget}
           data-compact={compact}
           data-focused={opened}
+          data-disabled={disabled}
           gap={0}
           px="sm"
           py="xs"
@@ -128,12 +130,12 @@ const AirportInput: FC<{
             {label && t(label)}
           </Text>
           {!compact && (
-            <Text size="xl" fw={700}>
-              {title || "-"}
+            <Text size="xl" fw={!title ? 600 : 700} c={!title ? "gray.5" : undefined}>
+              {title || t("City or Airport")}
             </Text>
           )}
-          <Text size="sm" c={compact ? "white" : "gray.7"} truncate>
-            {description || "-"}
+          <Text size="sm" c={compact ? !title ? "gray.5" : "white" : !title ? "gray.5" : "gray.7"} truncate>
+            {description || t("Click to search")}
           </Text>
         </Stack>
       </Popover.Target>

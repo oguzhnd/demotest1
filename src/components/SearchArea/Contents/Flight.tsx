@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { IconCheck, IconSearch } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 
 import classes from "../SearchArea.module.css";
 import AirportInput, { AirportType } from "../Inputs/AirportInput";
@@ -21,6 +21,8 @@ import { useMediaQuery } from "@mantine/hooks";
 import { xiorInstance } from "@/utils/xior";
 import { isDate } from "lodash";
 import { useLoading } from "@/utils/hooks/useLoading";
+import { useFlightStore } from "@/store/products/flight";
+import { useSearchStore } from "@/store/search";
 
 export interface FlightSearchFormProps {
   type: "one-way" | "round-trip";
@@ -50,39 +52,22 @@ const FlightSearch: FC<{
   const { push } = useRouter();
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
+  const { setFlightList, setFilterOpt } = useFlightStore();
+  const { flightSearch, setSearch } = useSearchStore();
+
+  const [inputsLoading, setInputsLoading] = useState(true);
   const [loading, startLoading, stopLoading] = useLoading();
 
   const form = useForm<FlightSearchFormProps>({
     initialValues: {
       type: "one-way",
-      dep: {
-        type: 1,
-        geolocation: {
-          longitude: "28.9783589",
-          latitude: "41.0082376",
-        },
-        city: {
-          id: "IST",
-          name: "Istanbul, Turkey (All Airports)",
-        },
-      },
-      arr: {
-        type: 3,
-        geolocation: {
-          longitude: "32.995083",
-          latitude: "40.128082",
-        },
-        airport: {
-          name: "Ankara, Esenboga International Airport, Turkey (ESB)",
-          id: "ESB",
-          code: "ESB",
-        },
-      },
+      dep: undefined,
+      arr: undefined,
       departureDate: new Date(),
       returnDate: null,
       passengers: {
         adult: 1,
-        child: 1,
+        child: 0,
         baby: 0,
       },
       class: "economy",
@@ -92,7 +77,6 @@ const FlightSearch: FC<{
   const handleSubmit = useCallback(async (values: FlightSearchFormProps) => {
     try {
       startLoading();
-
       const res = await xiorInstance.post("/searchFlight", {
         dep:
           values.dep?.type === 1
@@ -111,7 +95,11 @@ const FlightSearch: FC<{
         nonStop: "0",
       });
 
-      console.log(res);
+      console.log(res)
+
+      setFlightList(res.data.result);
+      setFilterOpt(res.data.filterOpt);
+      setSearch("flightSearch", values);
     } catch (err) {
       console.error(err);
     } finally {
@@ -122,6 +110,15 @@ const FlightSearch: FC<{
   }, []);
 
   const Parent = matchesSm ? Stack : compact ? Group : Stack;
+
+  const updateSearchForm = useCallback(() => {
+    form.setValues(flightSearch);
+    setInputsLoading(false);
+  }, [flightSearch]);
+
+  useEffect(() => {
+    updateSearchForm();
+  }, [flightSearch]);
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -170,6 +167,7 @@ const FlightSearch: FC<{
               }}
             >
               <AirportInput
+                disabled={inputsLoading}
                 compact={compact}
                 title={
                   form.getValues().dep?.type === 1

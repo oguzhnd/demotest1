@@ -66,7 +66,7 @@ const HotelListFilters = () => {
         ]}
       />
       <Divider />
-      <PriceFilter />
+      <PriceFilter max={100} min={0} />
       <Divider />
       <CheckboxFilter
         label={t("Star Rating")}

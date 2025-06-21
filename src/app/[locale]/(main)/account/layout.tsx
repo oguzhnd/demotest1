@@ -12,11 +12,14 @@ import React, { FC, useEffect, useState } from "react";
 
 import classes from "@/components/AccountPageElements/Account.module.css";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { useGlobalStore } from "@/store/global";
 
 const AccountLayout: FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const t = useTranslations();
+
+  const { makeSignout } = useGlobalStore();
 
   const pathname = usePathname();
   const { push } = useRouter();
@@ -32,9 +35,14 @@ const AccountLayout: FC<{
     <Container size="xl" w="100%" py={20}>
       <Tabs
         value={activeTab}
-        onChange={(value) =>
-          push(value === "profile" ? `/account` : `/account/${value}`)
-        }
+        onChange={(value) => {
+          if (value === "signout") {
+            makeSignout();
+            push("/");
+          } else {
+            push(value === "profile" ? `/account` : `/account/${value}`);
+          }
+        }}
         variant="pills"
         orientation="vertical"
         classNames={{

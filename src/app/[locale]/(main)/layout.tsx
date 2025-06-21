@@ -29,14 +29,6 @@ const MainLayout: FC<{
     setHeaderPinned(pinned);
   }, [pinned]);
 
-  const { isLogin, token } = useGlobalStore();
-
-  useEffect(() => {
-    if (isLogin && token) {
-      setAccessToken(token);
-    }
-  }, []);
-
   return (
     <AppShell header={{ height: 80 + 46, collapsed: !pinned, offset: false }}>
       <AppShell.Header withBorder={false}>

@@ -24,11 +24,12 @@ import React, { FC, useState } from "react";
 import classes from "../Flight.module.css";
 import { useHover, useMediaQuery } from "@mantine/hooks";
 import FlightPacket, { FlightPacketType } from "./FlightPacket";
+import { FlightType } from "@/store/products/flight";
 
 const FlightListCard: FC<{
-  id: string;
+  flight: FlightType;
   onSelect?: () => void;
-}> = ({ id, onSelect }) => {
+}> = ({ flight, onSelect }) => {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -37,78 +38,6 @@ const FlightListCard: FC<{
   const [expanded, setExpanded] = useState(false);
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
-
-  const packets: FlightPacketType[] = [
-    {
-      color: "gray",
-      title: "BASIC",
-      features: [
-        {
-          label: "1 parça x 8 kg kabin bagaj hakkı",
-        },
-        {
-          label: "1 parça x 4 kg kişisel eşya hakkı",
-        },
-        {
-          label: "15 kg bagaj hakkı",
-        },
-      ],
-      price: 3279.56,
-    },
-    {
-      color: "blue",
-      title: "FLEX",
-      features: [
-        {
-          label: "1 parça x 8 kg kabin bagaj hakkı",
-        },
-        {
-          label: "1 parça x 4 kg kişisel eşya hakkı",
-        },
-        {
-          label: "20 kg bagaj hakkı",
-        },
-        {
-          label: "Standart koltuk seçimi",
-        },
-        {
-          label: "Ücretli değişiklik",
-          description: "(Ücret farkı alınabilir)",
-        },
-        {
-          label: "Kesintili iade hakkı",
-        },
-      ],
-      price: 3929.56,
-    },
-    {
-      color: "violet",
-      title: "PREMIUM",
-      suggested: true,
-      features: [
-        {
-          label: "1 parça x 8 kg kabin bagaj hakkı",
-        },
-        {
-          label: "1 parça x 4 kg kişisel eşya hakkı",
-        },
-        {
-          label: "25 kg bagaj hakkı",
-        },
-        {
-          label: "Dilediğiniz koltuk seçimi",
-        },
-        {
-          label: "Ücretsiz Değişiklik",
-          description: "Uçuşa 1 saat kalana kadar (Ücret farkı alınabilir)",
-        },
-        {
-          label: "Esnek İade Hakkı (Uçuşa 12 saat kalana kadar)",
-        },
-      ],
-      price: 4129.56,
-    },
-  ];
 
   const Parent = matchesSm ? Stack : Group;
 
@@ -133,16 +62,16 @@ const FlightListCard: FC<{
         >
           <Stack gap={0} align={matchesSm ? "center" : "left"}>
             <Text size="lg" fw={500}>
-              12:40
+              {flight.dTime}
             </Text>
             <Group gap={8} wrap="nowrap">
               <Text size="lg" fw={500}>
-                İstanbul
+                {flight.legInfo[0].dCity}
               </Text>
-              <Text size="lg">(SAW)</Text>
+              <Text size="lg">({flight.legInfo[0].departure})</Text>
             </Group>
             <Text size="sm" c="gray.7" truncate>
-              Sabiha Gökçen Havalimanı
+              {flight.legInfo[0].dName}
             </Text>
           </Stack>
 
@@ -168,11 +97,11 @@ const FlightListCard: FC<{
               <Image
                 w={12}
                 h={12}
-                src="https://images.ucuzabilet.com/resources/img/flights-logo/logo25x19/25px-PC.png"
+                src={`https://admin.nttreservation.com/AirlineLogo/icon/${flight.legInfo[0].marketingAirwayCode}.png`}
               />
             </Box>
             <Text size="xs" c="gray.7">
-              3s 20d
+              {flight.legInfo[0].flightTime}
             </Text>
 
             <IconPlane
@@ -189,16 +118,16 @@ const FlightListCard: FC<{
 
           <Stack gap={0} align={matchesSm ? "center" : "right"}>
             <Text ta="right" size="lg" fw={500}>
-              18:00
+              {flight.aTime}
             </Text>
             <Group gap={8} justify="flex-end">
               <Text size="lg" fw={500}>
-                Antalya
+                {flight.legInfo[0].aCity}
               </Text>
-              <Text size="lg">(AYT)</Text>
+              <Text size="lg">({flight.legInfo[0].arrival})</Text>
             </Group>
             <Text ta="right" size="sm" c="gray.7" truncate>
-              Antalya Havalimanı
+              {flight.legInfo[0].aName}
             </Text>
           </Stack>
 
@@ -211,7 +140,7 @@ const FlightListCard: FC<{
           </Button>
 
           <Text size="lg" fw={600} style={{ whiteSpace: "nowrap" }}>
-            {(3279.56).toLocaleString(locale)} TRY
+            {(flight.totalPrice).toLocaleString(locale)} TRY
           </Text>
 
           <ActionIcon size="lg" radius="xl" variant="light">
@@ -229,15 +158,17 @@ const FlightListCard: FC<{
           <SimpleGrid
             cols={{
               base: 1,
-              sm: 3,
+              xs: 2,
+              sm: 4
             }}
             spacing="xs"
             px="lg"
             pb="lg"
           >
-            {packets.map((packet, i) => (
+            {flight.AlternativePrices.map((packet, i) => (
               <FlightPacket
                 key={`packet-${i}`}
+                color={["indigo", "blue", "cyan", "teal", "green", "lime", "yellow"][i]}
                 {...packet}
                 onSelect={onSelect}
               />

@@ -38,7 +38,6 @@ const SignInContent = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      push("/account");
       closeModal("accountModal");
     }
   }, []);

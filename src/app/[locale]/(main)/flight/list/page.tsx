@@ -6,7 +6,9 @@ import FlightLoading from "@/components/FlightPageElements/FlightLoading";
 import ReservationNotice from "@/components/FlightPageElements/ReservationNotice";
 import SearchArea from "@/components/SearchArea";
 import { useRouter } from "@/i18n/navigation";
+import { FlightType, useFlightStore } from "@/store/products/flight";
 import { useLoading } from "@/utils/hooks/useLoading";
+import { xiorInstance } from "@/utils/xior";
 import {
   ActionIcon,
   Button,
@@ -20,25 +22,23 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import { useListState } from "@mantine/hooks";
 import { IconChevronRight, IconFilter, IconX } from "@tabler/icons-react";
+import { isDate } from "lodash";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const FlightList = () => {
   const t = useTranslations();
 
   const { push } = useRouter();
 
+  const { flightList } = useFlightStore();
+
   const [loading, startLoading, stopLoading] = useLoading(true);
   const [opened, setOpened] = useState(false);
 
   const [departureFlight, setDepartureFlight] = useState<string | null>(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      // stopLoading()
-    }, 2000);
-  }, []);
 
   return (
     <Stack>
@@ -109,7 +109,7 @@ const FlightList = () => {
                         <IconX size={16} />
                       </ActionIcon>
                     </Group>
-                    <FlightListCard id={departureFlight} />
+                    <FlightListCard flight={flightList[0]} />
                   </Stack>
                 </Paper>
               )}
@@ -130,21 +130,19 @@ const FlightList = () => {
                   </Group>
                 </Group>
               )}
-              {Array(9)
-                .fill("")
-                .map((flight, i) => (
-                  <FlightListCard
-                    key={`flight-${i}`}
-                    id={`${i + 1}`}
-                    onSelect={() => {
-                      if (!departureFlight) {
-                        setDepartureFlight("1");
-                      } else {
-                        push(`/flight/reservation/${1}`);
-                      }
-                    }}
-                  />
-                ))}
+              {flightList.map((flight, i) => (
+                <FlightListCard
+                  flight={flight}
+                  key={`flight-${i}`}
+                  onSelect={() => {
+                    if (!departureFlight) {
+                      setDepartureFlight("1");
+                    } else {
+                      push(`/flight/reservation/${1}`);
+                    }
+                  }}
+                />
+              ))}
             </Stack>
           </Grid.Col>
         </Grid>

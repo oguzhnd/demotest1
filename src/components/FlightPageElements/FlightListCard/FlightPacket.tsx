@@ -1,3 +1,4 @@
+import { FlightType } from "@/store/products/flight";
 import {
   Badge,
   Button,
@@ -12,7 +13,6 @@ import { useLocale, useTranslations } from "next-intl";
 import React, { FC } from "react";
 
 export interface FlightPacketType {
-  color: MantineColor;
   title: string;
   suggested?: boolean;
   features: {
@@ -23,14 +23,12 @@ export interface FlightPacketType {
   onSelect?: () => void;
 }
 
-const FlightPacket: FC<FlightPacketType> = ({
-  color,
-  features,
-  price,
-  title,
-  suggested = false,
-  onSelect,
-}) => {
+const FlightPacket: FC<
+  FlightType["AlternativePrices"][number] & {
+    color: MantineColor;
+    onSelect?: () => void;
+  }
+> = (brand) => {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -38,33 +36,28 @@ const FlightPacket: FC<FlightPacketType> = ({
     <Paper
       p="md"
       withBorder
-      style={{ borderTop: `4px solid var(--mantine-color-${color}-7)` }}
+      style={{ borderTop: `4px solid var(--mantine-color-${brand.color}-7)` }}
     >
       <Stack h="100%" justify="space-between" gap="lg">
         <Stack gap="xs">
           <Group justify="space-between">
-            <Text fw={500}>{title}</Text>
+            <Text fw={500}>{brand.BrandName}</Text>
 
-            {suggested && <Badge color="green">{t("Suggested")}</Badge>}
+            {/* {suggested && <Badge color="green">{t("Suggested")}</Badge>} */}
           </Group>
           <List spacing={0}>
-            {features.map((item, i) => (
+            {brand.Features?.map((item, i) => (
               <List.Item key={`item-${i}`}>
                 <Stack gap={0}>
-                  <Text size="xs">{item.label}</Text>
-                  {item.description && (
-                    <Text size="xs" c="gray.7">
-                      {item.description}
-                    </Text>
-                  )}
+                  <Text size="xs">{item}</Text>
                 </Stack>
               </List.Item>
             ))}
           </List>
         </Stack>
 
-        <Button variant="filled" color={color} onClick={onSelect}>
-          {price.toLocaleString(locale)} TRY
+        <Button variant="filled" color={brand.color} onClick={brand.onSelect}>
+          {brand.totalPrice.toLocaleString(locale)} TRY
         </Button>
       </Stack>
     </Paper>

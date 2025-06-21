@@ -166,7 +166,7 @@ const RentalListFilters = () => {
         ]}
       />
       <Divider />
-      <PriceFilter />
+      <PriceFilter min={0} max={100} />
       <Divider />
       <CheckboxFilter
         label={t("Seat Count")}

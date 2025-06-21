@@ -83,6 +83,10 @@
       background-color: #293b4d;
     }
   }
+
+  &[data-disabled="true"] {
+    cursor: no-drop;
+  }
 }
 
 .airportOption {

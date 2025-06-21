@@ -60,7 +60,7 @@ const FlightDatePicker: FC<{
               </Text>
               {!compact && (
                 <Text size="xl" fw={700}>
-                  {form.getValues().departureDate?.toLocaleDateString(locale, {
+                  {getValidDate(form.getValues()?.departureDate)?.toLocaleDateString(locale, {
                     day: "2-digit",
                     month: "short",
                     year: "2-digit",
@@ -69,12 +69,12 @@ const FlightDatePicker: FC<{
               )}
               <Text size="sm" c={compact ? "white" : "gray.7"}>
                 {compact
-                  ? form.getValues().departureDate?.toLocaleDateString(locale, {
+                  ? getValidDate(form.getValues()?.departureDate)?.toLocaleDateString(locale, {
                       day: "2-digit",
                       month: "short",
                       year: "2-digit",
                     })
-                  : form.getValues().departureDate?.toLocaleDateString(locale, {
+                  : getValidDate(form.getValues()?.departureDate)?.toLocaleDateString(locale, {
                       weekday: "long",
                     })}
               </Text>

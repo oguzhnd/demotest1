@@ -2,7 +2,9 @@ import xior from 'xior';
 
 export const xiorInstance = xior.create({
   baseURL: "https://api.nttreservation.com/services/v1",
-  headers: {},
+  headers: {
+    "accept-language": "tr"
+  },
 });
 
 export function setAccessToken(token: string) {
@@ -13,4 +15,9 @@ export function setAccessToken(token: string) {
 export function removeUserToken() {
   // delete xiorInstance.defaults.params['x'];
   delete xiorInstance.defaults.headers['Authorization'];
+}
+
+export function setAcceptLanguage(lang: string) {
+  // xiorInstance.defaults.params['x'] = 1;
+  xiorInstance.defaults.headers['accept-language'] = lang;
 }
