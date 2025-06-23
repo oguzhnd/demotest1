@@ -144,7 +144,7 @@ const hotels: SelectedHotelType[] = [
 const SelectedHotels = () => {
   const t = useTranslations();
 
-  const [openedCard, setOpenedCard] = useState(5);
+  const [openedCard, setOpenedCard] = useState(0);
 
   return (
     <Stack py={20} gap={20}>

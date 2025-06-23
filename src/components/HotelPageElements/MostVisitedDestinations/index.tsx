@@ -21,30 +21,24 @@ const mostVisitedDestinations: MostVisitedDestinationType[] = [
   },
   {
     category: "Domestic",
-    name: "Bodrum Otelleri",
+    name: "Los Angeles Otelleri",
     image:
-      "https://www.hotelchick.com/upload/HotelDestination/5d0ea431f1873b7fa36d5f74b509f391.jpg",
+      "https://www.hotelchick.com/upload/HotelDestination/5a1067ae12a3bea2639934f788fa482d.jpeg",
   },
   {
     category: "Domestic",
-    name: "Bodrum Otelleri",
+    name: "Dubai Otelleri",
     image:
-      "https://www.hotelchick.com/upload/HotelDestination/5d0ea431f1873b7fa36d5f74b509f391.jpg",
+      "https://www.hotelchick.com/upload/HotelDestination/875658156b306498e689123120a7cb9f.jpg",
   },
   {
     category: "Domestic",
-    name: "Bodrum Otelleri",
+    name: "Tokyo Otelleri",
     image:
-      "https://www.hotelchick.com/upload/HotelDestination/5d0ea431f1873b7fa36d5f74b509f391.jpg",
+      "https://www.hotelchick.com/upload/HotelDestination/a7d31309fc248b92de86604f45e1d73c.jpg",
   },
   {
-    category: "Domestic",
-    name: "Bodrum Otelleri",
-    image:
-      "https://www.hotelchick.com/upload/HotelDestination/5d0ea431f1873b7fa36d5f74b509f391.jpg",
-  },
-  {
-    category: "Domestic",
+    category: "Abroad",
     name: "Bodrum Otelleri",
     image:
       "https://www.hotelchick.com/upload/HotelDestination/5d0ea431f1873b7fa36d5f74b509f391.jpg",
@@ -57,21 +51,15 @@ const mostVisitedDestinations: MostVisitedDestinationType[] = [
   },
   {
     category: "Abroad",
+    name: "Dubai Otelleri",
+    image:
+      "https://www.hotelchick.com/upload/HotelDestination/875658156b306498e689123120a7cb9f.jpg",
+  },
+  {
+    category: "Abroad",
     name: "Tokyo Otelleri",
     image:
       "https://www.hotelchick.com/upload/HotelDestination/a7d31309fc248b92de86604f45e1d73c.jpg",
-  },
-  {
-    category: "Abroad",
-    name: "Dubai Otelleri",
-    image:
-      "https://www.hotelchick.com/upload/HotelDestination/875658156b306498e689123120a7cb9f.jpg",
-  },
-  {
-    category: "Abroad",
-    name: "Dubai Otelleri",
-    image:
-      "https://www.hotelchick.com/upload/HotelDestination/875658156b306498e689123120a7cb9f.jpg",
   },
 ];
 
