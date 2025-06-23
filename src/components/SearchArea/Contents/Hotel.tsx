@@ -27,7 +27,7 @@ const HotelSearch: FC<{
     passengers: {
       adult: number;
       child: number;
-      baby: number;
+      room: number;
     };
     class: "economy" | "business";
   }>({
@@ -35,9 +35,9 @@ const HotelSearch: FC<{
       checkIn: new Date(),
       checkOut: new Date(),
       passengers: {
+        room: 1,
         adult: 1,
         child: 0,
-        baby: 0,
       },
       class: "economy",
     },

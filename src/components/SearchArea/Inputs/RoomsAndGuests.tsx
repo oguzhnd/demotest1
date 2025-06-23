@@ -59,6 +59,23 @@ const RoomsAndGuestsInput: FC<{
       <Popover.Dropdown>
         <Stack>
           <Stack gap={4}>
+            <Text size="sm">{t("Rooms")}</Text>
+            <Group gap={4}>
+              <ActionIcon.Group>
+                {Array(6)
+                  .fill("")
+                  .map((_, i) => (
+                    <ActionIcon key={`btn-${i}`} variant="default" size="md">
+                      <Text size="xs">{i + 1}</Text>
+                    </ActionIcon>
+                  ))}
+              </ActionIcon.Group>
+              <ActionIcon variant="default" size="md">
+                <Text size="xs">{"> 6"}</Text>
+              </ActionIcon>
+            </Group>
+          </Stack>
+          <Stack gap={4}>
             <Text size="sm">{t("Adults")}</Text>
             <Group gap={4}>
               <ActionIcon.Group>
@@ -77,23 +94,6 @@ const RoomsAndGuestsInput: FC<{
           </Stack>
           <Stack gap={4}>
             <Text size="sm">{t("Childrens")}</Text>
-            <Group gap={4}>
-              <ActionIcon.Group>
-                {Array(6)
-                  .fill("")
-                  .map((_, i) => (
-                    <ActionIcon key={`btn-${i}`} variant="default" size="md">
-                      <Text size="xs">{i + 1}</Text>
-                    </ActionIcon>
-                  ))}
-              </ActionIcon.Group>
-              <ActionIcon variant="default" size="md">
-                <Text size="xs">{"> 6"}</Text>
-              </ActionIcon>
-            </Group>
-          </Stack>
-          <Stack gap={4}>
-            <Text size="sm">{t("Infants")}</Text>
             <Group gap={4}>
               <ActionIcon.Group>
                 {Array(6)
