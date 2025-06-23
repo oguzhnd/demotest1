@@ -6,19 +6,52 @@ import { useForm } from "@mantine/form";
 import { useTranslations } from "next-intl";
 import HoursFilter from "./Elements/Hours";
 import LuggageFilter from "./Elements/Luggage";
+import { useEffect } from "react";
 
 export interface FlightListFiltersForm {
-  transfers: string[];
+  transfers: Array<"0" | "1" | "2+">;
+  cabin: string[];
+  baggages: number[];
+  airports: string[];
+  airlines: string[];
+  hours: {
+    departure: {
+      min: number;
+      max: number;
+    };
+    return?: {
+      min: number;
+      max: number;
+    };
+  };
 }
 
 const FlightListFilters = () => {
   const t = useTranslations();
 
-  const { filterOpt } = useFlightStore();
+  const { filterOpt, setFlightFilters } = useFlightStore();
 
   const form = useForm<FlightListFiltersForm>({
     initialValues: {
       transfers: [],
+      baggages: [],
+      cabin: [],
+      airports: [],
+      airlines: [],
+      hours: {
+        departure: {
+          min: 0,
+          max: 0,
+        },
+        return: {
+          min: 0,
+          max: 0,
+        },
+      },
+    },
+
+    onValuesChange: (values) => {
+      setFlightFilters(values);
     },
   });
 
@@ -40,43 +73,63 @@ const FlightListFilters = () => {
             label: "2+ Aktarma",
           },
         ]}
+        {...form.getInputProps("transfers")}
       />
       <Divider />
-      <LuggageFilter />
+      {filterOpt?.baggages && (
+        <CheckboxFilter
+          label={t("Luggage")}
+          options={filterOpt?.baggages?.map((e: any) => ({
+            value: e.BaggageValue,
+            label: `${e.BaggageValue} ${e.BaggageUnit}`,
+          }))}
+          {...form.getInputProps("baggages")}
+        />
+      )}
+      {/* <LuggageFilter /> */}
       <Divider />
-      {filterOpt.classes && (
+      {filterOpt?.classes && (
         <CheckboxFilter
           label={t("Cabin")}
           options={filterOpt?.classes.map((e: any) => ({
             value: e,
             label: t(e),
           }))}
+          {...form.getInputProps("cabin")}
         />
       )}
       <Divider />
-      <HoursFilter />
+      <HoursFilter
+        dHours={{
+          min: filterOpt?.duration?.min || 0,
+          max: filterOpt?.duration?.max || 1,
+        }}
+        {...form.getInputProps("hours")}
+      />
       <Divider />
-      {filterOpt.airlines && (
+      {filterOpt?.airlines && (
         <CheckboxFilter
           label={t("Airline Companies")}
           options={filterOpt?.airlines.map((e: any) => ({
-            value: e.code,
+            value: e.name,
             label: e.name,
           }))}
+          {...form.getInputProps("airlines")}
         />
       )}
       <Divider />
-      {filterOpt.airports && (
+      {filterOpt?.airports && (
         <CheckboxFilter
           label={t("Airports")}
           options={filterOpt?.airports.map((e: any) => ({
-            value: e.code,
+            value: e.name,
             label: e.name,
           }))}
+          {...form.getInputProps("airports")}
         />
       )}
       <Divider />
-      {filterOpt.departureFilters?.price && (
+      {filterOpt?.departureFilters?.price && (
         <PriceFilter
           max={filterOpt.departureFilters.price.max}
           min={filterOpt.departureFilters.price.min}

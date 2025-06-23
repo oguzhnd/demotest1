@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { FlightTicketType } from ".";
 import {
   BackgroundImage,
@@ -14,6 +14,14 @@ import { useHover } from "@mantine/hooks";
 import { IconChevronRight, IconTransfer } from "@tabler/icons-react";
 import { localeDateRangeFormat } from "@/utils/tools";
 import { useLocale } from "next-intl";
+import { useFlightStore } from "@/store/products/flight";
+import { xiorInstance } from "@/utils/xior";
+import { useSearchStore } from "@/store/search";
+import { useRouter } from "@/i18n/navigation";
+import {
+  convertDate,
+  FlightSearchFormProps,
+} from "@/components/SearchArea/Contents/Flight";
 
 const TicketCard: FC<FlightTicketType> = ({
   airline,
@@ -27,6 +35,79 @@ const TicketCard: FC<FlightTicketType> = ({
 
   const { ref, hovered } = useHover();
 
+  const { push } = useRouter();
+
+  const { setFlightList, setFilterOpt } = useFlightStore();
+  const { flightSearch, setSearch } = useSearchStore();
+
+  const handleSubmit = useCallback(async () => {
+    try {
+      const values: FlightSearchFormProps = {
+        type: "one-way",
+        dep: {
+          type: 3,
+          geolocation: {
+            longitude: "30.8",
+            latitude: "36.89",
+          },
+          airport: {
+            name: "Antalya, Antalya Havalimanı, Türkiye (AYT)",
+            id: "AYT",
+            code: "AYT",
+          },
+        },
+        arr: {
+          type: 3,
+          geolocation: {
+            longitude: "32.995083",
+            latitude: "40.128082",
+          },
+          airport: {
+            name: "Ankara, Esenboğa Havalimanı, Türkiye (ESB)",
+            id: "ESB",
+            code: "ESB",
+          },
+        },
+        departureDate: new Date(),
+        returnDate: null,
+        passengers: {
+          adult: 1,
+          child: 0,
+          baby: 0,
+        },
+        class: "economy",
+      };
+
+      const val = {
+        dep:
+          values.dep?.type === 1
+            ? values.dep.city?.id
+            : values.dep?.airport?.id,
+        arr:
+          values.arr?.type === 1
+            ? values.arr.city?.id
+            : values.arr?.airport?.id,
+        dDate: convertDate(values.departureDate),
+        aDate: convertDate(values.returnDate),
+        adt: values.passengers.adult + "",
+        chd: values.passengers.child + "",
+        inf: values.passengers.baby + "",
+        serviceTypes: "",
+        nonStop: "0",
+      };
+
+      const res = await xiorInstance.post("/searchFlight", val);
+
+      setFlightList(res.data.result);
+      setFilterOpt(res.data.filterOpt);
+      setSearch("flightSearch", values);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      push("/flight/list");
+    }
+  }, [setSearch]);
+
   return (
     <Paper
       ref={ref}
@@ -34,6 +115,7 @@ const TicketCard: FC<FlightTicketType> = ({
       radius="lg"
       p="md"
       style={{ cursor: "pointer" }}
+      onClick={handleSubmit}
     >
       <Stack gap="xs">
         <Group justify="space-between">

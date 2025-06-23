@@ -242,5 +242,12 @@
   "Departure Flight": "Departure Flight",
   "Return Flight": "Return Flight",
   "City or Airport": "City or Airport",
-  "Click to search": "Click to search"
+  "Click to search": "Click to search",
+  "Premium economy": "Premium economy",
+  "First class": "First class",
+  "Flights Found": "Flights Found",
+  "Flight Details": "Flight Details",
+  "Select" :"Select",
+  "Transfer Point": "Transfer Point",
+  "Waiting Time": "Waiting Time"
 }

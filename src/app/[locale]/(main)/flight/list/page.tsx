@@ -1,10 +1,13 @@
 "use client";
 
 import FlightListCard from "@/components/FlightPageElements/FlightListCard";
-import FlightListFilters from "@/components/FlightPageElements/FlightListFilters";
+import FlightListFilters, {
+  FlightListFiltersForm,
+} from "@/components/FlightPageElements/FlightListFilters";
 import FlightLoading from "@/components/FlightPageElements/FlightLoading";
 import ReservationNotice from "@/components/FlightPageElements/ReservationNotice";
 import SearchArea from "@/components/SearchArea";
+import { convertDate } from "@/components/SearchArea/Contents/Flight";
 import { useRouter } from "@/i18n/navigation";
 import { FlightType, useFlightStore } from "@/store/products/flight";
 import { useLoading } from "@/utils/hooks/useLoading";
@@ -24,21 +27,154 @@ import {
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { IconChevronRight, IconFilter, IconX } from "@tabler/icons-react";
-import { isDate } from "lodash";
+import { filter, isDate } from "lodash";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
+
+const filterFlightData = (
+  flight: FlightType,
+  filters: FlightListFiltersForm
+) => {
+  if (filters.transfers.length > 0) {
+    const legCount = flight.legCount;
+    if (
+      !filters.transfers.includes(
+        legCount === 1 ? "0" : legCount === 2 ? "1" : "2+"
+      )
+    ) {
+      return false;
+    }
+  }
+
+  if (filters.cabin.length > 0) {
+    let r = false;
+
+    flight.AlternativePrices.map((e) => {
+      if (e.Bag.some((c) => filters.baggages.includes(+c.BaggageValue))) {
+        r = true;
+      }
+    });
+
+    if (!r) {
+      return false;
+    }
+  }
+
+  if (filters.cabin.length > 0) {
+    const lowerCaseClasses = filters.cabin.map((className) =>
+      className.toLowerCase()
+    );
+    let r = false;
+
+    flight.AlternativePrices.map((e) => {
+      if (
+        e.class
+          .map((c) => c.toLowerCase())
+          .some((c) => lowerCaseClasses.includes(c))
+      ) {
+        r = true;
+      }
+    });
+
+    if (!r) {
+      return false;
+    }
+  }
+
+  if (filters.airlines.length > 0) {
+    if (!filters.airlines.includes(flight.airway)) {
+      return false;
+    }
+  }
+
+  if (filters.airports.length > 0) {
+    let r = false;
+
+    flight.legInfo.map((leg) => {
+      if ([leg.dName, leg.aName].some((e) => filters.airports.includes(e))) {
+        r = true;
+      }
+    });
+
+    if (!r) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 const FlightList = () => {
   const t = useTranslations();
 
   const { push } = useRouter();
 
-  const { flightList } = useFlightStore();
+  const {
+    flightSearch,
+    flightList,
+    setFlightList,
+    flightFilters,
+    setFilterOpt,
+    setBookingFlight,
+  } = useFlightStore();
 
   const [loading, startLoading, stopLoading] = useLoading(true);
   const [opened, setOpened] = useState(false);
 
   const [departureFlight, setDepartureFlight] = useState<string | null>(null);
+
+  const [currentFlightList, flightListHandlers] = useListState<FlightType>([]);
+
+  const setCurrentFlightList = useCallback(() => {
+    const list = filter(flightList, (e) => filterFlightData(e, flightFilters));
+
+    flightListHandlers.setState(list);
+    stopLoading();
+  }, [flightFilters, flightList]);
+
+  useEffect(() => {
+    startLoading();
+    setCurrentFlightList();
+  }, [flightFilters, flightList]);
+
+  const checkFlightList = useCallback(async () => {
+    try {
+      startLoading();
+
+      const res = await xiorInstance.post("/searchFlight", {
+        dep:
+          flightSearch.dep?.type === 1
+            ? flightSearch.dep.city?.id
+            : flightSearch.dep?.airport?.id,
+        arr:
+          flightSearch.arr?.type === 1
+            ? flightSearch.arr.city?.id
+            : flightSearch.arr?.airport?.id,
+        dDate: convertDate(flightSearch.departureDate),
+        aDate: convertDate(flightSearch.returnDate),
+        adt: flightSearch.passengers.adult + "",
+        chd: flightSearch.passengers.child + "",
+        inf: flightSearch.passengers.baby + "",
+        serviceTypes: "",
+        nonStop: "0",
+      });
+
+      console.log(res);
+
+      setFlightList(res.data.result);
+      setFilterOpt(res.data.filterOpt);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      stopLoading();
+
+      push("/flight/list");
+    }
+  }, [xiorInstance, flightSearch]);
+
+  useEffect(() => {
+    checkFlightList();
+  }, [flightSearch]);
 
   return (
     <Stack>
@@ -83,6 +219,11 @@ const FlightList = () => {
                   </Button>
                 </Group>
               </ScrollArea>
+
+              <Text size="lg" fw={500}>
+                {currentFlightList.length} {t("Flights Found")}
+              </Text>
+
               {departureFlight && (
                 <Paper p="sm" bg="gray.0" withBorder radius="md">
                   <Stack gap={8}>
@@ -130,15 +271,20 @@ const FlightList = () => {
                   </Group>
                 </Group>
               )}
-              {flightList.map((flight, i) => (
+              {currentFlightList.map((flight, i) => (
                 <FlightListCard
                   flight={flight}
                   key={`flight-${i}`}
-                  onSelect={() => {
+                  onSelect={(packetIndex) => {
+                    setBookingFlight({
+                      ...flight,
+                      packetIndex,
+                    });
+                    push(`/flight/reservation/${flight.searchId}`);
+
                     if (!departureFlight) {
                       setDepartureFlight("1");
                     } else {
-                      push(`/flight/reservation/${1}`);
                     }
                   }}
                 />

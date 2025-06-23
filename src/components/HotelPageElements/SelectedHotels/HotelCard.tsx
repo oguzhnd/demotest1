@@ -15,6 +15,7 @@ import { useHover } from "@mantine/hooks";
 import classes from "../Hotel.module.css";
 import { useTranslations } from "next-intl";
 import { IconChevronRight } from "@tabler/icons-react";
+import { useRouter } from "@/i18n/navigation";
 
 const HotelCard: FC<
   SelectedHotelType & {
@@ -24,6 +25,8 @@ const HotelCard: FC<
 > = ({ image, name, city, isOpen, setOpenedCard }) => {
   const t = useTranslations();
 
+  const { push } = useRouter()
+
   return (
     <Paper
       mx={6}
@@ -31,6 +34,7 @@ const HotelCard: FC<
       h="100%"
       className={classes.selectedHotelCard}
       onMouseEnter={setOpenedCard}
+      onClick={() => push("/hotel/detail/1")}
     >
       <Group
         gap="xs"

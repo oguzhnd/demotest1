@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import { isArray } from "lodash";
 import { useLocale, useTranslations } from "next-intl";
 import React, { FC } from "react";
 
@@ -46,13 +47,14 @@ const FlightPacket: FC<
             {/* {suggested && <Badge color="green">{t("Suggested")}</Badge>} */}
           </Group>
           <List spacing={0}>
-            {brand.Features?.map((item, i) => (
-              <List.Item key={`item-${i}`}>
-                <Stack gap={0}>
-                  <Text size="xs">{item}</Text>
-                </Stack>
-              </List.Item>
-            ))}
+            {isArray(brand?.Features) &&
+              brand?.Features?.map((item, i) => (
+                <List.Item key={`item-${i}`}>
+                  <Stack gap={0}>
+                    <Text size="xs">{item}</Text>
+                  </Stack>
+                </List.Item>
+              ))}
           </List>
         </Stack>
 

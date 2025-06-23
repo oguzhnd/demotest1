@@ -1,3 +1,4 @@
+import { FlightListFiltersForm } from "@/components/FlightPageElements/FlightListFilters";
 import { FlightSearchFormProps } from "@/components/SearchArea/Contents/Flight";
 import { create } from "zustand";
 
@@ -25,7 +26,7 @@ export interface FlightType {
   serviceFee: 0;
   amount: 0;
   seatCount: "9";
-  legCount: 1;
+  legCount: number;
   bag: "15 KG";
   class: "T";
   classType: "T";
@@ -968,8 +969,15 @@ export interface FlightStore {
   filterOpt: Record<string, any>;
   setFilterOpt: (filterOpt: FlightStore["filterOpt"]) => void;
 
-  flightFilters: Record<string, any>;
+  flightFilters: FlightListFiltersForm;
   setFlightFilters: (filters: FlightStore["flightFilters"]) => void;
+
+  bookingFlight:
+    | (FlightType & {
+        packetIndex: number;
+      })
+    | undefined;
+  setBookingFlight: (value: FlightStore["bookingFlight"]) => void;
 }
 
 export const useFlightStore = create<FlightStore>((set) => ({
@@ -1006,10 +1014,33 @@ export const useFlightStore = create<FlightStore>((set) => ({
     });
   },
 
-  flightFilters: {},
+  flightFilters: {
+    transfers: [],
+    baggages: [],
+    cabin: [],
+    airports: [],
+    airlines: [],
+    hours: {
+      departure: {
+        min: 0,
+        max: 0,
+      },
+      return: {
+        min: 0,
+        max: 0,
+      },
+    },
+  },
   setFlightFilters: (filters) => {
     set({
       flightFilters: filters,
+    });
+  },
+
+  bookingFlight: undefined,
+  setBookingFlight: (value) => {
+    set({
+      bookingFlight: value,
     });
   },
 }));

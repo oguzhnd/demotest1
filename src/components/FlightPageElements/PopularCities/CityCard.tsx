@@ -5,6 +5,7 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { PopularCityType } from ".";
 import classes from "../Flight.module.css";
+import { useRouter } from "@/i18n/navigation";
 
 const CityCard: FC<
   PopularCityType & {
@@ -14,6 +15,8 @@ const CityCard: FC<
 > = ({ image, name, isOpen, setOpenedCard }) => {
   const t = useTranslations();
 
+  const { push } = useRouter();
+
   return (
     <Paper
       mx={6}
@@ -21,6 +24,7 @@ const CityCard: FC<
       h="100%"
       className={classes.selectedCityCard}
       onMouseEnter={setOpenedCard}
+      onClick={() => push("/city/1")}
     >
       <Group
         gap="xs"

@@ -1,3 +1,4 @@
+import { useRouter } from "@/i18n/navigation";
 import { Carousel } from "@mantine/carousel";
 import {
   Button,
@@ -40,6 +41,8 @@ const blogs = [
 
 const Blogs = () => {
   const t = useTranslations();
+
+  const { push } = useRouter()
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
@@ -99,6 +102,7 @@ const Blogs = () => {
                           size="compact-lg"
                           radius="xl"
                           px="md"
+                          onClick={() => push("/blog/1")}
                         >
                           {t("Review")}
                         </Button>
@@ -145,7 +149,8 @@ const Blogs = () => {
                         {blogs[0].content}
                       </Text>
                     </Stack>
-                    <Button size="compact-xs" radius="xl" px="md" h={26}>
+                    <Button size="compact-xs" radius="xl" px="md" h={26}
+                          onClick={() => push("/blog/1")}>
                       {t("Review")}
                     </Button>
                   </Stack>
@@ -174,7 +179,8 @@ const Blogs = () => {
                         {blogs[1].content}
                       </Text>
                     </Stack>
-                    <Button size="compact-xs" radius="xl" px="md" h={26}>
+                    <Button size="compact-xs" radius="xl" px="md" h={26}
+                          onClick={() => push("/blog/1")}>
                       {t("Review")}
                     </Button>
                   </Stack>

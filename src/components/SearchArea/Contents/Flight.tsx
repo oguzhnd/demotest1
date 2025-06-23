@@ -38,9 +38,11 @@ export interface FlightSearchFormProps {
   class: "economy" | "business";
 }
 
-const convertDate = (date: Date | null) => {
-  return isDate(date)
-    ? [date.getFullYear(), date.getMonth(), date.getDate()].join("-")
+export const convertDate = (date: any) => {
+  const d = date ? new Date(date) : null;
+
+  return isDate(d)
+    ? [d.getFullYear(), d.getMonth() + 1, d.getDate()].join("-")
     : null;
 };
 
@@ -74,40 +76,46 @@ const FlightSearch: FC<{
     },
   });
 
-  const handleSubmit = useCallback(async (values: FlightSearchFormProps) => {
-    try {
-      startLoading();
-      const res = await xiorInstance.post("/searchFlight", {
-        dep:
-          values.dep?.type === 1
-            ? values.dep.city?.id
-            : values.dep?.airport?.id,
-        arr:
-          values.arr?.type === 1
-            ? values.arr.city?.id
-            : values.arr?.airport?.id,
-        dDate: convertDate(values.departureDate),
-        aDate: convertDate(values.returnDate),
-        adt: values.passengers.adult + "",
-        chd: values.passengers.child + "",
-        inf: values.passengers.baby + "",
-        serviceTypes: "",
-        nonStop: "0",
-      });
+  const handleSubmit = useCallback(
+    async (values: FlightSearchFormProps) => {
+      try {
+        startLoading();
 
-      console.log(res)
+        const val = {
+          dep:
+            values.dep?.type === 1
+              ? values.dep.city?.id
+              : values.dep?.airport?.id,
+          arr:
+            values.arr?.type === 1
+              ? values.arr.city?.id
+              : values.arr?.airport?.id,
+          dDate: convertDate(values.departureDate),
+          aDate: convertDate(values.returnDate),
+          adt: values.passengers.adult + "",
+          chd: values.passengers.child + "",
+          inf: values.passengers.baby + "",
+          serviceTypes: "",
+          nonStop: "0",
+        };
 
-      setFlightList(res.data.result);
-      setFilterOpt(res.data.filterOpt);
-      setSearch("flightSearch", values);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      stopLoading();
+        const res = await xiorInstance.post("/searchFlight", val);
 
-      push("/flight/list");
-    }
-  }, []);
+        console.log(res);
+
+        setFlightList(res.data.result);
+        setFilterOpt(res.data.filterOpt);
+        setSearch("flightSearch", values);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        stopLoading();
+
+        push("/flight/list");
+      }
+    },
+    [setSearch]
+  );
 
   const Parent = matchesSm ? Stack : compact ? Group : Stack;
 

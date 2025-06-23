@@ -52,15 +52,15 @@ export default async function LocaleLayout({
       </head>
       <body>
         <NextIntlClientProvider>
-          <AppGuardProvider>
-            <MantineProvider theme={theme}>
-              <CustomDatesProvider>
-                <CustomModalsProvider>
-                  <GoogleMapProvider>{children}</GoogleMapProvider>
-                </CustomModalsProvider>
-              </CustomDatesProvider>
-            </MantineProvider>
-          </AppGuardProvider>
+          <MantineProvider theme={theme}>
+            <CustomDatesProvider>
+              <CustomModalsProvider>
+                <GoogleMapProvider>
+                  <AppGuardProvider>{children}</AppGuardProvider>
+                </GoogleMapProvider>
+              </CustomModalsProvider>
+            </CustomDatesProvider>
+          </MantineProvider>
         </NextIntlClientProvider>
       </body>
     </html>

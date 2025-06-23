@@ -5,6 +5,7 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { PopularLocationType } from ".";
 import classes from "../Rental.module.css";
+import { useRouter } from "@/i18n/navigation";
 
 const LocationCard: FC<
   PopularLocationType & {
@@ -14,6 +15,8 @@ const LocationCard: FC<
 > = ({ image, name, isOpen, setOpenedCard }) => {
   const t = useTranslations();
 
+  const { push } = useRouter();
+
   return (
     <Paper
       mx={6}
@@ -21,6 +24,7 @@ const LocationCard: FC<
       h="100%"
       className={classes.locationCard}
       onMouseEnter={setOpenedCard}
+      onClick={() => push("/city/1")}
     >
       <Group
         gap="xs"

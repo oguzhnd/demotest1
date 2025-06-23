@@ -25,10 +25,11 @@ import classes from "../Flight.module.css";
 import { useHover, useMediaQuery } from "@mantine/hooks";
 import FlightPacket, { FlightPacketType } from "./FlightPacket";
 import { FlightType } from "@/store/products/flight";
+import FlightDetailsModal from "./FlightDetails";
 
 const FlightListCard: FC<{
   flight: FlightType;
-  onSelect?: () => void;
+  onSelect?: (index: number) => void;
 }> = ({ flight, onSelect }) => {
   const t = useTranslations();
   const locale = useLocale();
@@ -36,6 +37,7 @@ const FlightListCard: FC<{
   const { push } = useRouter();
 
   const [expanded, setExpanded] = useState(false);
+  const [opened, setOpened] = useState(false);
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
@@ -48,11 +50,7 @@ const FlightListCard: FC<{
       radius="md"
       withBorder
     >
-      <Stack
-        gap={0}
-        style={{ cursor: "pointer" }}
-        onClick={() => setExpanded(!expanded)}
-      >
+      <Stack gap={0}>
         <Parent
           wrap={matchesSm ? "wrap" : "nowrap"}
           align="center"
@@ -61,16 +59,16 @@ const FlightListCard: FC<{
           px="xl"
         >
           <Stack gap={0} align={matchesSm ? "center" : "left"}>
-            <Text size="lg" fw={500}>
+            <Text size="lg" fw={500} w={130} truncate>
               {flight.dTime}
             </Text>
-            <Group gap={8} wrap="nowrap">
-              <Text size="lg" fw={500}>
+            <Group gap={8} wrap="nowrap" maw={130}>
+              <Text size="lg" fw={500} truncate>
                 {flight.legInfo[0].dCity}
               </Text>
               <Text size="lg">({flight.legInfo[0].departure})</Text>
             </Group>
-            <Text size="sm" c="gray.7" truncate>
+            <Text size="sm" c="gray.7" w={130} truncate>
               {flight.legInfo[0].dName}
             </Text>
           </Stack>
@@ -117,41 +115,55 @@ const FlightListCard: FC<{
           </Stack>
 
           <Stack gap={0} align={matchesSm ? "center" : "right"}>
-            <Text ta="right" size="lg" fw={500}>
+            <Text ta="right" size="lg" fw={500} w={130} truncate>
               {flight.aTime}
             </Text>
-            <Group gap={8} justify="flex-end">
-              <Text size="lg" fw={500}>
+            <Group gap={8} justify="flex-end" wrap="nowrap" maw={130}>
+              <Text size="lg" fw={500} truncate>
                 {flight.legInfo[0].aCity}
               </Text>
               <Text size="lg">({flight.legInfo[0].arrival})</Text>
             </Group>
-            <Text ta="right" size="sm" c="gray.7" truncate>
+            <Text ta="right" size="sm" c="gray.7" w={130} truncate>
               {flight.legInfo[0].aName}
             </Text>
           </Stack>
+
+          <FlightDetailsModal
+            flight={flight}
+            opened={opened}
+            handleClose={() => setOpened(false)}
+          />
 
           <Button
             variant="transparent"
             leftSection={<IconInfoCircle size={16} />}
             style={{ flexShrink: 0 }}
+            onClick={() => setOpened(true)}
           >
             {t("Details")}
           </Button>
 
           <Text size="lg" fw={600} style={{ whiteSpace: "nowrap" }}>
-            {(flight.totalPrice).toLocaleString(locale)} TRY
+            {flight.totalPrice.toLocaleString(locale)} TRY
           </Text>
 
-          <ActionIcon size="lg" radius="xl" variant="light">
-            <IconChevronDown
-              size={20}
-              style={{
-                transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-                transition: "transform .2s ease",
-              }}
-            />
-          </ActionIcon>
+          <Button
+            radius="xl"
+            variant="light"
+            rightSection={
+              <IconChevronDown
+                size={20}
+                style={{
+                  transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform .2s ease",
+                }}
+              />
+            }
+            onClick={() => setExpanded((v) => !v)}
+          >
+            {t("Select")}
+          </Button>
         </Parent>
 
         <Collapse in={expanded}>
@@ -159,7 +171,7 @@ const FlightListCard: FC<{
             cols={{
               base: 1,
               xs: 2,
-              sm: 4
+              sm: 4,
             }}
             spacing="xs"
             px="lg"
@@ -168,9 +180,13 @@ const FlightListCard: FC<{
             {flight.AlternativePrices.map((packet, i) => (
               <FlightPacket
                 key={`packet-${i}`}
-                color={["indigo", "blue", "cyan", "teal", "green", "lime", "yellow"][i]}
+                color={
+                  ["indigo", "blue", "cyan", "teal", "green", "lime", "yellow"][
+                    i
+                  ]
+                }
                 {...packet}
-                onSelect={onSelect}
+                onSelect={() => onSelect?.(i)}
               />
             ))}
           </SimpleGrid>

@@ -11,10 +11,12 @@ const CheckboxFilter: FC<{
     label: string;
     group?: string;
   }[];
-}> = ({ label, icon, options }) => {
+  value?: string[]
+  onChange?: (value: string[]) => void
+}> = ({ label, icon, options, value, onChange }) => {
   return (
     <FilterWrapper label={label} icon={icon}>
-      <Checkbox.Group>
+      <Checkbox.Group value={value} onChange={onChange}>
         <Stack gap={6}>
           {options.map((opt, i) => (
             <Checkbox key={`opt-${i}`} value={opt.value} label={opt.label} />
