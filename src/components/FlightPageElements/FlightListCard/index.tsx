@@ -145,7 +145,7 @@ const FlightListCard: FC<{
           </Button>
 
           <Text size="lg" fw={600} style={{ whiteSpace: "nowrap" }}>
-            {flight.totalPrice.toLocaleString(locale)} TRY
+            {(+flight.totalPrice).toLocaleString(locale)} TRY
           </Text>
 
           <Button
