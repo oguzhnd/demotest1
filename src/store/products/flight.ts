@@ -10,7 +10,7 @@ export interface FlightType {
   airway: "Turkish Airlines";
   totalPrice: string;
   totalTime: "01:15";
-  totalTimeM: 75;
+  totalTimeM: string;
   totalFligthTime: "01:15";
   totalFligthTimeM: 75;
   waitTime: "00:00";
@@ -1028,16 +1028,7 @@ export const useFlightStore = create<FlightStore>((set) => ({
     airports: [],
     airlines: [],
     price: [0, 0],
-    hours: {
-      departure: {
-        min: 0,
-        max: 0,
-      },
-      return: {
-        min: 0,
-        max: 0,
-      },
-    },
+    hours: [0, 1]
   },
   setFlightFilters: (filters) => {
     set({

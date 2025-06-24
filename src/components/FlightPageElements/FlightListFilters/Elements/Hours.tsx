@@ -2,45 +2,31 @@ import FilterWrapper from "@/components/Filter/FilterWrapper";
 import { RangeSlider, Stack, Text } from "@mantine/core";
 import { GetInputPropsReturnType } from "@mantine/form/lib/types";
 import { useTranslations } from "next-intl";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 
 const HoursFilter: FC<
   GetInputPropsReturnType & {
-    dHours: {
-      min: number;
-      max: number;
-    };
+    min: number;
+    max: number;
   }
-> = ({ dHours, value, onChange }) => {
+> = ({ max, min, value, onChange }) => {
   const t = useTranslations();
+
+  useEffect(() => {
+    onChange([min, max]);
+  }, [min, max]);
 
   return (
     <FilterWrapper label={t("Hours")}>
-      <Stack>
-        {value.departure && (
-          <Stack gap={0}>
-            <Text size="sm">{t("Departure")}</Text>
-            <RangeSlider
-              value={[
-                value?.departure?.min || dHours?.min,
-                value?.departure?.max || dHours?.max,
-              ]}
-              max={dHours?.max}
-              min={dHours?.min}
-            />
-          </Stack>
-        )}
-        {/* <Stack gap={0}>
-          <Text size="sm">{t("Landing")}</Text>
-          <RangeSlider
-            defaultValue={[20, 60]}
-            marks={[
-              { value: 20 },
-              { value: 50 },
-              { value: 80 },
-            ]}
-          />
-        </Stack> */}
+      <Stack gap={0}>
+        <RangeSlider
+          value={value}
+          step={1}
+          max={max || 1}
+          min={min || 0}
+          label={e => `${e} ${t("Hour")}`}
+          onChange={onChange}
+        />
       </Stack>
     </FilterWrapper>
   );

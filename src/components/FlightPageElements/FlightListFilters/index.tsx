@@ -14,17 +14,8 @@ export interface FlightListFiltersForm {
   baggages: number[];
   airports: string[];
   airlines: string[];
-  price: [number, number]
-  hours: {
-    departure: {
-      min: number;
-      max: number;
-    };
-    return?: {
-      min: number;
-      max: number;
-    };
-  };
+  price: [number, number];
+  hours: [number, number]
 }
 
 const FlightListFilters = () => {
@@ -40,16 +31,7 @@ const FlightListFilters = () => {
       airports: [],
       airlines: [],
       price: [0, 0],
-      hours: {
-        departure: {
-          min: 0,
-          max: 0,
-        },
-        return: {
-          min: 0,
-          max: 0,
-        },
-      },
+      hours: [0, 1],
     },
 
     onValuesChange: (values) => {
@@ -102,10 +84,8 @@ const FlightListFilters = () => {
       )}
       <Divider />
       <HoursFilter
-        dHours={{
-          min: filterOpt?.duration?.min || 0,
-          max: filterOpt?.duration?.max || 1,
-        }}
+        min={filterOpt?.duration?.min || 0}
+        max={filterOpt?.duration?.max || 1}
         {...form.getInputProps("hours")}
       />
       <Divider />
@@ -138,7 +118,7 @@ const FlightListFilters = () => {
           {...form.getInputProps("price")}
         />
       )}
-      <Divider />
+      {/* <Divider />
       <CheckboxFilter
         label={t("Transfer Airports")}
         options={[
@@ -155,7 +135,7 @@ const FlightListFilters = () => {
             label: "Ankara (ESB)",
           },
         ]}
-      />
+      /> */}
     </Stack>
   );
 };

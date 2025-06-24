@@ -93,6 +93,11 @@ const filterFlightData = (
     }
   }
 
+  if(filters.hours) {
+    const flightTime = parseFloat(flight.totalTimeM);
+    return flightTime >= filters.hours[0] * 60 && flightTime <= filters.hours[1] * 60 + 1;
+  }
+
   if (filters.airports.length > 0) {
     let r = false;
 
