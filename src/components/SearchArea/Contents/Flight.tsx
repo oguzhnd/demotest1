@@ -81,6 +81,8 @@ const FlightSearch: FC<{
       try {
         startLoading();
 
+        console.log(values)
+
         const val = {
           dep:
             values.dep?.type === 1

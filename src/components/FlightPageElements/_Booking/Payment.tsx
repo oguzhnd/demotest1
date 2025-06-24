@@ -1,3 +1,4 @@
+import { useFlightStore } from "@/store/products/flight";
 import {
   Button,
   Checkbox,
@@ -12,7 +13,7 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useLocale, useTranslations } from "next-intl";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { IMaskInput } from "react-imask";
 
 const Payment: FC<{
@@ -22,6 +23,15 @@ const Payment: FC<{
   const locale = useLocale();
 
   const [saveCard, setSaveCard] = useState<boolean>(false);
+
+  const { bookingFlight, returnFlight } = useFlightStore();
+
+  const totalPrice = useMemo(() => {
+    return (
+      (bookingFlight?.AlternativePrices[bookingFlight.packetIndex].totalPrice || 0) +
+      (returnFlight?.AlternativePrices[returnFlight.packetIndex].totalPrice || 0)
+    );
+  }, [bookingFlight, returnFlight]);
 
   return (
     <Paper withBorder p="md">
@@ -43,18 +53,22 @@ const Payment: FC<{
               <Input component={IMaskInput} mask="0000 0000 0000 0000" />
             </Input.Wrapper>
           </Grid.Col>
-          <Grid.Col span={{
+          <Grid.Col
+            span={{
               base: 12,
               xs: 4,
               sm: 3,
-            }}>
+            }}
+          >
             <DatePickerInput label={t("Expiration Date")} />
           </Grid.Col>
-          <Grid.Col span={{
+          <Grid.Col
+            span={{
               base: 12,
               xs: 2,
               sm: 2,
-            }}>
+            }}
+          >
             <Input.Wrapper label={t("CVV")}>
               <Input component={IMaskInput} mask="0000" />
             </Input.Wrapper>
@@ -78,7 +92,7 @@ const Payment: FC<{
           <Stack gap={0}>
             <Text size="xs">{t("Total Price")}</Text>
             <Text size="lg" fw={600}>
-              {(1706.99).toLocaleString(locale)} TRY
+              {(totalPrice).toLocaleString(locale)} TRY
             </Text>
           </Stack>
 

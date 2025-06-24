@@ -10,6 +10,7 @@ import SearchArea from "@/components/SearchArea";
 import { convertDate } from "@/components/SearchArea/Contents/Flight";
 import { useRouter } from "@/i18n/navigation";
 import { FlightType, useFlightStore } from "@/store/products/flight";
+import { useSearchStore } from "@/store/search";
 import { useLoading } from "@/utils/hooks/useLoading";
 import { xiorInstance } from "@/utils/xior";
 import {
@@ -110,36 +111,61 @@ const FlightList = () => {
   const { push } = useRouter();
 
   const {
-    flightSearch,
     flightList,
     setFlightList,
     flightFilters,
     setFilterOpt,
+    bookingFlight,
     setBookingFlight,
+    setReturnFlight,
   } = useFlightStore();
+
+  const { flightSearch } = useSearchStore();
 
   const [loading, startLoading, stopLoading] = useLoading(true);
   const [opened, setOpened] = useState(false);
 
-  const [departureFlight, setDepartureFlight] = useState<string | null>(null);
-
   const [currentFlightList, flightListHandlers] = useListState<FlightType>([]);
+  const [departureSelected, setDepartureSelected] = useState(false);
 
   const setCurrentFlightList = useCallback(() => {
-    const list = filter(flightList, (e) => filterFlightData(e, flightFilters));
+    let list = flightList.filter((e) => {
+      console.log(flightSearch.type === "one-way", e.returnFlight);
+      return flightSearch.type === "one-way"
+        ? true
+        : !departureSelected
+        ? e.returnFlight === "false"
+        : e.returnFlight === "true";
+    });
+
+    list = filter(list, (e) => filterFlightData(e, flightFilters));
+
+    console.log(list);
 
     flightListHandlers.setState(list);
     stopLoading();
-  }, [flightFilters, flightList]);
+  }, [
+    flightFilters,
+    flightList,
+    flightSearch,
+    flightSearch.type,
+    departureSelected,
+  ]);
 
   useEffect(() => {
     startLoading();
     setCurrentFlightList();
-  }, [flightFilters, flightList]);
+  }, [flightFilters, flightList, departureSelected]);
 
   const checkFlightList = useCallback(async () => {
     try {
       startLoading();
+
+      setDepartureSelected(false);
+      setBookingFlight(undefined);
+      setReturnFlight(undefined);
+
+      console.log(flightSearch);
 
       const res = await xiorInstance.post("/searchFlight", {
         dep:
@@ -171,6 +197,30 @@ const FlightList = () => {
       push("/flight/list");
     }
   }, [xiorInstance, flightSearch]);
+
+  const handleSelectFlight = useCallback(
+    (flight: FlightType, packetIndex: number) => {
+      if (flightSearch.type === "round-trip") {
+        if (!departureSelected) {
+          setDepartureSelected(true);
+          setBookingFlight({ ...flight, packetIndex });
+        } else {
+          setReturnFlight({
+            ...flight,
+            packetIndex,
+          });
+        push(`/flight/reservation/${flight.searchId}`);
+        }
+      } else {
+        setBookingFlight({
+          ...flight,
+          packetIndex,
+        });
+        push(`/flight/reservation/${flight.searchId}`);
+      }
+    },
+    [flightSearch, departureSelected]
+  );
 
   useEffect(() => {
     checkFlightList();
@@ -224,7 +274,7 @@ const FlightList = () => {
                 {currentFlightList.length} {t("Flights Found")}
               </Text>
 
-              {departureFlight && (
+              {departureSelected && bookingFlight && (
                 <Paper p="sm" bg="gray.0" withBorder radius="md">
                   <Stack gap={8}>
                     <Group justify="space-between">
@@ -245,18 +295,21 @@ const FlightList = () => {
                       <ActionIcon
                         variant="subtle"
                         color="dark"
-                        onClick={() => setDepartureFlight(null)}
+                        onClick={() => {
+                          setBookingFlight(undefined);
+                          setDepartureSelected(false);
+                        }}
                       >
                         <IconX size={16} />
                       </ActionIcon>
                     </Group>
-                    <FlightListCard flight={flightList[0]} />
+                    <FlightListCard flight={bookingFlight} />
                   </Stack>
                 </Paper>
               )}
-              {departureFlight && <Divider />}
+              {departureSelected && bookingFlight && <Divider />}
 
-              {departureFlight && (
+              {departureSelected && bookingFlight && (
                 <Group>
                   <Text fw={500}>{t("Return Flight")}</Text>
 
@@ -275,18 +328,7 @@ const FlightList = () => {
                 <FlightListCard
                   flight={flight}
                   key={`flight-${i}`}
-                  onSelect={(packetIndex) => {
-                    setBookingFlight({
-                      ...flight,
-                      packetIndex,
-                    });
-                    push(`/flight/reservation/${flight.searchId}`);
-
-                    if (!departureFlight) {
-                      setDepartureFlight("1");
-                    } else {
-                    }
-                  }}
+                  onSelect={(pkgIndex) => handleSelectFlight(flight, pkgIndex)}
                 />
               ))}
             </Stack>

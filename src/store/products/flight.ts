@@ -956,7 +956,7 @@ export interface FlightType {
       ];
     }
   ];
-  returnFlight: "false";
+  returnFlight: "false" | "true";
 }
 
 export interface FlightStore {
@@ -978,6 +978,13 @@ export interface FlightStore {
       })
     | undefined;
   setBookingFlight: (value: FlightStore["bookingFlight"]) => void;
+
+  returnFlight:
+    | (FlightType & {
+        packetIndex: number;
+      })
+    | undefined;
+  setReturnFlight: (flight: FlightStore["bookingFlight"]) => void;
 }
 
 export const useFlightStore = create<FlightStore>((set) => ({
@@ -1041,6 +1048,13 @@ export const useFlightStore = create<FlightStore>((set) => ({
   setBookingFlight: (value) => {
     set({
       bookingFlight: value,
+    });
+  },
+
+  returnFlight: undefined,
+  setReturnFlight: (returnFlight) => {
+    set({
+      returnFlight,
     });
   },
 }));
