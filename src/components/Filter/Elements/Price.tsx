@@ -1,15 +1,20 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import FilterWrapper from "../FilterWrapper";
 import { useTranslations } from "next-intl";
 import { Group, NumberInput, RangeSlider, Stack } from "@mantine/core";
+import { GetInputPropsReturnType } from "@mantine/form/lib/types";
 
-const PriceFilter: FC<{
-  min: number;
-  max: number;
-}> = ({ max, min }) => {
+const PriceFilter: FC<
+  {
+    min: number;
+    max: number;
+  } & GetInputPropsReturnType
+> = ({ max, min, value, onChange }) => {
   const t = useTranslations();
 
-  const [value, setValue] = useState<[number, number]>([min || 0, max || 100]);
+  useEffect(() => {
+    onChange([min, max]);
+  }, [min, max]);
 
   return (
     <FilterWrapper label={t("Price")}>
@@ -17,13 +22,13 @@ const PriceFilter: FC<{
         <Group gap={4} wrap="nowrap">
           <NumberInput
             value={value[0]}
-            onChange={(v) => setValue([+v, value[1]])}
+            onChange={(v) => onChange([+v, value[1]])}
             size="xs"
             hideControls
           />
           <NumberInput
             value={value[1]}
-            onChange={(v) => setValue([value[0], +v])}
+            onChange={(v) => onChange([value[0], +v])}
             size="xs"
             hideControls
           />
@@ -32,8 +37,8 @@ const PriceFilter: FC<{
           min={min || 0}
           max={max || 100}
           step={0.05}
-          value={value}
-          onChange={setValue}
+          value={value || [0, 100]}
+          onChange={onChange}
         />
       </Stack>
     </FilterWrapper>

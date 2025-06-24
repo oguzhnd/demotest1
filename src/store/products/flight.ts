@@ -8,7 +8,7 @@ export interface FlightType {
   flightID: "ffd60e60-596e-49c8-9fd3-7f213243faa5";
   flightNo: "TK2116";
   airway: "Turkish Airlines";
-  totalPrice: 3797.66;
+  totalPrice: string;
   totalTime: "01:15";
   totalTimeM: 75;
   totalFligthTime: "01:15";
@@ -1027,6 +1027,7 @@ export const useFlightStore = create<FlightStore>((set) => ({
     cabin: [],
     airports: [],
     airlines: [],
+    price: [0, 0],
     hours: {
       departure: {
         min: 0,

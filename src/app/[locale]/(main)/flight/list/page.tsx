@@ -82,6 +82,11 @@ const filterFlightData = (
     }
   }
 
+  if (filters.price) {
+    const totalPrice = parseFloat(flight.totalPrice);
+    return totalPrice >= filters.price[0] && totalPrice <= filters.price[1] + 1;
+  }
+
   if (filters.airlines.length > 0) {
     if (!filters.airlines.includes(flight.airway)) {
       return false;
@@ -130,7 +135,6 @@ const FlightList = () => {
 
   const setCurrentFlightList = useCallback(() => {
     let list = flightList.filter((e) => {
-      console.log(flightSearch.type === "one-way", e.returnFlight);
       return flightSearch.type === "one-way"
         ? true
         : !departureSelected
@@ -139,8 +143,6 @@ const FlightList = () => {
     });
 
     list = filter(list, (e) => filterFlightData(e, flightFilters));
-
-    console.log(list);
 
     flightListHandlers.setState(list);
     stopLoading();
@@ -209,7 +211,7 @@ const FlightList = () => {
             ...flight,
             packetIndex,
           });
-        push(`/flight/reservation/${flight.searchId}`);
+          push(`/flight/reservation/${flight.searchId}`);
         }
       } else {
         setBookingFlight({
@@ -228,8 +230,10 @@ const FlightList = () => {
 
   return (
     <Stack>
-      <SearchArea type="flight" />
-      {loading && <FlightLoading />}
+      <Stack gap={0}>
+        <SearchArea type="flight" />
+        {loading && <FlightLoading />}
+      </Stack>
 
       <Drawer
         opened={opened}
