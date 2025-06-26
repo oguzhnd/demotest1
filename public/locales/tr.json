@@ -260,5 +260,7 @@
   "Reservation Number": "Rezervasyon Numarası",
   "I would like to continue with e-mail": "E-posta ile devam etmek istiyorum",
   "Enter the e-mail address or phone number you used during booking": "Rezervasyon esnasında kullandığınız e-posta adresinizi ya da telefon numaranızı girin",
-  "Search": "Ara"
+  "Search": "Ara",
+  "Hotel or City Name": "Otel veya Şehir Adı",
+  "Guest": "Misafir"
 }

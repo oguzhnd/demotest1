@@ -14,18 +14,34 @@ import {
 
 import { IconPlus, IconSearch, IconX } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import { FC, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import classes from "../SearchArea.module.css";
 import { useMediaQuery } from "@mantine/hooks";
+import { UseFormReturnType } from "@mantine/form";
+import { HotelSearchFormProps } from "../Contents/Hotel";
+import { cloneDeep, concat, sum } from "lodash";
 
 const RoomsAndGuestsInput: FC<{
   compact?: boolean;
-}> = ({ compact = false }) => {
+  form: UseFormReturnType<HotelSearchFormProps>;
+}> = ({ compact = false, form }) => {
   const t = useTranslations();
 
   const [opened, setOpened] = useState(false);
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
+
+  const totalGuest = useMemo(() => {
+    return sum(form.getValues().rooms.map((e) => e.adult + e.child));
+  }, [form.getValues().rooms]);
+
+  const deleteRoom = useCallback((roomIndex: number) => {
+    form.setFieldValue("rooms", (v) => {
+      let c = cloneDeep(v);
+      c.splice(roomIndex, 1);
+      return c;
+    });
+  }, []);
 
   return (
     <Popover shadow="lg" opened={opened} onChange={setOpened}>
@@ -49,75 +65,106 @@ const RoomsAndGuestsInput: FC<{
           </Text>
           {!compact && (
             <Text size="xl" fw={700}>
-              1 Misafir
+              {totalGuest} {t("Guest")}
             </Text>
           )}
           <Text size="sm" c={compact ? "white" : "gray.7"}>
-            1 Oda
+            {form.getValues().rooms.length} {t("Room")}
           </Text>
         </Stack>
       </Popover.Target>
       <Popover.Dropdown>
         <Stack gap="xs">
-          <Accordion variant="contained" defaultValue="Apples">
-            {Array(2)
-              .fill("")
-              .map((room, i) => (
-                <Accordion.Item key={`room-${i}`} value={`${i}`}>
-                  <Accordion.Control>
-                    {i + 1}. {t("Room")}
-                  </Accordion.Control>
-                  <Accordion.Panel>
-                    <Stack gap={8}>
-                      <Stack gap={4}>
-                        <Text size="sm">{t("Adults")}</Text>
-                        <Group gap={4}>
-                          <ActionIcon.Group>
-                            {Array(9)
-                              .fill("")
-                              .map((_, i) => (
-                                <ActionIcon
-                                  key={`btn-${i}`}
-                                  variant="default"
-                                  size="md"
-                                >
-                                  <Text size="xs">{i + 1}</Text>
-                                </ActionIcon>
-                              ))}
-                          </ActionIcon.Group>
-                          <ActionIcon variant="default" size="md">
-                            <Text size="xs">{"> 9"}</Text>
-                          </ActionIcon>
-                        </Group>
-                      </Stack>
-                      <Stack gap={4}>
-                        <Text size="sm">{t("Childrens")}</Text>
-                        <Group gap={4}>
-                          <ActionIcon.Group>
-                            {Array(6)
-                              .fill("")
-                              .map((_, i) => (
-                                <ActionIcon
-                                  key={`btn-${i}`}
-                                  variant="default"
-                                  size="md"
-                                >
-                                  <Text size="xs">{i + 1}</Text>
-                                </ActionIcon>
-                              ))}
-                          </ActionIcon.Group>
-                          <ActionIcon variant="default" size="md">
-                            <Text size="xs">{"> 6"}</Text>
-                          </ActionIcon>
-                        </Group>
-                      </Stack>
+          <Accordion variant="contained" defaultValue="0">
+            {form.getValues().rooms.map((room, j) => (
+              <Accordion.Item key={`room-${j}`} value={`${j}`}>
+                <Accordion.Control>
+                  <Group justify="space-between" pr={8}>
+                    <Text size="sm">
+                      {j + 1}. {t("Room")}
+                    </Text>
+
+                    {form.getValues().rooms.length > 1 && (
+                      <ActionIcon
+                        size="xs"
+                        variant="transparent"
+                        color="red"
+                        onClick={() => deleteRoom(j)}
+                      >
+                        <IconX size={16} />
+                      </ActionIcon>
+                    )}
+                  </Group>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Stack gap={8}>
+                    <Stack gap={4}>
+                      <Text size="sm">{t("Adults")}</Text>
+                      <Group gap={4}>
+                        <ActionIcon.Group>
+                          {Array(9)
+                            .fill("")
+                            .map((_, i) => (
+                              <ActionIcon
+                                key={`btn-${i}`}
+                                variant={
+                                  i + 1 === room.adult ? "filled" : "default"
+                                }
+                                size="md"
+                                onClick={() =>
+                                  form.setFieldValue(`rooms.${j}.adult`, i + 1)
+                                }
+                              >
+                                <Text size="xs">{i + 1}</Text>
+                              </ActionIcon>
+                            ))}
+                        </ActionIcon.Group>
+                        <ActionIcon variant="default" size="md">
+                          <Text size="xs">{"> 9"}</Text>
+                        </ActionIcon>
+                      </Group>
                     </Stack>
-                  </Accordion.Panel>
-                </Accordion.Item>
-              ))}
+                    <Stack gap={4}>
+                      <Text size="sm">{t("Childrens")}</Text>
+                      <Group gap={4}>
+                        <ActionIcon.Group>
+                          {Array(7)
+                            .fill("")
+                            .map((_, i) => (
+                              <ActionIcon
+                                key={`btn-${i}`}
+                                variant={
+                                  i === room.child ? "filled" : "default"
+                                }
+                                size="md"
+                                onClick={() =>
+                                  form.setFieldValue(`rooms.${j}.child`, i)
+                                }
+                              >
+                                <Text size="xs">{i}</Text>
+                              </ActionIcon>
+                            ))}
+                        </ActionIcon.Group>
+                        <ActionIcon variant="default" size="md">
+                          <Text size="xs">{"> 6"}</Text>
+                        </ActionIcon>
+                      </Group>
+                    </Stack>
+                  </Stack>
+                </Accordion.Panel>
+              </Accordion.Item>
+            ))}
           </Accordion>
           <Group justify="flex-end">
-            <Button leftSection={<IconPlus size={14} />} size="xs">
+            <Button
+              leftSection={<IconPlus size={14} />}
+              size="xs"
+              onClick={() => {
+                form.setFieldValue("rooms", (v) =>
+                  concat(v, { adult: 1, child: 0 })
+                );
+              }}
+            >
               {t("Add Room")}
             </Button>
           </Group>

@@ -101,7 +101,9 @@ const Footer = () => {
           }}>
             <Stack justify="space-between">
               <Stack gap={4}>
-                {/* <Image src="/ntt_logo.jpg" /> */}
+                <Group justify="flex-start">
+                  <Image src="/ntt_logo_light.png" w="auto" h={48} />
+                </Group>
 
                 <Group mt="md" gap="xs">
                   <ActionIcon
