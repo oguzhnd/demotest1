@@ -197,8 +197,8 @@
   "Optional": "İsteğe Bağlı",
   "Notes you would like to send to the hotel": "Otele iletmek istediğiniz notlar",
   "Enter the notes you want to send": "İletmek istediğiniz notları giriniz",
-  "I approve the Clarification Text": "Aydınlatma Metnini onaylıyorum",
-  "I approve the text of Explicit Consent": "Açık Rıza Metnini onaylıyorum",
+  "I approve the Clarification Text": "<link>Aydınlatma Metnini</link> onaylıyorum",
+  "I approve the text of Explicit Consent": "<link>Açık Rıza Metnini</link> onaylıyorum",
   "Price Details": "Fiyat Detayları",
   "Cancellation Penalty Schedule": "İptal Cezası Takvimi",
   "If you cancel today": "Bugün iptal ederseniz",
@@ -251,5 +251,14 @@
   "Transfer Point": "Aktarma Noktası",
   "Waiting Time": "Bekleme Süresi",
   "Rooms": "Odalar",
-  "Hour": "Saat"
+  "Hour": "Saat",
+  "Add Room": "Oda Ekle",
+  "Room": "Oda",
+  "Transfer": "Aktarma",
+  "Query Transaction": "İşlem Sorgula",
+  "PNR Number": "PNR Numarası",
+  "Reservation Number": "Rezervasyon Numarası",
+  "I would like to continue with e-mail": "E-posta ile devam etmek istiyorum",
+  "Enter the e-mail address or phone number you used during booking": "Rezervasyon esnasında kullandığınız e-posta adresinizi ya da telefon numaranızı girin",
+  "Search": "Ara"
 }

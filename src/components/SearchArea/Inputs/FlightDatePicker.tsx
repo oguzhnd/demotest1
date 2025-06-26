@@ -156,7 +156,7 @@ const FlightDatePicker: FC<{
       </Popover.Target>
       <Popover.Dropdown>
         <DatePicker
-          numberOfColumns={2}
+          numberOfColumns={matchesSm ? 1 : 2}
           type={form.getValues().type === "one-way" ? "default" : "range"}
           value={
             form.getValues().type === "one-way"

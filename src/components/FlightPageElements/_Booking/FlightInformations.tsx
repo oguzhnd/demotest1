@@ -38,7 +38,7 @@ const FlightSummary: FC<
               gap={6}
               px="sm"
               py={8}
-              bg="dark.7"
+              bg={flight.type === "departure" ? "green.9" : "orange"}
               c="white"
               style={{
                 borderBottomRightRadius: "var(--mantine-radius-md)",

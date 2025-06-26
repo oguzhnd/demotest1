@@ -194,7 +194,7 @@ const RentalDatesPicker: FC<{
       <Popover.Dropdown>
         <Stack>
           <DatePicker
-            numberOfColumns={2}
+          numberOfColumns={matchesSm ? 1 : 2}
             type={"range"}
             value={[form.getValues().pickupDate, form.getValues().deliveryDate]}
             onChange={(dates) => {

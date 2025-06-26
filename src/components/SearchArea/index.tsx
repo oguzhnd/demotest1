@@ -100,7 +100,7 @@ const SearchArea: FC<{
       </Container>
     </Paper>
   ) : (
-    <BackgroundImage src={`/search-bg.webp`}>
+    <BackgroundImage src={`/search-bg.jpg`}>
       <Container size="xl" py={100}>
         <Paper p="lg" mt="md" pt={60}>
           <Tabs pos="relative" value={searchType} variant="pills">

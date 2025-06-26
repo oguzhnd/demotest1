@@ -44,22 +44,24 @@ const InvoiceInformations = () => {
           </Button>
         </Group>
 
-        <Grid gutter="xs">
-          <Grid.Col span={6}>
-            <Group wrap="nowrap" align="flex-end">
-              <TextInput label={t("Company Name")} />
-              <Stack h={36} justify="center">
-                <Checkbox label={t("Sole Proprietorship")} />
-              </Stack>
-            </Group>
-          </Grid.Col>
-          <Grid.Col span={3}>
-            <TextInput label={t("Tax Office")} />
-          </Grid.Col>
-          <Grid.Col span={3}>
-            <TextInput label={t("Tax Number")} />
-          </Grid.Col>
-        </Grid>
+        {selectedType === "corporate" && (
+          <Grid gutter="xs">
+            <Grid.Col span={6}>
+              <Group wrap="nowrap" align="flex-end">
+                <TextInput label={t("Company Name")} />
+                <Stack h={36} justify="center">
+                  <Checkbox label={t("Sole Proprietorship")} />
+                </Stack>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={3}>
+              <TextInput label={t("Tax Office")} />
+            </Grid.Col>
+            <Grid.Col span={3}>
+              <TextInput label={t("Tax Number")} />
+            </Grid.Col>
+          </Grid>
+        )}
         <Grid gutter="xs">
           <Grid.Col span={3}>
             <Select label={t("Country")} />

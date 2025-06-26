@@ -93,9 +93,12 @@ const filterFlightData = (
     }
   }
 
-  if(filters.hours) {
+  if (filters.hours) {
     const flightTime = parseFloat(flight.totalTimeM);
-    return flightTime >= filters.hours[0] * 60 && flightTime <= filters.hours[1] * 60 + 1;
+    return (
+      flightTime >= filters.hours[0] * 60 &&
+      flightTime <= filters.hours[1] * 60 + 1
+    );
   }
 
   if (filters.airports.length > 0) {
@@ -165,14 +168,11 @@ const FlightList = () => {
   }, [flightFilters, flightList, departureSelected]);
 
   const checkFlightList = useCallback(async () => {
+    startLoading();
     try {
-      startLoading();
-
       setDepartureSelected(false);
       setBookingFlight(undefined);
       setReturnFlight(undefined);
-
-      console.log(flightSearch);
 
       const res = await xiorInstance.post("/searchFlight", {
         dep:

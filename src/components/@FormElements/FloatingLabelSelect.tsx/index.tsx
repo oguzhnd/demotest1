@@ -1,14 +1,16 @@
 import { FC, ForwardedRef, forwardRef, useState } from "react";
-import { TextInput, TextInputProps } from "@mantine/core";
-import classes from "./FloatingLabelTextInput.module.css";
+import { Select, SelectProps, TextInput, TextInputProps } from "@mantine/core";
+import classes from "./FloatingLabelSelect.module.css";
 
-const FloatingLabelTextInput: FC<TextInputProps> = (props) => {
+const FloatingLabelSelect: FC<
+  SelectProps
+> = (props) => {
   const [focused, setFocused] = useState(false);
   const floating =
     (props.value || "").toString().trim().length !== 0 || focused || undefined;
 
   return (
-    <TextInput
+    <Select
       classNames={classes}
       data-floating={floating}
       labelProps={{ "data-floating": floating }}
@@ -18,6 +20,6 @@ const FloatingLabelTextInput: FC<TextInputProps> = (props) => {
       onBlur={() => setFocused(false)}
     />
   );
-};
+}
 
-export default FloatingLabelTextInput;
+export default FloatingLabelSelect;

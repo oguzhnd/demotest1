@@ -5,6 +5,7 @@ import {
   Container,
   Divider,
   Group,
+  Image,
   Stack,
 } from "@mantine/core";
 import React from "react";
@@ -26,7 +27,8 @@ import { useModalManager } from "@/store/managers/modal";
 import { useMediaQuery } from "@mantine/hooks";
 import MobileDrawer from "./Drawer";
 import { useGlobalStore } from "@/store/global";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
+import QueryTransactionModal from "./QueryTransaction";
 
 const Header = () => {
   const t = useTranslations();
@@ -43,9 +45,9 @@ const Header = () => {
   return (
     <Container size="xl" w="100%" h="100%">
       <Group h="100%" justify="space-between">
-        <Anchor c="dark" size="xl" fw={600}>
-          LOGO
-        </Anchor>
+        <Link href="/">
+          <Image src="/ntt_logo.jpg" h={matchesSm ? 40 : 80} />
+        </Link>
 
         {!matchesSm && <NavLinks />}
 
@@ -59,6 +61,8 @@ const Header = () => {
         >
           <IconMenu2 size={20} />
         </ActionIcon>
+
+        <QueryTransactionModal />
 
         <Stack visibleFrom="md" h="100%" gap={6} align="center">
           <Group gap={0} wrap="nowrap">
@@ -94,8 +98,9 @@ const Header = () => {
                 size="compact-sm"
                 fw={400}
                 leftSection={<IconFileDescription size={16} />}
+                onClick={() => openModal("queryTransaction")}
               >
-                {t("My Reservations")}
+                {t(isLogin ? "My Reservations" : "Query Transaction")}
               </Button>
             </Group>
             <svg

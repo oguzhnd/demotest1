@@ -1,3 +1,4 @@
+import { localeDateFormat } from "@/utils/tools";
 import {
   Button,
   Checkbox,
@@ -50,7 +51,7 @@ const PassengersModal: FC<{
   ]);
 
   return (
-    <Modal opened={opened} onClose={onClose} title={t("My Passengers")}>
+    <Modal size="lg" opened={opened} onClose={onClose} title={t("My Passengers")}>
       <Stack>
         <Table
           withTableBorder
@@ -65,6 +66,8 @@ const PassengersModal: FC<{
             <Table.Tr>
               <Table.Th>{t("Name")}</Table.Th>
               <Table.Th>{t("Surname")}</Table.Th>
+              <Table.Th>{t("Birth Date")}</Table.Th>
+              <Table.Th>{t("TC Identity Number")}</Table.Th>
               <Table.Th>{t("Gender")}</Table.Th>
               <Table.Th></Table.Th>
             </Table.Tr>
@@ -74,6 +77,8 @@ const PassengersModal: FC<{
               <Table.Tr key={`passenger-${i}`}>
                 <Table.Td>{passenger.name}</Table.Td>
                 <Table.Td>{passenger.surname}</Table.Td>
+                <Table.Td>{localeDateFormat(passenger.birthDate)}</Table.Td>
+                <Table.Td>{passenger.identityNumber}</Table.Td>
                 <Table.Td>
                   {t(passenger.gender === "male" ? "Male" : "Female")}
                 </Table.Td>

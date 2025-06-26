@@ -101,12 +101,12 @@ const FlightSearch: FC<{
           nonStop: "0",
         };
 
-        const res = await xiorInstance.post("/searchFlight", val);
+        // const res = await xiorInstance.post("/searchFlight", val);
 
-        console.log(res);
+        // console.log(res);
 
-        setFlightList(res.data.result);
-        setFilterOpt(res.data.filterOpt);
+        // setFlightList(res.data.result);
+        // setFilterOpt(res.data.filterOpt);
         setSearch("flightSearch", values);
       } catch (err) {
         console.error(err);

@@ -101,15 +101,7 @@ const Footer = () => {
           }}>
             <Stack justify="space-between">
               <Stack gap={4}>
-                <Text size="xl" c="white" fw={500} mb="md">
-                  LOGO
-                </Text>
-                <Text size="sm" c="gray.2">
-                  Hotelchick ile mükemmel tatilinizi keşfedin
-                </Text>
-                <Text size="sm" c="gray.2">
-                  MISYURA TRAVEL Lisans No:17192
-                </Text>
+                {/* <Image src="/ntt_logo.jpg" /> */}
 
                 <Group mt="md" gap="xs">
                   <ActionIcon
@@ -149,10 +141,10 @@ const Footer = () => {
 
               <Divider color="gray.9" mr="xl" />
 
-              <Group>
+              {/* <Group>
                 <Image src="https://www.hotelchick.com/upload/General/61be2b6e7a8ace0b82fc8562c2a43eb3.png" w="auto" h={60} />
                 <Image src="https://www.hotelchick.com/upload/General/1abe53099d2ef2eb4330d2c8bcb71a6d.jpeg" w="auto" h={60} />
-              </Group>
+              </Group> */}
             </Stack>
           </Grid.Col>
           {footerLinks.map((links, i) => (

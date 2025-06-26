@@ -19,6 +19,9 @@ export const useModalManager = create<ModalManager>((set, get) => ({
     },
     hotelMapDetail: {
       opened: false,
+    },
+    queryTransaction: {
+      opened: false
     }
   },
 

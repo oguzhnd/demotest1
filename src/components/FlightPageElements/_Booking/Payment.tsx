@@ -1,5 +1,7 @@
+import { Link } from "@/i18n/navigation";
 import { useFlightStore } from "@/store/products/flight";
 import {
+  Anchor,
   Button,
   Checkbox,
   Grid,
@@ -24,12 +26,17 @@ const Payment: FC<{
 
   const [saveCard, setSaveCard] = useState<boolean>(false);
 
+  const [clarification, setClarification] = useState(false);
+  const [explicitConsent, setExplicitConsent] = useState(false);
+
   const { bookingFlight, returnFlight } = useFlightStore();
 
   const totalPrice = useMemo(() => {
     return (
-      (bookingFlight?.AlternativePrices[bookingFlight.packetIndex].totalPrice || 0) +
-      (returnFlight?.AlternativePrices[returnFlight.packetIndex].totalPrice || 0)
+      (bookingFlight?.AlternativePrices[bookingFlight.packetIndex].totalPrice ||
+        0) +
+      (returnFlight?.AlternativePrices[returnFlight.packetIndex].totalPrice ||
+        0)
     );
   }, [bookingFlight, returnFlight]);
 
@@ -74,7 +81,7 @@ const Payment: FC<{
             </Input.Wrapper>
           </Grid.Col>
         </Grid>
-        <Checkbox
+        {/* <Checkbox
           checked={saveCard}
           onChange={(e) => setSaveCard(e.currentTarget.checked)}
           label={t(
@@ -82,23 +89,53 @@ const Payment: FC<{
           )}
         />
         {saveCard && (
-          <Grid>
-            <Grid.Col span={3}>
-              <TextInput label={t("Name The Card")} />
-            </Grid.Col>
-          </Grid>
-        )}
-        <Group justify="space-between">
+          <Group>
+            <TextInput label={t("Name The Card")} />
+          </Group>
+        )} */}
+
+        <Stack gap="xs">
+          <Checkbox
+            label={t.rich("I approve the Clarification Text", {
+              link: (text) => (
+                <Link href="/clarification" style={{ textDecoration: "none" }}>
+                  <Anchor size="sm">{text}</Anchor>
+                </Link>
+              ),
+            })}
+            checked={clarification}
+            onChange={(e) => setClarification(e.currentTarget.checked)}
+          />
+          <Checkbox
+            label={t.rich("I approve the text of Explicit Consent", {
+              link: (text) => (
+                <Link
+                  href="/explicitConsent"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Anchor size="sm">{text}</Anchor>
+                </Link>
+              ),
+            })}
+            checked={explicitConsent}
+            onChange={(e) => setExplicitConsent(e.currentTarget.checked)}
+          />
+        </Stack>
+
+        <Group>
+          <Button
+            color="green"
+            onClick={onSubmit}
+            disabled={!clarification || !explicitConsent}
+          >
+            {t("Make Payment")}
+          </Button>
           <Stack gap={0}>
             <Text size="xs">{t("Total Price")}</Text>
             <Text size="lg" fw={600}>
-              {(totalPrice).toLocaleString(locale)} TRY
+              {totalPrice.toLocaleString(locale)} TRY
             </Text>
           </Stack>
-
-          <Button color="green" onClick={onSubmit}>
-            {t("Make Payment")}
-          </Button>
         </Group>
         <Text size="sm">
           Kişisel verileriniz Aydınlatma Metni kapsamında işleniyor. Butona

@@ -16,8 +16,8 @@ const FlightReservation = () => {
     <Container w="100%" size="xl" py={20}>
       <Stack>
         <FlightInformations />
-        <ContactInformations />
         <PassengerInformations />
+        <ContactInformations />
         <InvoiceInformations />
         <Payment onSubmit={() => push("/flight/reservation/completed")} />
       </Stack>

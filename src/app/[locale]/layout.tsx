@@ -24,7 +24,7 @@ const geist = Geist({
 });
 
 export const metadata = {
-  title: "HotelChick",
+  title: "NTT GO",
 };
 
 export default async function LocaleLayout({

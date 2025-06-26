@@ -1,6 +1,15 @@
 import { useDrawerManager } from "@/store/managers/drawer";
 import { useModalManager } from "@/store/managers/modal";
-import { Button, Divider, Drawer, Group, Stack, Text } from "@mantine/core";
+import {
+  Anchor,
+  Button,
+  Divider,
+  Drawer,
+  Group,
+  Image,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { IconFileDescription, IconUser } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import React, { useCallback } from "react";
@@ -29,9 +38,9 @@ const MobileDrawer = () => {
       position="left"
       size="sm"
       title={
-        <Text size="lg" fw={500}>
-          LOGO
-        </Text>
+        <Anchor c="dark" size="xl" fw={600}>
+          <Image src="/ntt_logo.jpg" h={60} />
+        </Anchor>
       }
     >
       <Stack gap={4}>

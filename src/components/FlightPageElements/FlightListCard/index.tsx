@@ -77,7 +77,7 @@ const FlightListCard: FC<{
 
           <Stack pos="relative" w="100%" align="center" visibleFrom="sm">
             <Text size="xs" c="gray.7">
-              {t("Direct")}
+              {t(flight.legInfo.length > 1 ? "Transfer" : "Direct")}
             </Text>
             <Divider w="100%" />
             <Box
@@ -144,7 +144,7 @@ const FlightListCard: FC<{
             {t("Details")}
           </Button>
 
-          <Text size="lg" fw={600} style={{ whiteSpace: "nowrap" }}>
+          <Text w={120} size="lg" fw={600} ta="right" style={{ whiteSpace: "nowrap", flexShrink: 0 }}>
             {(+flight.totalPrice).toLocaleString(locale)} TRY
           </Text>
 

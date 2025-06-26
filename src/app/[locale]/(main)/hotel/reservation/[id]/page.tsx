@@ -35,10 +35,7 @@ const HotelReservation = () => {
             <RoomGuestInformations />
             <SpecialRequests />
 
-            <Stack gap="xs">
-              <Checkbox label={t("I approve the Clarification Text")} />
-              <Checkbox label={t("I approve the text of Explicit Consent")} />
-            </Stack>
+            
             <Payment onSubmit={() => push("/hotel/reservation/completed")} />
           </Stack>
         </Grid.Col>

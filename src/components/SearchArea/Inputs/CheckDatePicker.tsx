@@ -133,7 +133,7 @@ const CheckDatePicker: FC<{
       </Popover.Target>
       <Popover.Dropdown>
         <DatePicker
-          numberOfColumns={2}
+          numberOfColumns={matchesSm ? 1 : 2}
           type={"range"}
           value={[checkIn, checkOut]}
           onChange={(dates) =>
