@@ -15,26 +15,19 @@ import classes from "../SearchArea.module.css";
 import { useTranslations } from "next-intl";
 import { IconSearch } from "@tabler/icons-react";
 
-interface PopularCityType {
-  city: string;
-  country: string;
+interface CountryType {
+  countryCode: string;
   name: string;
-  code: string;
 }
 
-const AirportOption: FC<PopularCityType> = ({ city, code, country, name }) => {
+const CountryOption: FC<CountryType> = ({ countryCode, name }) => {
   return (
     <Stack gap={0} p={8} className={classes.airportOption}>
       <Group justify="space-between">
-        <Text size="sm">
-          {city}, {country}
-        </Text>
-        <Text size="sm" fw={500}>
-          {code}
-        </Text>
+        <Text size="sm">{name}</Text>
       </Group>
       <Text size="xs" c="gray.7" truncate>
-        {name}
+        {countryCode}
       </Text>
     </Stack>
   );
@@ -42,30 +35,17 @@ const AirportOption: FC<PopularCityType> = ({ city, code, country, name }) => {
 
 const CountrySelect: FC<{
   label: string;
-  compact?: boolean
+  compact?: boolean;
+  disabled?: boolean;
 }> = ({ label, compact = false }) => {
   const t = useTranslations();
 
   const [opened, setOpened] = useState(false);
 
-  const popularCities: PopularCityType[] = [
+  const countries: CountryType[] = [
     {
-      city: "Mumbai",
-      country: "India",
-      name: "Chhatrapati Shivaji International Airport",
-      code: "BOM",
-    },
-    {
-      city: "Mumbai",
-      country: "India",
-      name: "Chhatrapati Shivaji International Airport",
-      code: "BOM",
-    },
-    {
-      city: "Mumbai",
-      country: "India",
-      name: "Chhatrapati Shivaji International Airport",
-      code: "BOM",
+      countryCode: "TR",
+      name: "Türkiye",
     },
   ];
 
@@ -82,10 +62,14 @@ const CountrySelect: FC<{
           style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
           onClick={() => setOpened((o) => !o)}
         >
-          <Text size="sm" c={compact ? "blue.7" : undefined}>{label && t(label)}</Text>
-          {!compact && <Text size="xl" fw={700} truncate>
-            Türkiye
-          </Text>}
+          <Text size="sm" c={compact ? "blue.7" : undefined}>
+            {label && t(label)}
+          </Text>
+          {!compact && (
+            <Text size="xl" fw={700} truncate>
+              Türkiye
+            </Text>
+          )}
           <Text size="sm" c={compact ? "white" : "gray.7"}>
             TR
           </Text>
@@ -102,10 +86,10 @@ const CountrySelect: FC<{
 
           <Stack gap={0}>
             <Text size="xs" c="gray.7" p={8}>
-              {t("Popular Cities")}
+              {t("Countries")}
             </Text>
-            {popularCities.map((airport, i) => (
-              <AirportOption key={`airport-${i}`} {...airport} />
+            {countries.map((country, i) => (
+              <CountryOption key={`country-${i}`} {...country} />
             ))}
           </Stack>
         </Stack>

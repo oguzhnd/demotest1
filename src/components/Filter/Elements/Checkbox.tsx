@@ -19,7 +19,7 @@ const CheckboxFilter: FC<{
       <Checkbox.Group value={value} onChange={onChange}>
         <Stack gap={6}>
           {options.map((opt, i) => (
-            <Checkbox key={`opt-${i}`} value={opt.value} label={opt.label} />
+            <Checkbox key={`opt-${i}`} value={`${opt.value}`} label={`${opt.label}`} />
           ))}
         </Stack>
       </Checkbox.Group>

@@ -262,5 +262,13 @@
   "Enter the e-mail address or phone number you used during booking": "Enter the e-mail address or phone number you used during booking",
   "Search": "Search",
   "Hotel or City Name": "Hotel or City Name",
-  "Guest": "Guest"
+  "Guest": "Guest",
+  "Countries": "Countries",
+  "Hotel Rating": "Hotel Rating",
+  "Hotel Themes": "Hotel Themes",
+  "Paid": "Paid",
+  "+X Images": "+{count} Images",
+  "Cancellation Policy": "Cancellation Policy",
+  "At a price of Y until date X": "At a price of {Y} until date {X}",
+  "Make a reservation": "Make a reservation"
 }

@@ -200,8 +200,6 @@ const FlightList = () => {
       console.error(err);
     } finally {
       stopLoading();
-
-      push("/flight/list");
     }
   }, [xiorInstance, flightSearch]);
 

@@ -10,6 +10,7 @@ import {
   Stack,
   Text,
   TextInput,
+  ThemeIcon,
 } from "@mantine/core";
 
 import { IconPlus, IconSearch, IconX } from "@tabler/icons-react";
@@ -24,6 +25,7 @@ import { cloneDeep, concat, sum } from "lodash";
 const RoomsAndGuestsInput: FC<{
   compact?: boolean;
   form: UseFormReturnType<HotelSearchFormProps>;
+  disabled?: boolean;
 }> = ({ compact = false, form }) => {
   const t = useTranslations();
 
@@ -85,14 +87,14 @@ const RoomsAndGuestsInput: FC<{
                     </Text>
 
                     {form.getValues().rooms.length > 1 && (
-                      <ActionIcon
+                      <ThemeIcon
                         size="xs"
                         variant="transparent"
                         color="red"
                         onClick={() => deleteRoom(j)}
                       >
                         <IconX size={16} />
-                      </ActionIcon>
+                      </ThemeIcon>
                     )}
                   </Group>
                 </Accordion.Control>

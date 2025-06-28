@@ -34,7 +34,13 @@ export interface SearchHotelType {
   onClick?: () => void;
 }
 
-const HotelOption: FC<SearchHotelType> = ({ type, city, country, name, onClick }) => {
+const HotelOption: FC<SearchHotelType> = ({
+  type,
+  city,
+  country,
+  name,
+  onClick,
+}) => {
   return (
     <Stack gap={4} p="xs" className={classes.airportOption} onClick={onClick}>
       <Group gap={4} wrap="nowrap">
@@ -56,8 +62,9 @@ const HotelOption: FC<SearchHotelType> = ({ type, city, country, name, onClick }
 
 const HotelSeachInput: FC<{
   label: string;
-    compact?: boolean;
-    form: UseFormReturnType<HotelSearchFormProps>;
+  compact?: boolean;
+  form: UseFormReturnType<HotelSearchFormProps>;
+  disabled?: boolean;
 }> = ({ label, compact = false, form }) => {
   const t = useTranslations();
   const locale = useLocale();
@@ -114,12 +121,28 @@ const HotelSeachInput: FC<{
             {label && t(label)}
           </Text>
           {!compact && (
-            <Text size="xl" fw={700} truncate>
-              {form.getValues().hotel?.name  || t("Hotel or City Name")}
+            <Text
+              size="xl"
+              fw={700}
+              truncate
+              c={!form.getValues().hotel?.name ? "gray.5" : undefined}
+            >
+              {form.getValues().hotel?.name || t("Hotel or City Name")}
             </Text>
           )}
-          <Text size="sm" c={compact ? "white" : "gray.7"}>
-            {form.getValues().hotel?.city  || t("Click to search")}
+          <Text
+            size="sm"
+            c={
+              compact
+                ? !form.getValues().hotel?.city
+                  ? "gray.5"
+                  : "white"
+                : !form.getValues().hotel?.city
+                ? "gray.5"
+                : "gray.7"
+            }
+          >
+            {form.getValues().hotel?.city || t("Click to search")}
           </Text>
         </Stack>
       </Popover.Target>

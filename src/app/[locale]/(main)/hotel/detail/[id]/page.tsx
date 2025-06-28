@@ -1,19 +1,28 @@
 "use client";
 
-import Rooms from "@/components/HotelPageElements/HotelDetails/Rooms";
+import Rooms, {
+  RoomDetailType,
+} from "@/components/HotelPageElements/HotelDetails/Rooms";
 import { facilities } from "@/components/HotelPageElements/HotelListFilters/Elements/FacilitiesAndFeatures";
 import HotelMapDetail from "@/components/HotelPageElements/HotelMapDetail";
 import SearchArea from "@/components/SearchArea";
+import { convertDate } from "@/components/SearchArea/Contents/Flight";
 import { useRouter } from "@/i18n/navigation";
 import { useModalManager } from "@/store/managers/modal";
+import { HotelType } from "@/store/products/hotel";
+import { useSearchStore } from "@/store/search";
+import { useLoading } from "@/utils/hooks/useLoading";
+import { xiorInstance } from "@/utils/xior";
 import {
   Anchor,
+  Box,
   Button,
   Center,
   Container,
   Grid,
   Group,
   Image,
+  LoadingOverlay,
   Paper,
   Rating,
   ScrollArea,
@@ -21,6 +30,7 @@ import {
   Stack,
   Tabs,
   Text,
+  Tooltip,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -28,10 +38,12 @@ import {
   IconMapPin,
   IconMapPinFilled,
   IconSpeakerphone,
+  IconSwimming,
 } from "@tabler/icons-react";
+import { merge } from "lodash";
 import { useLocale, useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 const HotelDetail = () => {
   const t = useTranslations();
@@ -40,46 +52,116 @@ const HotelDetail = () => {
   const params = useParams();
   const { push } = useRouter();
 
-  const { openModal } = useModalManager()
+  const { hotelSearch } = useSearchStore();
+
+  const { openModal } = useModalManager();
+
+  const [loading, startLoading, stopLoading] = useLoading();
+  const [hotel, setHotel] = useState<HotelType | undefined>(undefined);
+  const [groupRooms, setGroupRooms] = useState<
+    Record<string, RoomDetailType[]> | undefined
+  >(undefined);
+  const [hotelDetails, setHotelDetails] = useState<any | undefined>(undefined);
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
+
+  const getHotelDetails = useCallback(async () => {
+    if (loading) {
+      return;
+    }
+
+    startLoading();
+
+    try {
+      const resDetails = await xiorInstance.post("/getHotelInfo", {
+        hotelId: params.id,
+        language: locale,
+      });
+
+      console.log(resDetails);
+
+      setHotelDetails(resDetails.data.result);
+
+      const res = await xiorInstance.post("/searchHotel", {
+        product: "1",
+        hotel: params.id,
+        name: resDetails.data.result.name,
+        checkIn: convertDate(hotelSearch.checkIn),
+        checkOut: convertDate(hotelSearch.checkOut),
+        rooms: hotelSearch.rooms.map((e) =>
+          merge(
+            { adult: `${e.adult}` },
+            e.child > 0 ? { child: `${e.child}` } : {}
+          )
+        ),
+        language: locale,
+      });
+
+      console.log(res);
+
+      setGroupRooms(res.data.groupRooms);
+      setHotel(res.data.hotelData[0]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      stopLoading();
+    }
+  }, [loading, xiorInstance, params.id, hotelSearch]);
+
+  useEffect(() => {
+    getHotelDetails();
+  }, [params.id]);
 
   const Parent = matchesSm ? Stack : Group;
 
   return (
     <Stack>
+      <LoadingOverlay visible={loading} />
+
       <HotelMapDetail />
 
       <SearchArea type="hotel" />
       <Container w="100%" size="xl" py={20}>
         <Stack gap="xs">
-          <Stack gap="xs">
-            <Group>
-              <Text size="xl" fw={500}>
-                All Suites Appart Hôtel Orly Rungis
-              </Text>
-              <Rating value={5} readOnly />
-            </Group>
-            <Group gap="xs">
-              <Text
-                size="sm"
-                c="white"
-                fw={500}
-                bg="green.9"
-                px="xs"
-                py={6}
-                lh={1}
-                style={{ borderRadius: 8 }}
-              >
-                9.6
-              </Text>
-              <Anchor size="sm" fw={500} c="gray.7">
-                37 Misafir Yorumu
-              </Anchor>
-            </Group>
-          </Stack>
+          <Group justify="space-between">
+            <Stack gap="xs">
+              <Stack gap={0}>
+                <Group>
+                  <Text size="xl" fw={500}>
+                    {hotel?.title}
+                  </Text>
+                  <Text
+                    size="sm"
+                    c="white"
+                    fw={500}
+                    bg="green.9"
+                    px="xs"
+                    py={6}
+                    lh={1}
+                    style={{ borderRadius: 8 }}
+                  >
+                    {hotel?.rating}
+                  </Text>
+                  <Rating
+                    size="xs"
+                    fractions={2}
+                    value={hotel?.stars}
+                    count={Math.ceil(hotel?.stars || 0)}
+                    readOnly
+                  />
+                </Group>
+                <Text size="xs" c="gray">
+                  {hotel?.address}
+                </Text>
+              </Stack>
+              <Group gap="xs"></Group>
+            </Stack>
+            <Button radius="xl" mb="xs">
+              Tekliflere Bak
+            </Button>
+          </Group>
 
-          <Tabs mt="md" defaultValue="Ana Sayfa">
+          <Tabs defaultValue="Ana Sayfa">
             <Tabs.List>
               <Parent
                 w="100%"
@@ -104,26 +186,6 @@ const HotelDetail = () => {
                     )}
                   </Group>
                 </ScrollArea>
-
-                <Parent
-                  gap={matchesSm ? 0 : undefined}
-                  align={matchesSm ? "center" : undefined}
-                  mb={matchesSm ? 8 : 0}
-                >
-                  <Stack
-                    gap={0}
-                    align={matchesSm ? "center" : "flex-end"}
-                    mb={4}
-                  >
-                    <Text size="lg" fw={500}>
-                      {(85930).toLocaleString(locale)} TRY
-                    </Text>
-                    <Text size="xs" c="gray.7">
-                      vergi ve harçlar dahil
-                    </Text>
-                  </Stack>
-                  <Button radius="xl">Tekliflere Bak</Button>
-                </Parent>
               </Parent>
             </Tabs.List>
           </Tabs>
@@ -140,7 +202,7 @@ const HotelDetail = () => {
                   alt="hotel-1"
                   h={matchesSm ? 200 : 500}
                   radius="md"
-                  src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
+                  src={hotelDetails?.images[0].replace("{size}", "x500")}
                 />
               </Grid.Col>
               <Grid.Col
@@ -160,20 +222,42 @@ const HotelDetail = () => {
                     alt="hotel-1"
                     h={matchesSm ? 100 : 160}
                     radius="md"
-                    src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
+                    src={hotelDetails?.images[1].replace("{size}", "x500")}
                   />
                   <Image
                     alt="hotel-1"
                     h={matchesSm ? 100 : 160}
                     radius="md"
-                    src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
+                    src={hotelDetails?.images[2].replace("{size}", "x500")}
                   />
-                  <Image
-                    alt="hotel-1"
-                    h={matchesSm ? 100 : 160}
-                    radius="md"
-                    src="https://images.trvl-media.com/lodging/7000000/6250000/6248700/6248658/1e9c9eee.jpg?impolicy=resizecrop&rw=455&ra=fit"
-                  />
+                  <Box pos="relative">
+                    <Image
+                      alt="hotel-1"
+                      h={matchesSm ? 100 : 160}
+                      radius="md"
+                      src={hotelDetails?.images[3].replace("{size}", "x500")}
+                    />
+                    <Stack
+                      pos="absolute"
+                      top={0}
+                      left={0}
+                      w="100%"
+                      h="100%"
+                      bg="#00000088"
+                      style={{
+                        borderRadius: "var(--mantine-radius-md)",
+                        cursor: "pointer",
+                      }}
+                      justify="center"
+                      align="center"
+                    >
+                      <Text fw={500} c="white">
+                        {t("+X Images", {
+                          count: hotelDetails?.images.length - 3,
+                        })}
+                      </Text>
+                    </Stack>
+                  </Box>
                 </SimpleGrid>
               </Grid.Col>
               <Grid.Col
@@ -221,7 +305,7 @@ const HotelDetail = () => {
                   >
                     <Image
                       h="100%"
-                      src={`https://maps.googleapis.com/maps/api/staticmap?key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API}&center=36.8643,30.726517&size=400x400&zoom=13`}
+                      src={`https://maps.googleapis.com/maps/api/staticmap?key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API}&center=${hotelDetails?.latitude},${hotelDetails?.longitude}&size=400x400&zoom=13`}
                     />
                     <Stack
                       pos="absolute"
@@ -243,58 +327,96 @@ const HotelDetail = () => {
               </Grid.Col>
             </Grid>
 
-            <Rooms />
+            {groupRooms && hotelDetails?.room_groups && (
+              <Rooms
+                groupRooms={groupRooms}
+                rooms={hotelDetails?.room_groups}
+              />
+            )}
 
             <Stack>
-              <Stack gap={8}>
-                <Text size="lg" fw={500}>
-                  Konum
-                </Text>
-                <Text size="sm" c="gray.7">
-                  Barın ferah ortamında güzel bir akşam geçir. Lokantada, yerel
-                  mutfaktan seçme tatları dene ve dinlenmene bak. Kafede bir
-                  fincan kahvenin tadını çıkar; kim bilir, belki de senin için
-                  burası kentin en iyi kafesidir. Yakın çevrede, ücretsiz Wi-Fi
-                  bağlantısı mevcuttur. Giriş yaparken, ayrıntılı bilgi iste.
-                </Text>
-              </Stack>
-              <Stack gap={8}>
-                <Text size="lg" fw={500}>
-                  Odadaki malzemeler
-                </Text>
-                <Text size="sm" c="gray.7">
-                  Uzun bir günün ardından rahatlaman için, odada işte bu
-                  malzemeleri bulacaksın: Tv, mini bar ve bornoz mevcuttur.
-                  Lütfen, listede yer alan hizmetlerin, tüm odalarda mevcut
-                  olmayabileceği hususunu dikkate al.
-                </Text>
-              </Stack>
+              {hotelDetails?.description_struct.map(
+                (
+                  struct: {
+                    title: string;
+                    paragraphs: string[];
+                  },
+                  i: number
+                ) => (
+                  <Stack key={`struct-${i}`} gap={8}>
+                    <Text size="lg" fw={500}>
+                      {struct.title}
+                    </Text>
+                    {struct.paragraphs.map((paragraph: string, j: number) => (
+                      <Text key={`paragraph-${j}`} size="sm" c="gray.7">
+                        {paragraph}
+                      </Text>
+                    ))}
+                  </Stack>
+                )
+              )}
             </Stack>
 
             <Stack gap={8}>
               <Text size="lg" fw={500}>
                 Olanaklar
               </Text>
-              <SimpleGrid
-                cols={{
-                  base: 3,
-                  xs: 4,
-                  sm: 5,
-                  md: 8,
-                }}
-                spacing={8}
-              >
-                {facilities.map(({ icon: Icon, label }, i) => (
-                  <Paper key={`item-${i}`} withBorder p="xs">
-                    <Stack gap={4} align="center ">
-                      <Icon size={20} />
-                      <Text size="xs" fw={500} ta="center">
-                        {label}
+
+              <Box style={{ columnCount: 3, gap: 30 }}>
+                {hotelDetails?.amenity_groups.map(
+                  (
+                    group: {
+                      group_name: string;
+                      amenities: string[];
+                      non_free_amenities: string[];
+                    },
+                    i: number
+                  ) => (
+                    <Stack
+                      gap="xs"
+                      key={`group-${i}`}
+                      style={{ overflow: "hidden" }}
+                      mb={30}
+                    >
+                      <Text size="sm" fw={500}>
+                        {group.group_name}
                       </Text>
+
+                      <SimpleGrid cols={4} spacing={4}>
+                        {group.non_free_amenities?.map((e, j) => (
+                          <Tooltip key={`item-${j}`} label={t("Paid")}>
+                            <Paper
+                              withBorder
+                              p="xs"
+                              style={{
+                                borderColor: "var(--mantine-color-orange-3)",
+                              }}
+                              bg="orange.0"
+                            >
+                              <Stack gap={4} align="center ">
+                                <IconSwimming size={20} />
+                                <Text size="xs" fw={500} ta="center">
+                                  {e}
+                                </Text>
+                              </Stack>
+                            </Paper>
+                          </Tooltip>
+                        ))}
+                        {group.amenities?.map((e, j) => (
+                          <Paper key={`item-${j}`} withBorder p="xs">
+                            <Stack gap={4} align="center ">
+                              <IconSwimming size={20} />
+                              <Text size="xs" fw={500} ta="center">
+                                {e}
+                              </Text>
+                            </Stack>
+                          </Paper>
+                        ))}
+                      </SimpleGrid>
                     </Stack>
-                  </Paper>
-                ))}
-              </SimpleGrid>
+                  )
+                )}
+              </Box>
             </Stack>
           </Stack>
         </Stack>

@@ -105,9 +105,8 @@ const HotelListMap = () => {
         )}
       </Map>
 
-      {activeHotel && (
+      {/* {activeHotel && (
         <HotelListCard
-          id={activeHotel}
           onSelect={() => push("/hotel/detail/1")}
           onClose={() => setActiveHotel(null)}
           style={{
@@ -117,7 +116,7 @@ const HotelListMap = () => {
             transform: "translateX(-50%)"
           }}
         />
-      )}
+      )} */}
     </Stack>
   );
 };

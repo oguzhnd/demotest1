@@ -262,5 +262,13 @@
   "Enter the e-mail address or phone number you used during booking": "Rezervasyon esnasında kullandığınız e-posta adresinizi ya da telefon numaranızı girin",
   "Search": "Ara",
   "Hotel or City Name": "Otel veya Şehir Adı",
-  "Guest": "Misafir"
+  "Guest": "Misafir",
+  "Countries": "Ülkeler",
+  "Hotel Rating": "Otel Puanlaması",
+  "Hotel Themes": "Otel Temaları",
+  "Paid": "Ücretli",
+  "+X Images": "+{count} Resim",
+  "Cancellation Policy": "İptal Politikası",
+  "At a price of Y until date X": "{X} tarihine kadar {Y} bedeli ile",
+  "Make a reservation": "Rezervasyon yap"
 }

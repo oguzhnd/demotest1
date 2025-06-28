@@ -14,87 +14,102 @@ import HoursFilter from "./Elements/Hours";
 import PriceFilter from "@/components/Filter/Elements/Price";
 import SearchFilter from "@/components/Filter/Elements/Search";
 import FacilitiesAndFeatures from "./Elements/FacilitiesAndFeatures";
+import { useHotelStore } from "@/store/products/hotel";
+import { useForm } from "@mantine/form";
+
+export interface HotelListFiltersForm {
+  boardGroups: string[];
+  facilities: string[];
+  ratings: string[];
+  roomTypes: string[];
+  stars: string[];
+  themes: string[];
+}
 
 const HotelListFilters = () => {
   const t = useTranslations();
+
+  const { filterOpt, setHotelFilters } = useHotelStore();
+
+  const form = useForm<HotelListFiltersForm>({
+    initialValues: {
+      boardGroups: [],
+      facilities: [],
+      ratings: [],
+      roomTypes: [],
+      stars: [],
+      themes: [],
+    },
+
+    onValuesChange: (values) => {
+      setHotelFilters(values);
+    },
+  });
 
   return (
     <Stack gap={0}>
       <SearchFilter label={t("Hotel Name")} />
       <Divider />
-      <CheckboxFilter
-        label={t("Popular Filters")}
-        options={[
-          {
-            value: "Kahvaltı Dahil",
-            label: "Kahvaltı Dahil",
-          },
-          {
-            value: "Klima",
-            label: "Klima",
-          },
-          {
-            value: "Kablosuz İnternet",
-            label: "Kablosuz İnternet",
-          },
-          {
-            value: "Spor Salonu",
-            label: "Spor Salonu",
-          },
-        ]}
-      />
+      {filterOpt.boardGroups && (
+        <CheckboxFilter
+          label={t("Popular Filters")}
+          options={filterOpt.boardGroups.map((e: string) => ({
+            value: e,
+            label: e,
+          }))}
+          {...form.getInputProps("boardGroups")}
+        />
+      )}
       <Divider />
-      <CheckboxFilter
-        label={t("Meal Plans")}
-        options={[
-          {
-            value: "Kahvaltı dahil",
-            label: "Kahvaltı dahil",
-          },
-          {
-            value: "Akşam yemeği dahil",
-            label: "Akşam yemeği dahil",
-          },
-          {
-            value: "Öğle yemeği dahil",
-            label: "Öğle yemeği dahil",
-          },
-          {
-            value: "Her şey dahil",
-            label: "Her şey dahil",
-          },
-        ]}
-      />
+      {filterOpt.roomTypes && (
+        <CheckboxFilter
+          label={t("Room Types")}
+          options={filterOpt.roomTypes.map((e: string) => ({
+            value: e,
+            label: e,
+          }))}
+          {...form.getInputProps("roomTypes")}
+        />
+      )}
       <Divider />
-      <PriceFilter max={100} min={0} onChange={() => {}} />
+      {filterOpt.themes && (
+        <CheckboxFilter
+          label={t("Hotel Themes")}
+          options={filterOpt.themes.map((e: string) => ({
+            value: e,
+            label: e,
+          }))}
+          {...form.getInputProps("themes")}
+        />
+      )}
       <Divider />
-      <CheckboxFilter
-        label={t("Star Rating")}
-        options={[
-          {
-            value: "5 Yıldızlı",
-            label: "5 Yıldızlı",
-          },
-          {
-            value: "4 Yıldızlı",
-            label: "4 Yıldızlı",
-          },
-          {
-            value: "3 Yıldızlı",
-            label: "3 Yıldızlı",
-          },
-          {
-            value: "2 Yıldızlı",
-            label: "2 Yıldızlı",
-          },
-          {
-            value: "1 Yıldızlı",
-            label: "1 Yıldızlı",
-          },
-        ]}
-      />
+      <PriceFilter max={100} min={0} value={[0, 100]} onChange={() => {}} />
       <Divider />
-      <FacilitiesAndFeatures />
+      {filterOpt.stars && (
+        <CheckboxFilter
+          label={t("Star Rating")}
+          options={filterOpt.stars.map((e: number) => ({
+            value: e,
+            label: e,
+          }))}
+          {...form.getInputProps("stars")}
+        />
+      )}
+      <Divider />
+      {filterOpt.ratings && (
+        <CheckboxFilter
+          label={t("Hotel Rating")}
+          options={filterOpt.ratings.map((e: number) => ({
+            value: e,
+            label: e,
+          }))}
+          {...form.getInputProps("ratings")}
+        />
+      )}
+      <Divider />
+      {filterOpt.facilities && (
+        <FacilitiesAndFeatures {...form.getInputProps("facilities")} />
+      )}
     </Stack>
   );
 };

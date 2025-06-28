@@ -963,9 +963,6 @@ export interface FlightStore {
   flightList: FlightType[];
   setFlightList: (flights: FlightStore["flightList"]) => void;
 
-  flightSearch: FlightSearchFormProps;
-  setFlightSearch: (value: FlightStore["flightSearch"]) => void;
-
   filterOpt: Record<string, any>;
   setFilterOpt: (filterOpt: FlightStore["filterOpt"]) => void;
 
@@ -992,25 +989,6 @@ export const useFlightStore = create<FlightStore>((set) => ({
   setFlightList: (flightList) => {
     set({
       flightList,
-    });
-  },
-
-  flightSearch: {
-    type: "one-way",
-    dep: undefined,
-    arr: undefined,
-    departureDate: new Date(),
-    returnDate: null,
-    passengers: {
-      adult: 1,
-      child: 0,
-      baby: 0,
-    },
-    class: "economy",
-  },
-  setFlightSearch: (value) => {
-    set({
-      flightSearch: value,
     });
   },
 

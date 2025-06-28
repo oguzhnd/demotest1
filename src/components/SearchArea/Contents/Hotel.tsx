@@ -1,8 +1,8 @@
 import { useRouter } from "@/i18n/navigation";
 import { Button, Grid, Group, Stack, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
-import React, { FC, useCallback } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import classes from "../SearchArea.module.css";
 import AirportInput from "../Inputs/AirportInput";
 import { useForm } from "@mantine/form";
@@ -11,6 +11,12 @@ import CheckDatePicker from "../Inputs/CheckDatePicker";
 import RoomsAndGuestsInput from "../Inputs/RoomsAndGuests";
 import CountrySelect from "../Inputs/Country";
 import { useMediaQuery } from "@mantine/hooks";
+import { useSearchStore } from "@/store/search";
+import { convertDate } from "./Flight";
+import { useHotelStore } from "@/store/products/hotel";
+import { xiorInstance } from "@/utils/xior";
+import { useLoading } from "@/utils/hooks/useLoading";
+import { merge } from "lodash";
 
 export interface HotelSearchFormProps {
   hotel: SearchHotelType | undefined;
@@ -27,10 +33,17 @@ const HotelSearch: FC<{
   compact?: boolean;
 }> = ({ compact = false }) => {
   const t = useTranslations();
+  const locale = useLocale();
 
   const { push } = useRouter();
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
+
+  const [inputsLoading, setInputsLoading] = useState(true);
+  const [loading, startLoading, stopLoading] = useLoading();
+
+  const { hotelSearch, setSearch } = useSearchStore();
+  const { setBookingHotel } = useHotelStore();
 
   const form = useForm<HotelSearchFormProps>({
     initialValues: {
@@ -56,7 +69,55 @@ const HotelSearch: FC<{
     },
   });
 
-  const handleSubmit = useCallback(() => {}, []);
+  const handleSubmit = useCallback(
+    async (values: HotelSearchFormProps) => {
+      startLoading();
+      try {
+        console.log(values);
+
+        setSearch("hotelSearch", values);
+
+        if (values.hotel?.type === "City") {
+          push("/hotel/list");
+        } else if (values.hotel?.type === "Hotel") {
+          const val = {
+            product: "1",
+            hotel: values.hotel.id,
+            name: values.hotel?.name,
+            checkIn: convertDate(values.checkIn),
+            checkOut: convertDate(values.checkOut),
+            rooms: hotelSearch.rooms.map((e) =>
+              merge(
+                { adult: `${e.adult}` },
+                e.child > 0 ? { child: `${e.child}` } : {}
+              )
+            ),
+            language: locale,
+          };
+
+          const res = await xiorInstance.post("/searchHotel", val);
+
+          console.log(res);
+
+          // setBookingHotel(res.hotelData[0])
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        stopLoading();
+      }
+    },
+    [xiorInstance]
+  );
+
+  const updateSearchForm = useCallback(() => {
+    form.setValues(hotelSearch);
+    setInputsLoading(false);
+  }, [hotelSearch]);
+
+  useEffect(() => {
+    updateSearchForm();
+  }, [hotelSearch]);
 
   const Parent = matchesSm ? Stack : compact ? Group : Stack;
 
@@ -90,6 +151,7 @@ const HotelSearch: FC<{
                 compact={compact}
                 label="City, Hotel name or Location"
                 form={form}
+                disabled={inputsLoading}
               />
             </Grid.Col>
             <Grid.Col
@@ -106,6 +168,7 @@ const HotelSearch: FC<{
                   form.setFieldValue("checkIn", dates[0]);
                   form.setFieldValue("checkOut", dates[1]);
                 }}
+                disabled={inputsLoading}
               />
             </Grid.Col>
             <Grid.Col
@@ -114,7 +177,11 @@ const HotelSearch: FC<{
                 sm: 2,
               }}
             >
-              <RoomsAndGuestsInput compact={compact} form={form} />
+              <RoomsAndGuestsInput
+                compact={compact}
+                form={form}
+                disabled={inputsLoading}
+              />
             </Grid.Col>
             <Grid.Col
               span={{
@@ -122,7 +189,11 @@ const HotelSearch: FC<{
                 sm: 2,
               }}
             >
-              <CountrySelect compact={compact} label="Country" />
+              <CountrySelect
+                compact={compact}
+                label="Country"
+                disabled={inputsLoading}
+              />
             </Grid.Col>
           </Grid>
         </Stack>
@@ -134,13 +205,13 @@ const HotelSearch: FC<{
             bottom={compact ? undefined : -40}
           >
             <Button
+              loading={loading}
               type="submit"
               size="compact-lg"
               px="xl"
               h={40}
               radius="xl"
               style={{ flexShrink: 0 }}
-              onClick={() => push("/hotel/list")}
             >
               {t("Search Hotel")}
             </Button>

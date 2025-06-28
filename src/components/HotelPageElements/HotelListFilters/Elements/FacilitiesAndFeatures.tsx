@@ -23,9 +23,10 @@ import {
   IconWindow,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
 import classes from "../../Hotel.module.css";
+import { useHotelStore } from "@/store/products/hotel";
 
 export const facilities = [
   {
@@ -110,37 +111,41 @@ export const facilities = [
   },
 ];
 
-const FacilitiesAndFeatures = () => {
+const FacilitiesAndFeatures: FC<{
+  value?: string[];
+  onChange: (value: string[]) => void;
+}> = ({ value, onChange }) => {
   const t = useTranslations();
 
-  const [value, setValue] = useState<number[]>([]);
+  const { filterOpt, setHotelFilters } = useHotelStore();
 
   return (
     <FilterWrapper label={t("Facilities & Features")}>
       <SimpleGrid cols={2} spacing={4}>
-        {facilities.map(({ icon: Icon, label }, i) => (
-          <Paper
-            key={`item-${i}`}
-            withBorder
-            p="xs"
-            className={classes.featureCard}
-            data-active={value.includes(i)}
-            onClick={() =>
-              setValue((value) =>
-                value.includes(i)
-                  ? value.filter((e) => e !== i)
-                  : value.concat(i)
-              )
-            }
-          >
-            <Stack gap={4} align="center ">
-              <Icon size={20} />
-              <Text size="xs" fw={500} ta="center">
-                {label}
-              </Text>
-            </Stack>
-          </Paper>
-        ))}
+        {value &&
+          filterOpt.facilities.map((label: string, i: number) => (
+            <Paper
+              key={`item-${i}`}
+              withBorder
+              p="xs"
+              className={classes.featureCard}
+              data-active={value?.includes(label)}
+              onClick={() =>
+                onChange(
+                  value.includes(label)
+                    ? value.filter((e) => e !== label)
+                    : value.concat(label)
+                )
+              }
+            >
+              <Stack gap={4} align="center ">
+                <IconGlassFull size={20} />
+                <Text size="xs" fw={500} ta="center">
+                  {label}
+                </Text>
+              </Stack>
+            </Paper>
+          ))}
       </SimpleGrid>
     </FilterWrapper>
   );

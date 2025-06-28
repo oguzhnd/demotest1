@@ -25,6 +25,7 @@ const CheckDatePicker: FC<{
   checkIn: Date | null;
   checkOut: Date | null;
   onChange: (dates: [Date | null, Date | null]) => void;
+  disabled?: boolean;
 }> = ({ compact = false, checkIn, checkOut, onChange }) => {
   const t = useTranslations();
   const locale = useLocale();
@@ -60,7 +61,7 @@ const CheckDatePicker: FC<{
               </Text>
               {!compact && (
                 <Text size="xl" fw={700}>
-                  {checkIn?.toLocaleDateString(locale, {
+                  {getValidDate(checkIn)?.toLocaleDateString(locale, {
                     day: "2-digit",
                     month: "short",
                     year: "2-digit",
@@ -69,12 +70,12 @@ const CheckDatePicker: FC<{
               )}
               <Text size="sm" c={compact ? "white" : "gray.7"}>
                 {compact
-                  ? checkIn?.toLocaleDateString(locale, {
+                  ? getValidDate(checkIn)?.toLocaleDateString(locale, {
                       day: "2-digit",
                       month: "short",
                       year: "2-digit",
                     })
-                  : checkIn?.toLocaleDateString(locale, {
+                  : getValidDate(checkIn)?.toLocaleDateString(locale, {
                       weekday: "long",
                     })}
               </Text>
@@ -108,7 +109,7 @@ const CheckDatePicker: FC<{
               </Text>
               {!compact && (
                 <Text size="xl" fw={700}>
-                  {checkOut?.toLocaleDateString(locale, {
+                  {getValidDate(checkOut)?.toLocaleDateString(locale, {
                     day: "2-digit",
                     month: "short",
                     year: "2-digit",
@@ -118,12 +119,12 @@ const CheckDatePicker: FC<{
 
               <Text size="sm" c={compact ? "white" : "gray.7"}>
                 {compact
-                  ? checkOut?.toLocaleDateString(locale, {
+                  ? getValidDate(checkOut)?.toLocaleDateString(locale, {
                       day: "2-digit",
                       month: "short",
                       year: "2-digit",
                     })
-                  : checkOut?.toLocaleDateString(locale, {
+                  : getValidDate(checkOut)?.toLocaleDateString(locale, {
                       weekday: "long",
                     })}
               </Text>
