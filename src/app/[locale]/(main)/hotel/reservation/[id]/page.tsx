@@ -8,6 +8,7 @@ import ReservationInformations from "@/components/HotelPageElements/_Booking/Res
 import RoomGuestInformations from "@/components/HotelPageElements/_Booking/RoomGuestInformations";
 import SpecialRequests from "@/components/HotelPageElements/_Booking/SpecialRequests";
 import { useRouter } from "@/i18n/navigation";
+import { useHotelStore } from "@/store/products/hotel";
 import { Checkbox, Container, Grid, Paper, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useTranslations } from "next-intl";
@@ -17,6 +18,8 @@ const HotelReservation = () => {
   const t = useTranslations();
 
   const { push } = useRouter();
+
+  const { bookingHotel, bookingOffer } = useHotelStore()
 
   const matchesMd = useMediaQuery("(max-width: 62em)")
 

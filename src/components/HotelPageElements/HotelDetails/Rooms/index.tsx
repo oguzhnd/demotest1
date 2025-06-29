@@ -78,13 +78,12 @@ export interface RoomDetailType {
 const Rooms: FC<{
   groupRooms: Record<string, RoomDetailType[]>;
   rooms: any[];
-}> = ({ groupRooms, rooms }) => {
+  handleRoomSelect: (room: RoomDetailType) => void;
+}> = ({ groupRooms, rooms, handleRoomSelect }) => {
   const t = useTranslations();
   const locale = useLocale();
 
   const { push } = useRouter();
-
-  console.log(rooms);
 
   return (
     <Group w="100%">
@@ -216,9 +215,12 @@ const Rooms: FC<{
                   <Stack>
                     {rooms.map((room, j) => {
                       return (
-                        <>
-                          <Room room={room.rooms[0]} details={room} />
-                        </>
+                        <Room
+                          key={`room-${j}`}
+                          room={room.rooms[0]}
+                          details={room}
+                          onSelect={() => handleRoomSelect(room)}
+                        />
                       );
                     })}
                   </Stack>

@@ -270,5 +270,7 @@
   "+X Images": "+{count} Images",
   "Cancellation Policy": "Cancellation Policy",
   "At a price of Y until date X": "At a price of {Y} until date {X}",
-  "Make a reservation": "Make a reservation"
+  "Make a reservation": "Make a reservation",
+  "X years old": "{X} years old",
+  "Children Ages": "Children Ages"
 }

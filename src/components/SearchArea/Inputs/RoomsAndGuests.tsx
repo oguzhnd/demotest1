@@ -7,6 +7,8 @@ import {
   Divider,
   Group,
   Popover,
+  Select,
+  SimpleGrid,
   Stack,
   Text,
   TextInput,
@@ -20,7 +22,7 @@ import classes from "../SearchArea.module.css";
 import { useMediaQuery } from "@mantine/hooks";
 import { UseFormReturnType } from "@mantine/form";
 import { HotelSearchFormProps } from "../Contents/Hotel";
-import { cloneDeep, concat, sum } from "lodash";
+import { cloneDeep, concat, merge, sum } from "lodash";
 
 const RoomsAndGuestsInput: FC<{
   compact?: boolean;
@@ -34,7 +36,7 @@ const RoomsAndGuestsInput: FC<{
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
   const totalGuest = useMemo(() => {
-    return sum(form.getValues().rooms.map((e) => e.adult + e.child));
+    return sum(form.getValues().rooms.map((e) => e.adult + e.child.length));
   }, [form.getValues().rooms]);
 
   const deleteRoom = useCallback((roomIndex: number) => {
@@ -136,11 +138,17 @@ const RoomsAndGuestsInput: FC<{
                               <ActionIcon
                                 key={`btn-${i}`}
                                 variant={
-                                  i === room.child ? "filled" : "default"
+                                  i === room.child.length ? "filled" : "default"
                                 }
                                 size="md"
                                 onClick={() =>
-                                  form.setFieldValue(`rooms.${j}.child`, i)
+                                  form.setFieldValue(
+                                    `rooms.${j}.child`,
+                                    merge(
+                                      Array(i).fill(0),
+                                      form.getValues().rooms[j].child
+                                    ).slice(0, i)
+                                  )
                                 }
                               >
                                 <Text size="xs">{i}</Text>
@@ -152,6 +160,31 @@ const RoomsAndGuestsInput: FC<{
                         </ActionIcon>
                       </Group>
                     </Stack>
+                    {form.getValues().rooms[j].child.length > 0 && (
+                      <Stack gap={4}>
+                        <Text size="sm">{t("Children Ages")}</Text>
+                        <SimpleGrid maw={300} cols={2} spacing={8}>
+                          {form
+                            .getValues()
+                            .rooms[j].child.map((childAge, i) => (
+                              <Select
+                                key={`age-${i}`}
+                                value={`${childAge}`}
+                                data={Array(15)
+                                  .fill("")
+                                  .map((_, k) => ({
+                                    value: `${k}`,
+                                    label: t("X years old", { X: k }),
+                                  }))}
+                                onChange={(v) =>
+                                  form.setFieldValue(`rooms.${j}.child.${i}`, +(v || 0))
+                                }
+                                comboboxProps={{ withinPortal: false }}
+                              />
+                            ))}
+                        </SimpleGrid>
+                      </Stack>
+                    )}
                   </Stack>
                 </Accordion.Panel>
               </Accordion.Item>
@@ -163,7 +196,7 @@ const RoomsAndGuestsInput: FC<{
               size="xs"
               onClick={() => {
                 form.setFieldValue("rooms", (v) =>
-                  concat(v, { adult: 1, child: 0 })
+                  concat(v, { adult: 1, child: [] })
                 );
               }}
             >

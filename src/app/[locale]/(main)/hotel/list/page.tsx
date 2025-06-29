@@ -34,35 +34,35 @@ import { useCallback, useEffect, useState } from "react";
 
 const filterHotelData = (hotel: HotelType, filters: HotelListFiltersForm) => {
   if (filters.boardGroups.length > 0) {
-    let result = true
-    const boardGroups = hotel.hotelBoardGroups.split(",")
+    let result = true;
+    const boardGroups = hotel.hotelBoardGroups.split(",");
 
     boardGroups.map((boardGroup) => {
-      if(boardGroup !== "" && !filters.boardGroups.includes(boardGroup)) {
-        result = false
+      if (boardGroup !== "" && !filters.boardGroups.includes(boardGroup)) {
+        result = false;
       }
-    })
+    });
 
-    return result
+    return result;
   }
-  
+
   if (filters.stars.length > 0) {
-    if(!filters.stars.includes(`${hotel.stars}`)) {
-      return false
+    if (!filters.stars.includes(`${hotel.stars}`)) {
+      return false;
     }
   }
 
   if (filters.facilities.length > 0) {
-    let result = true
-    const facilities = hotel.hotelfreeamenities.split(",")
+    let result = true;
+    const facilities = hotel.hotelfreeamenities.split(",");
 
     facilities.map((facility) => {
-      if(!filters.facilities.includes(facility)) {
-        result = false
+      if (!filters.facilities.includes(facility)) {
+        result = false;
       }
-    })
+    });
 
-    return result
+    return result;
   }
 
   return true;
@@ -93,9 +93,9 @@ const HotelList = () => {
 
   const setCurrentHotelList = useCallback(() => {
     let list = filter(hotelList, (e) => filterHotelData(e, hotelFilters));
-    
-    console.log(hotelFilters)
-    console.log(list)
+
+    console.log(hotelFilters);
+    console.log(list);
 
     hotelListHandlers.setState(list);
     stopLoading();
@@ -116,12 +116,10 @@ const HotelList = () => {
         name: hotelSearch.hotel?.name,
         checkIn: convertDate(hotelSearch.checkIn),
         checkOut: convertDate(hotelSearch.checkOut),
-        rooms: hotelSearch.rooms.map((e) =>
-          merge(
-            { adult: `${e.adult}` },
-            e.child > 0 ? { child: `${e.child}` } : {}
-          )
-        ),
+        rooms: hotelSearch.rooms.map((e) => ({
+          adult: `${e.adult}`,
+          child: e.child,
+        })),
         language: locale,
       });
 

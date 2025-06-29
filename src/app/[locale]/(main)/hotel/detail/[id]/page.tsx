@@ -9,7 +9,7 @@ import SearchArea from "@/components/SearchArea";
 import { convertDate } from "@/components/SearchArea/Contents/Flight";
 import { useRouter } from "@/i18n/navigation";
 import { useModalManager } from "@/store/managers/modal";
-import { HotelType } from "@/store/products/hotel";
+import { HotelType, useHotelStore } from "@/store/products/hotel";
 import { useSearchStore } from "@/store/search";
 import { useLoading } from "@/utils/hooks/useLoading";
 import { xiorInstance } from "@/utils/xior";
@@ -53,6 +53,7 @@ const HotelDetail = () => {
   const { push } = useRouter();
 
   const { hotelSearch } = useSearchStore();
+  const { setBookingHotel, setBookingOffer, setBookingRoom } = useHotelStore();
 
   const { openModal } = useModalManager();
 
@@ -62,6 +63,8 @@ const HotelDetail = () => {
     Record<string, RoomDetailType[]> | undefined
   >(undefined);
   const [hotelDetails, setHotelDetails] = useState<any | undefined>(undefined);
+
+  const [searchId, setSearchId] = useState<string | undefined>("");
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
@@ -88,16 +91,16 @@ const HotelDetail = () => {
         name: resDetails.data.result.name,
         checkIn: convertDate(hotelSearch.checkIn),
         checkOut: convertDate(hotelSearch.checkOut),
-        rooms: hotelSearch.rooms.map((e) =>
-          merge(
-            { adult: `${e.adult}` },
-            e.child > 0 ? { child: `${e.child}` } : {}
-          )
-        ),
+        rooms: hotelSearch.rooms.map((e) => ({
+          adult: `${e.adult}`,
+          child: e.child,
+        })),
         language: locale,
       });
 
       console.log(res);
+
+      setSearchId(res.data.searchId);
 
       setGroupRooms(res.data.groupRooms);
       setHotel(res.data.hotelData[0]);
@@ -108,6 +111,35 @@ const HotelDetail = () => {
     }
   }, [loading, xiorInstance, params.id, hotelSearch]);
 
+  const handleRoomSelect = useCallback(
+    async (room: RoomDetailType) => {
+      startLoading();
+
+      try {
+        const res = await xiorInstance.post("/getOfferDetail", {
+          tempId: hotel?.hotelID,
+          searchId: searchId,
+          roomId: room.roomId,
+        });
+
+        console.log(res);
+
+        if (res.data.error === false) {
+          setBookingHotel(res.data.hotelDetail);
+          setBookingOffer(res.data.offers[0]);
+          setBookingRoom(room);
+
+          push(`/hotel/reservation/${res.data.offers[0].offerId}`);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        stopLoading();
+      }
+    },
+    [hotel, searchId]
+  );
+
   useEffect(() => {
     getHotelDetails();
   }, [params.id]);
@@ -115,7 +147,7 @@ const HotelDetail = () => {
   const Parent = matchesSm ? Stack : Group;
 
   return (
-    <Stack>
+    <Stack pos="relative">
       <LoadingOverlay visible={loading} />
 
       <HotelMapDetail />
@@ -331,6 +363,7 @@ const HotelDetail = () => {
               <Rooms
                 groupRooms={groupRooms}
                 rooms={hotelDetails?.room_groups}
+                handleRoomSelect={(room) => handleRoomSelect(room)}
               />
             )}
 

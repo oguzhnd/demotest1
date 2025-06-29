@@ -270,5 +270,7 @@
   "+X Images": "+{count} Resim",
   "Cancellation Policy": "İptal Politikası",
   "At a price of Y until date X": "{X} tarihine kadar {Y} bedeli ile",
-  "Make a reservation": "Rezervasyon yap"
+  "Make a reservation": "Rezervasyon yap",
+  "X years old": "{X} yaşında",
+  "Children Ages": "Çocuk Yaşları"
 }

@@ -24,7 +24,7 @@ export interface HotelSearchFormProps {
   checkOut: Date | null;
   rooms: {
     adult: number;
-    child: number;
+    child: number[];
   }[];
   country: string;
 }
@@ -62,7 +62,7 @@ const HotelSearch: FC<{
       rooms: [
         {
           adult: 1,
-          child: 0,
+          child: [0],
         },
       ],
       country: "TR",
@@ -86,12 +86,10 @@ const HotelSearch: FC<{
             name: values.hotel?.name,
             checkIn: convertDate(values.checkIn),
             checkOut: convertDate(values.checkOut),
-            rooms: hotelSearch.rooms.map((e) =>
-              merge(
-                { adult: `${e.adult}` },
-                e.child > 0 ? { child: `${e.child}` } : {}
-              )
-            ),
+            rooms: hotelSearch.rooms.map((e) => ({
+              adult: `${e.adult}`,
+              child: e.child,
+            })),
             language: locale,
           };
 

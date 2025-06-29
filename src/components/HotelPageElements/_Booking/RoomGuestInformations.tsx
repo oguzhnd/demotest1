@@ -1,3 +1,4 @@
+import { useHotelStore } from "@/store/products/hotel";
 import {
   Badge,
   Button,
@@ -24,18 +25,15 @@ import { IMaskInput } from "react-imask";
 const RoomGuestInformations = () => {
   const t = useTranslations();
 
+  const { bookingHotel, bookingOffer, bookingRoom } = useHotelStore();
+
   return (
     <Paper withBorder p="md">
       <Group wrap="nowrap" align="flex-start">
-        <Image
-          w={200}
-          h={120}
-          radius="md"
-          src="https://imgkit.otelz.com/turkey/antalya/kas/villatamarahotel9f8342a6.jpg?tr=w-240,h-120,fo-auto,q-80"
-        />
+        <Image w={200} h={120} radius="md" src={bookingRoom} />
         <Stack mih={120} w="100%" gap={4}>
           <Text size="sm" fw={600} c="blue">
-            İnfinity Oda - Deniz Manzaralı 45m2
+            {bookingRoom?.roomName}
           </Text>
           <Group gap="xs">
             <Group gap={4}>
@@ -43,7 +41,7 @@ const RoomGuestInformations = () => {
                 Konuk Sayısı:
               </Text>
               <Text size="xs" c="gray.7">
-                2 Yetişkin
+                {bookingRoom?.travellers.length}
               </Text>
             </Group>
             <Group gap={4}>
@@ -75,23 +73,33 @@ const RoomGuestInformations = () => {
           </HoverCard>
           <Divider />
           <Stack gap={4}>
-            <Text size="xs" fw={500}>Bu odadaki konuklar</Text>
-            <Group gap={4}>
-              <Text size="xs" fw={500} c="gray.7" w={70}>{t("Adult")}</Text>
-              <TextInput placeholder={t("Name")} />
-              <TextInput placeholder={t("Surname")} />
-            </Group>
-            <Group gap={4}>
-              <Text size="xs" fw={500} c="gray.7" w={70}>{t("Adult")}</Text>
-              <TextInput placeholder={t("Name")} />
-              <TextInput placeholder={t("Surname")} />
-            </Group>
-            <Group gap={4}>
-              <Text size="xs" fw={500} c="gray.7" w={70}>{t("Child")}</Text>
-              <TextInput placeholder={t("Name")} />
-              <TextInput placeholder={t("Surname")} />
-              <DatePickerInput placeholder={t("Birth Date")} />
-            </Group>
+            <Text size="xs" fw={500}>
+              Bu odadaki konuklar
+            </Text>
+            {bookingRoom?.travellers.map((traveller, i) => {
+              if (traveller.type === 1) {
+                return (
+                  <Group key={`traveller-${i}`} gap={4}>
+                    <Text size="xs" fw={500} c="gray.7" w={70}>
+                      {t("Adult")}
+                    </Text>
+                    <TextInput placeholder={t("Name")} />
+                    <TextInput placeholder={t("Surname")} />
+                  </Group>
+                );
+              } else if (traveller.type === 2) {
+                return (
+                  <Group key={`traveller-${i}`} gap={4}>
+                    <Text size="xs" fw={500} c="gray.7" w={70}>
+                      {t("Child")}
+                    </Text>
+                    <TextInput placeholder={t("Name")} />
+                    <TextInput placeholder={t("Surname")} />
+                    <DatePickerInput placeholder={t("Birth Date")} />
+                  </Group>
+                );
+              }
+            })}
           </Stack>
         </Stack>
       </Group>

@@ -37,7 +37,7 @@ export const useSearchStore = create(
         rooms: [
           {
             adult: 1,
-            child: 0,
+            child: [],
           },
         ],
         country: "TR",

@@ -21,7 +21,8 @@ const Room: FC<{
     boardName: "Ultra All Inclusive";
   };
   details: RoomDetailType;
-}> = ({ details, room }) => {
+  onSelect: () => void
+}> = ({ details, room, onSelect }) => {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -198,7 +199,7 @@ const Room: FC<{
             </Text>
             {details.currency}
           </Group>
-          <Button mt={8} onClick={() => push("/hotel/reservation/1")}>
+          <Button mt={8} onClick={() => onSelect()}>
             {t("Make a reservation")}
           </Button>
         </Stack>
