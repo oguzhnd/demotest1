@@ -8,8 +8,11 @@ import ExtraProducts from "@/components/RentalPageElements/_Booking/ExtraProduct
 import PriceDetails from "@/components/RentalPageElements/_Booking/PriceDetails";
 import RentalDetails from "@/components/RentalPageElements/_Booking/RentalDetails";
 import { useRouter } from "@/i18n/navigation";
+import { useRentalStore } from "@/store/products/rental";
+import { useSearchStore } from "@/store/search";
+import { xiorInstance } from "@/utils/xior";
 import { Container, Grid, Paper, Stack } from "@mantine/core";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 
 const FlightReservation = () => {
   const { push } = useRouter();

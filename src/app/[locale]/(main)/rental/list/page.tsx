@@ -5,6 +5,7 @@ import RentalListFilters, {
   RentalListFiltersForm,
 } from "@/components/RentalPageElements/RentalListFilters";
 import RentalLoading from "@/components/RentalPageElements/RentalLoading";
+import RentalNotFound from "@/components/RentalPageElements/RentalNotFound";
 import SearchArea from "@/components/SearchArea";
 import { convertDate } from "@/components/SearchArea/Contents/Flight";
 import { useRouter } from "@/i18n/navigation";
@@ -23,7 +24,7 @@ import {
   ScrollArea,
   Stack,
 } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
+import { useInViewport, useListState } from "@mantine/hooks";
 import { IconFilter } from "@tabler/icons-react";
 import { filter } from "lodash";
 import { useLocale, useTranslations } from "next-intl";
@@ -52,13 +53,13 @@ const filterFlightData = (
   }
 
   if (filters.brand.length > 0) {
-    if (!filters.brand.includes(rental.carDetail[0].brand)) {
+    if (!filters.brand.includes(rental.carDetail[0].brand.toLowerCase())) {
       return false;
     }
   }
 
   if (filters.model.length > 0) {
-    if (!filters.model.includes(rental.carDetail[0].model)) {
+    if (!filters.model.includes(rental.carDetail[0].model.toLowerCase())) {
       return false;
     }
   }
@@ -107,10 +108,22 @@ const RentalList = () => {
   const [searchId, setSearchId] = useState<string | undefined>(undefined);
   const [tempId, setTempId] = useState<string | undefined>(undefined);
 
+  const { ref, inViewport } = useInViewport();
+  const [limit, setLimit] = useState(20);
+  const [page, setPage] = useState(1);
+  const [isMore, setIsMore] = useState(true);
+
+  useEffect(() => {
+    if (inViewport) {
+      setPage((p) => p + 1);
+      setIsMore(currentRentalList.length > limit * (page + 1));
+    }
+  }, [inViewport]);
+
   const setCurrentFlightList = useCallback(() => {
     let list = filter(rentalList, (e) => filterFlightData(e, rentalFilters));
 
-    console.log(list);
+    setIsMore(list.length > limit);
 
     rentalListHandlers.setState(list);
     stopLoading();
@@ -167,7 +180,6 @@ const RentalList = () => {
   return (
     <Stack>
       <SearchArea type="rental" />
-      {loading && <RentalLoading />}
 
       <Drawer
         opened={opened}
@@ -205,15 +217,26 @@ const RentalList = () => {
                   </Button>
                 </Group>
               </ScrollArea>
-              {currentRentalList.map((rental, i) => (
-                <RentalListCard
-                  key={`rental-${i}`}
-                  rental={rental}
-                  onSelect={() => {
-                    handleSelectRental(rental);
-                  }}
-                />
-              ))}
+
+              {loading
+                ? Array(4)
+                    .fill("")
+                    .map((_, i) => <RentalLoading key={`loading-${i}`} />)
+                : currentRentalList.map((rental, i) => (
+                    <RentalListCard
+                      key={`rental-${i}`}
+                      rental={rental}
+                      onSelect={() => {
+                        handleSelectRental(rental);
+                      }}
+                    />
+                  ))}
+
+              {!loading && isMore && currentRentalList.length > 1 && (
+                <RentalLoading ref={ref} />
+              )}
+
+              {currentRentalList.length === 0 && !loading && <RentalNotFound />}
             </Stack>
           </Grid.Col>
         </Grid>

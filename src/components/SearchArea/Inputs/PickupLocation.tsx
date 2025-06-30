@@ -3,7 +3,9 @@
 import {
   Divider,
   Group,
+  LoadingOverlay,
   Popover,
+  ScrollArea,
   Stack,
   Text,
   TextInput,
@@ -19,15 +21,19 @@ import { RentalSearchForm } from "../Contents/Rental";
 import { useLoading } from "@/utils/hooks/useLoading";
 import { xiorInstance } from "@/utils/xior";
 import { locale } from "dayjs";
+import { isArray, pick } from "lodash";
 
 interface PickupLocationType {
   name: string;
+  city: string;
+  country: string;
   id: string;
+  onClick?: () => void;
 }
 
-const LocationOption: FC<PickupLocationType> = ({ name }) => {
+const LocationOption: FC<PickupLocationType> = ({ name, onClick }) => {
   return (
-    <Stack gap={0} p={8} className={classes.airportOption}>
+    <Stack gap={0} p={8} className={classes.airportOption} onClick={onClick}>
       <Group justify="space-between">
         <Text size="sm" fw={500}>
           {name}
@@ -56,13 +62,14 @@ const PickupLocation: FC<{
     try {
       startLoading();
 
-      const res = await xiorInstance.post("/autocomplete", {
-        Product: "1",
-        Query: searchValue,
+      const res = await xiorInstance.post("/autocompleteRental", {
+        term: searchValue,
         Language: locale,
       });
 
-      listHandlers.setState(res.data);
+      console.log(res)
+
+      listHandlers.setState(isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -101,30 +108,36 @@ const PickupLocation: FC<{
             </Text>
           )}
           <Text size="sm" c={compact ? "white" : "gray.7"}>
-            Antalya
+            {value?.name}
           </Text>
         </Stack>
       </Popover.Target>
       <Popover.Dropdown p={0}>
-        <Stack gap={0}>
-          <TextInput
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.currentTarget.value)}
-            leftSection={<IconSearch size={16} />}
-            placeholder={t(label)}
-            styles={{ input: { border: "none" } }}
-          />
-          <Divider />
-
+        <ScrollArea h={400}>
           <Stack gap={0}>
-            <Text size="xs" c="gray.7" p={8}>
-              {t("Popular Cities")}
-            </Text>
-            {list.map((location, i) => (
-              <LocationOption key={`location-${i}`} {...location} />
-            ))}
+            <TextInput
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.currentTarget.value)}
+              leftSection={<IconSearch size={16} />}
+              placeholder={t(label)}
+              styles={{ input: { border: "none" } }}
+            />
+            <Divider />
+
+            <Stack gap={0}>
+              <LoadingOverlay h={400} visible={loading} />
+              {list.map((location, i) => (
+                <LocationOption
+                  key={`location-${i}`}
+                  {...location}
+                  onClick={() => {
+                    onChange(pick(location, ["id", "city", "country", "name"]));
+                  }}
+                />
+              ))}
+            </Stack>
           </Stack>
-        </Stack>
+        </ScrollArea>
       </Popover.Dropdown>
     </Popover>
   );

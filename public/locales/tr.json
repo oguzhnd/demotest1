@@ -275,5 +275,18 @@
   "Children Ages": "Çocuk Yaşları",
   "Total Range Limit": "Toplam Kilometre Limiti",
   "Daily Price": "Günlük Fiyat",
-  "Total": "Toplam"
+  "Total": "Toplam",
+  "Hotel Not Found": "Otel Bulunamadı",
+  "Flight Not Found": "Uçuş Bulunamadı",
+  "Rental Not Found": "Kiralık Araç Bulunamadı",
+  "babySeat": "Bebek Koltuğu",
+  "damageInsurance": "Hasar Sigortası",
+  "wifiModem": "Wifi Modem",
+  "winterTires": "Kışlık Lastikler",
+  "extraRange": "Ekstra Menzil",
+  "automatic": "Otomatik",
+  "manual": "Manuel",
+  "diesel": "Dizel",
+  "gas": "Gaz",
+  "fromOffice": "Ofisten"
 }

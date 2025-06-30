@@ -5,6 +5,7 @@ import FlightListFilters, {
   FlightListFiltersForm,
 } from "@/components/FlightPageElements/FlightListFilters";
 import FlightLoading from "@/components/FlightPageElements/FlightLoading";
+import FlightNotFound from "@/components/FlightPageElements/FlightNotFound";
 import ReservationNotice from "@/components/FlightPageElements/ReservationNotice";
 import SearchArea from "@/components/SearchArea";
 import { convertDate } from "@/components/SearchArea/Contents/Flight";
@@ -26,7 +27,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
+import { useInViewport, useListState } from "@mantine/hooks";
 import { IconChevronRight, IconFilter, IconX } from "@tabler/icons-react";
 import { filter, isDate } from "lodash";
 import { useTranslations } from "next-intl";
@@ -141,6 +142,18 @@ const FlightList = () => {
   const [currentFlightList, flightListHandlers] = useListState<FlightType>([]);
   const [departureSelected, setDepartureSelected] = useState(false);
 
+  const { ref, inViewport } = useInViewport();
+  const [limit, setLimit] = useState(20);
+  const [page, setPage] = useState(1);
+  const [isMore, setIsMore] = useState(true);
+
+  useEffect(() => {
+    if (inViewport) {
+      setPage((p) => p + 1);
+      setIsMore(currentFlightList.length > limit * (page + 1));
+    }
+  }, [inViewport]);
+
   const setCurrentFlightList = useCallback(() => {
     let list = flightList.filter((e) => {
       return flightSearch.type === "one-way"
@@ -151,6 +164,7 @@ const FlightList = () => {
     });
 
     list = filter(list, (e) => filterFlightData(e, flightFilters));
+    setIsMore(list.length > limit);
 
     flightListHandlers.setState(list);
     stopLoading();
@@ -160,6 +174,7 @@ const FlightList = () => {
     flightSearch,
     flightSearch.type,
     departureSelected,
+    limit,
   ]);
 
   useEffect(() => {
@@ -235,7 +250,6 @@ const FlightList = () => {
     <Stack>
       <Stack gap={0}>
         <SearchArea type="flight" />
-        {loading && <FlightLoading />}
       </Stack>
 
       <Drawer
@@ -331,13 +345,27 @@ const FlightList = () => {
                   </Group>
                 </Group>
               )}
-              {currentFlightList.map((flight, i) => (
-                <FlightListCard
-                  flight={flight}
-                  key={`flight-${i}`}
-                  onSelect={(pkgIndex) => handleSelectFlight(flight, pkgIndex)}
-                />
-              ))}
+              {loading
+                ? Array(4)
+                    .fill("")
+                    .map((_, i) => <FlightLoading key={`loading-${i}`} />)
+                : currentFlightList
+                    .slice(0, limit * page)
+                    .map((flight, i) => (
+                      <FlightListCard
+                        flight={flight}
+                        key={`flight-${i}`}
+                        onSelect={(pkgIndex) =>
+                          handleSelectFlight(flight, pkgIndex)
+                        }
+                      />
+                    ))}
+
+              {!loading && isMore && currentFlightList.length > 1 && (
+                <FlightLoading ref={ref} />
+              )}
+
+              {currentFlightList.length === 0 && !loading && <FlightNotFound />}
             </Stack>
           </Grid.Col>
         </Grid>

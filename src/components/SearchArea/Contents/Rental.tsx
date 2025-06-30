@@ -15,10 +15,14 @@ import { useSearchStore } from "@/store/search";
 export interface RentalSearchForm {
   pickupLocation?: {
     name: string;
+    city: string
+    country: string
     id: string;
   };
   dropoffLocation?: {
     name: string;
+    city: string
+    country: string
     id: string;
   };
   pickupDate: Date | null;
@@ -45,10 +49,14 @@ const RentalSearch: FC<{
     initialValues: {
       pickupLocation: {
         name: "İstanbul-Sabiha Gökçen Havalimanı (SAW)",
+        city: "Pendik",
+        country: "Türkiye",
         id: "30",
       },
       dropoffLocation: {
         name: "İstanbul-Sabiha Gökçen Havalimanı (SAW)",
+        city: "Pendik",
+        country: "Türkiye",
         id: "30",
       },
       pickupDate: new Date(),

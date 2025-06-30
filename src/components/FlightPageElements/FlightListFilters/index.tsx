@@ -15,7 +15,7 @@ export interface FlightListFiltersForm {
   airports: string[];
   airlines: string[];
   price: [number, number];
-  hours: [number, number]
+  hours: [number, number];
 }
 
 const FlightListFilters = () => {
@@ -113,8 +113,8 @@ const FlightListFilters = () => {
       <Divider />
       {filterOpt?.departureFilters?.price && (
         <PriceFilter
-          max={filterOpt.departureFilters?.price?.max}
-          min={filterOpt.departureFilters?.price?.min}
+          max={filterOpt.departureFilters?.price?.max || 0}
+          min={filterOpt.departureFilters?.price?.min || 100}
           {...form.getInputProps("price")}
         />
       )}

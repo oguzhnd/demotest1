@@ -47,10 +47,14 @@ export const useSearchStore = create(
       rentalSearch: {
         pickupLocation: {
           name: "İstanbul-Sabiha Gökçen Havalimanı (SAW)",
+          city: "Pendik",
+          country: "Türkiye",
           id: "30",
         },
         dropoffLocation: {
           name: "İstanbul-Sabiha Gökçen Havalimanı (SAW)",
+          city: "Pendik",
+          country: "Türkiye",
           id: "30",
         },
         pickupDate: new Date(),

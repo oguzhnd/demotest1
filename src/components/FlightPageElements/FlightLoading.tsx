@@ -1,18 +1,14 @@
-import { Container, Paper } from "@mantine/core";
-import { IconPlane } from "@tabler/icons-react";
-import React from "react";
+import { Group, Paper, Skeleton, Stack } from "@mantine/core";
+import { FC } from "react";
 
-const FlightLoading = () => {
+const FlightLoading: FC<{ ref?: (node: any) => void }> = ({ ref }) => {
   return (
-    <Paper bg="#051422" radius={0} py="md">
-      <Container
-        size="xl"
-        w="100%"
-        c="white
-    "
-      >
-        <IconPlane size={16} />
-      </Container>
+    <Paper ref={ref} withBorder radius="md" px={32} py={20}>
+      <Group wrap="nowrap" gap={32}>
+        <Skeleton width={500} height={77.89} style={{ flexShrink: 0 }} />
+        <Skeleton width={200} height={36} />
+        <Skeleton width="100%" height={36} />
+      </Group>
     </Paper>
   );
 };

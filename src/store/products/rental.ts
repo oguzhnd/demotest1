@@ -1,3 +1,4 @@
+import { ExtraProductType } from "@/components/RentalPageElements/_Booking/ExtraProducts";
 import { RentalListFiltersForm } from "@/components/RentalPageElements/RentalListFilters";
 import { create } from "zustand";
 
@@ -219,9 +220,15 @@ export interface RentalStore {
     searchId?: string,
     tempId?: string
   ) => void;
+
+  extraProducts: ExtraProductType[];
+  setExtraProducts: (value: RentalStore["extraProducts"]) => void;
+
+  selectedExtraProducts: Record<string, number>;
+  setSelectedExtraProducts: (id: string, value: number) => void;
 }
 
-export const useRentalStore = create<RentalStore>((set) => ({
+export const useRentalStore = create<RentalStore>((set, get) => ({
   rentalList: [],
   setRentalList: (rentalList) => {
     set({
@@ -285,6 +292,23 @@ export const useRentalStore = create<RentalStore>((set) => ({
       bookingRental: value,
       searchId,
       tempId,
+    });
+  },
+
+  extraProducts: [],
+  setExtraProducts: (data) => {
+    set({
+      extraProducts: data,
+    });
+  },
+
+  selectedExtraProducts: {},
+  setSelectedExtraProducts: (id, value) => {
+    set({
+      selectedExtraProducts: {
+        ...get().selectedExtraProducts,
+        [id]: value,
+      },
     });
   },
 }));

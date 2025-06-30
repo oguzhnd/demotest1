@@ -275,5 +275,18 @@
   "Children Ages": "Children Ages",
   "Total Range Limit": "Total Range Limit",
   "Daily Price": "Daily Price",
-  "Total": "Total"
+  "Total": "Total",
+  "Hotel Not Found": "Hotel Not Found",
+  "Flight Not Found": "Flight Not Found",
+  "Rental Not Found": "Rental Not Found",
+  "babySeat": "Baby Seat",
+  "damageInsurance": "Damage Insurance",
+  "wifiModem": "Wifi Modem",
+  "winterTires": "Winter Tires",
+  "extraRange": "Extra Range",
+  "automatic": "Automatic",
+  "manual": "Manual",
+  "diesel": "Diesel",
+  "gas": "Gas",
+  "fromOffice": "From Office"
 }
