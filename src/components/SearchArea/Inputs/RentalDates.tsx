@@ -49,8 +49,10 @@ const RentalDatesPicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ [matchesSm ? "borderBottom" : "borderRight"]:
-              "1px solid var(--mantine-color-gray-3)", }}
+              style={{
+                [matchesSm ? "borderBottom" : "borderRight"]:
+                  "1px solid var(--mantine-color-gray-3)",
+              }}
               onClick={() => setOpened((o) => !o)}
             >
               <Text size="sm" c={compact ? "blue.7" : undefined}>
@@ -58,7 +60,9 @@ const RentalDatesPicker: FC<{
               </Text>
               {!compact && (
                 <Text size="xl" fw={700}>
-                  {form.getValues()?.deliveryDate?.toLocaleDateString(locale, {
+                  {getValidDate(
+                    form.getValues()?.pickupDate
+                  )?.toLocaleDateString(locale, {
                     day: "2-digit",
                     month: "short",
                     year: "2-digit",
@@ -67,12 +71,16 @@ const RentalDatesPicker: FC<{
               )}
               <Text size="sm" c={compact ? "white" : "gray.7"}>
                 {compact
-                  ? form.getValues()?.pickupDate?.toLocaleDateString(locale, {
+                  ? getValidDate(
+                      form.getValues()?.pickupDate
+                    )?.toLocaleDateString(locale, {
                       day: "2-digit",
                       month: "short",
                       year: "2-digit",
                     })
-                  : form.getValues()?.pickupDate?.toLocaleDateString(locale, {
+                  : getValidDate(
+                      form.getValues()?.pickupDate
+                    )?.toLocaleDateString(locale, {
                       weekday: "long",
                     })}
               </Text>
@@ -92,8 +100,10 @@ const RentalDatesPicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ [matchesSm ? "borderBottom" : "borderRight"]:
-              "1px solid var(--mantine-color-gray-3)", }}
+              style={{
+                [matchesSm ? "borderBottom" : "borderRight"]:
+                  "1px solid var(--mantine-color-gray-3)",
+              }}
               onClick={() => setOpened((o) => !o)}
             >
               <Text size="sm" c={compact ? "blue.7" : undefined}>
@@ -125,8 +135,10 @@ const RentalDatesPicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ [matchesSm ? "borderBottom" : "borderRight"]:
-              "1px solid var(--mantine-color-gray-3)", }}
+              style={{
+                [matchesSm ? "borderBottom" : "borderRight"]:
+                  "1px solid var(--mantine-color-gray-3)",
+              }}
               onClick={() => {
                 setOpened((o) => !o);
               }}
@@ -136,7 +148,9 @@ const RentalDatesPicker: FC<{
               </Text>
               {!compact && (
                 <Text size="xl" fw={700}>
-                  {form.getValues().deliveryDate?.toLocaleDateString(locale, {
+                  {getValidDate(
+                    form.getValues().deliveryDate
+                  )?.toLocaleDateString(locale, {
                     day: "2-digit",
                     month: "short",
                     year: "2-digit",
@@ -146,12 +160,16 @@ const RentalDatesPicker: FC<{
 
               <Text size="sm" c={compact ? "white" : "gray.7"}>
                 {compact
-                  ? form.getValues().deliveryDate?.toLocaleDateString(locale, {
+                  ? getValidDate(
+                      form.getValues().deliveryDate
+                    )?.toLocaleDateString(locale, {
                       day: "2-digit",
                       month: "short",
                       year: "2-digit",
                     })
-                  : form.getValues().deliveryDate?.toLocaleDateString(locale, {
+                  : getValidDate(
+                      form.getValues().deliveryDate
+                    )?.toLocaleDateString(locale, {
                       weekday: "long",
                     })}
               </Text>
@@ -171,8 +189,10 @@ const RentalDatesPicker: FC<{
               gap={0}
               px="sm"
               py="xs"
-              style={{ [matchesSm ? "borderBottom" : "borderRight"]:
-              "1px solid var(--mantine-color-gray-3)", }}
+              style={{
+                [matchesSm ? "borderBottom" : "borderRight"]:
+                  "1px solid var(--mantine-color-gray-3)",
+              }}
               onClick={() => setOpened((o) => !o)}
             >
               <Text size="sm" c={compact ? "blue.7" : undefined}>
@@ -194,7 +214,7 @@ const RentalDatesPicker: FC<{
       <Popover.Dropdown>
         <Stack>
           <DatePicker
-          numberOfColumns={matchesSm ? 1 : 2}
+            numberOfColumns={matchesSm ? 1 : 2}
             type={"range"}
             value={[form.getValues().pickupDate, form.getValues().deliveryDate]}
             onChange={(dates) => {

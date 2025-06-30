@@ -9,34 +9,30 @@ import {
   TextInput,
   TextInputProps,
 } from "@mantine/core";
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 
 import classes from "../SearchArea.module.css";
 import { useTranslations } from "next-intl";
 import { IconSearch } from "@tabler/icons-react";
-import { useMediaQuery } from "@mantine/hooks";
+import { useListState, useMediaQuery } from "@mantine/hooks";
+import { RentalSearchForm } from "../Contents/Rental";
+import { useLoading } from "@/utils/hooks/useLoading";
+import { xiorInstance } from "@/utils/xior";
+import { locale } from "dayjs";
 
-interface PopularCityType {
-  city: string;
-  country: string;
+interface PickupLocationType {
   name: string;
-  code: string;
+  id: string;
 }
 
-const AirportOption: FC<PopularCityType> = ({ city, code, country, name }) => {
+const LocationOption: FC<PickupLocationType> = ({ name }) => {
   return (
     <Stack gap={0} p={8} className={classes.airportOption}>
       <Group justify="space-between">
-        <Text size="sm">
-          {city}, {country}
-        </Text>
         <Text size="sm" fw={500}>
-          {code}
+          {name}
         </Text>
       </Group>
-      <Text size="xs" c="gray.7" truncate>
-        {name}
-      </Text>
     </Stack>
   );
 };
@@ -44,32 +40,41 @@ const AirportOption: FC<PopularCityType> = ({ city, code, country, name }) => {
 const PickupLocation: FC<{
   label: string;
   compact?: boolean;
-}> = ({ label, compact = false }) => {
+  value?: PickupLocationType;
+  onChange: (value: PickupLocationType) => void;
+}> = ({ label, compact = false, value, onChange }) => {
   const t = useTranslations();
 
   const [opened, setOpened] = useState(false);
   const matchesSm = useMediaQuery("(max-width: 48em)");
+  const [loading, startLoading, stopLoading] = useLoading();
 
-  const popularCities: PopularCityType[] = [
-    {
-      city: "Mumbai",
-      country: "India",
-      name: "Chhatrapati Shivaji International Airport",
-      code: "BOM",
-    },
-    {
-      city: "Mumbai",
-      country: "India",
-      name: "Chhatrapati Shivaji International Airport",
-      code: "BOM",
-    },
-    {
-      city: "Mumbai",
-      country: "India",
-      name: "Chhatrapati Shivaji International Airport",
-      code: "BOM",
-    },
-  ];
+  const [searchValue, setSearchValue] = useState("");
+  const [list, listHandlers] = useListState<PickupLocationType>([]);
+
+  const searchLocations = useCallback(async () => {
+    try {
+      startLoading();
+
+      const res = await xiorInstance.post("/autocomplete", {
+        Product: "1",
+        Query: searchValue,
+        Language: locale,
+      });
+
+      listHandlers.setState(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      stopLoading();
+    }
+  }, [xiorInstance, searchValue, locale]);
+
+  useEffect(() => {
+    if (searchValue.length > 3) {
+      searchLocations();
+    }
+  }, [searchValue]);
 
   return (
     <Popover width={270} shadow="lg" opened={opened} onChange={setOpened}>
@@ -92,7 +97,7 @@ const PickupLocation: FC<{
           </Text>
           {!compact && (
             <Text size="xl" fw={700} truncate>
-              Granada Luxury Resort Okurcalar
+              {value?.name}
             </Text>
           )}
           <Text size="sm" c={compact ? "white" : "gray.7"}>
@@ -103,6 +108,8 @@ const PickupLocation: FC<{
       <Popover.Dropdown p={0}>
         <Stack gap={0}>
           <TextInput
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.currentTarget.value)}
             leftSection={<IconSearch size={16} />}
             placeholder={t(label)}
             styles={{ input: { border: "none" } }}
@@ -113,8 +120,8 @@ const PickupLocation: FC<{
             <Text size="xs" c="gray.7" p={8}>
               {t("Popular Cities")}
             </Text>
-            {popularCities.map((airport, i) => (
-              <AirportOption key={`airport-${i}`} {...airport} />
+            {list.map((location, i) => (
+              <LocationOption key={`location-${i}`} {...location} />
             ))}
           </Stack>
         </Stack>

@@ -4,6 +4,7 @@ import InvoiceInformations from "@/components/FlightPageElements/_Booking/Invoic
 import Payment from "@/components/FlightPageElements/_Booking/Payment";
 import ContactInformations from "@/components/RentalPageElements/_Booking/ContactInformations";
 import DriverInformations from "@/components/RentalPageElements/_Booking/DriverInformations";
+import ExtraProducts from "@/components/RentalPageElements/_Booking/ExtraProducts";
 import PriceDetails from "@/components/RentalPageElements/_Booking/PriceDetails";
 import RentalDetails from "@/components/RentalPageElements/_Booking/RentalDetails";
 import { useRouter } from "@/i18n/navigation";
@@ -18,6 +19,7 @@ const FlightReservation = () => {
       <Grid>
         <Grid.Col span={9}>
           <Stack>
+            <ExtraProducts />
             <ContactInformations />
             <DriverInformations />
             <InvoiceInformations />

@@ -272,5 +272,8 @@
   "At a price of Y until date X": "{X} tarihine kadar {Y} bedeli ile",
   "Make a reservation": "Rezervasyon yap",
   "X years old": "{X} yaşında",
-  "Children Ages": "Çocuk Yaşları"
+  "Children Ages": "Çocuk Yaşları",
+  "Total Range Limit": "Toplam Kilometre Limiti",
+  "Daily Price": "Günlük Fiyat",
+  "Total": "Toplam"
 }

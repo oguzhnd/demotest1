@@ -6,10 +6,11 @@ import { GetInputPropsReturnType } from "@mantine/form/lib/types";
 
 const PriceFilter: FC<
   {
+    label?: string
     min: number;
     max: number;
   } & GetInputPropsReturnType
-> = ({ max, min, value, onChange }) => {
+> = ({ label, max, min, value, onChange }) => {
   const t = useTranslations();
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const PriceFilter: FC<
   }, [min, max]);
 
   return (
-    <FilterWrapper label={t("Price")}>
+    <FilterWrapper label={label || t("Price")}>
       <Stack gap="xs">
         <Group gap={4} wrap="nowrap">
           <NumberInput

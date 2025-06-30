@@ -1,16 +1,26 @@
 import { useRouter } from "@/i18n/navigation";
 import { Button, Grid, Group, Stack, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
-import React, { FC, useCallback } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import classes from "../SearchArea.module.css";
 import AirportInput from "../Inputs/AirportInput";
 import PickupLocation from "../Inputs/PickupLocation";
 import RentalDatesPicker from "../Inputs/RentalDates";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
+import { useLoading } from "@/utils/hooks/useLoading";
+import { useSearchStore } from "@/store/search";
 
 export interface RentalSearchForm {
+  pickupLocation?: {
+    name: string;
+    id: string;
+  };
+  dropoffLocation?: {
+    name: string;
+    id: string;
+  };
   pickupDate: Date | null;
   pickupTime: string;
   deliveryDate: Date | null;
@@ -21,12 +31,26 @@ const RentalSearch: FC<{
   compact?: boolean;
 }> = ({ compact = false }) => {
   const t = useTranslations();
+  const locale = useLocale();
 
   const { push } = useRouter();
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
+  const [inputsLoading, setInputsLoading] = useState(true);
+  const [loading, startLoading, stopLoading] = useLoading();
+
+  const { rentalSearch, setSearch } = useSearchStore();
+
   const form = useForm<RentalSearchForm>({
     initialValues: {
+      pickupLocation: {
+        name: "İstanbul-Sabiha Gökçen Havalimanı (SAW)",
+        id: "30",
+      },
+      dropoffLocation: {
+        name: "İstanbul-Sabiha Gökçen Havalimanı (SAW)",
+        id: "30",
+      },
       pickupDate: new Date(),
       pickupTime: "10:00",
       deliveryDate: new Date(),
@@ -34,7 +58,33 @@ const RentalSearch: FC<{
     },
   });
 
-  const handleSubmit = useCallback(() => {}, []);
+  const handleSubmit = useCallback(
+    async (values: RentalSearchForm) => {
+      try {
+        startLoading();
+
+        console.log(values);
+
+        setSearch("rentalSearch", values);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        stopLoading();
+
+        push("/rental/list");
+      }
+    },
+    [locale]
+  );
+
+  const updateSearchForm = useCallback(() => {
+    form.setValues(rentalSearch);
+    setInputsLoading(false);
+  }, [rentalSearch]);
+
+  useEffect(() => {
+    updateSearchForm();
+  }, [rentalSearch]);
 
   const Parent = matchesSm ? Stack : compact ? Group : Stack;
 
@@ -45,7 +95,7 @@ const RentalSearch: FC<{
         wrap="nowrap"
         pb={compact ? 0 : 8}
         gap={8}
-        align={compact ? matchesSm ? "stretch" :  "flex-end" : undefined}
+        align={compact ? (matchesSm ? "stretch" : "flex-end") : undefined}
       >
         <Grid
           w="100%"
@@ -63,7 +113,11 @@ const RentalSearch: FC<{
               sm: 4,
             }}
           >
-            <PickupLocation compact={compact} label="Pickup Location" />
+            <PickupLocation
+              compact={compact}
+              label="Pickup Location"
+              {...form.getInputProps("pickupLocation")}
+            />
           </Grid.Col>
           <Grid.Col
             span={{
@@ -82,12 +136,12 @@ const RentalSearch: FC<{
             bottom={compact ? undefined : -40}
           >
             <Button
+              type="submit"
               size="compact-lg"
               px="xl"
               h={40}
               radius="xl"
               style={{ flexShrink: 0 }}
-              onClick={() => push("/rental/list")}
             >
               {t("Search Car")}
             </Button>

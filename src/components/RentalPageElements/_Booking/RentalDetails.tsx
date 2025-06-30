@@ -1,3 +1,6 @@
+import { useRentalStore } from "@/store/products/rental";
+import { useSearchStore } from "@/store/search";
+import { localeDateFormat } from "@/utils/tools";
 import {
   Divider,
   Group,
@@ -14,28 +17,27 @@ import {
   IconGasStationFilled,
   IconManualGearboxFilled,
 } from "@tabler/icons-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import React from "react";
 
 const RentalDetails = () => {
-  const locale = useLocale()
+  const t = useTranslations();
+  const locale = useLocale();
+
+  const { rentalSearch } = useSearchStore();
+  const { bookingRental } = useRentalStore();
 
   return (
     <Paper p="sm" withBorder>
       <Stack gap="xs">
         <Group>
-          <Image
-            w={100}
-            src="https://integration-static.yolcu360.com/vehicle/a477e3bd-0a22-4c8e-ad85-4ad3616fe653.png"
-          />
+          <Image w={100} src={bookingRental?.carDetail[0].image.medium} />
           <Stack gap={0}>
             <Text size="sm" fw={500}>
-              Fiat Egea
+              {bookingRental?.carDetail[0].brand}{" "}
+              {bookingRental?.carDetail[0].model}
             </Text>
-            <Image
-              h={24}
-              src="https://integration-static.yolcu360.com/supplier/2d3514e5-046d-4e3c-a1eb-b96a08ab7e98.png"
-            />
+            <Image h={24} src={bookingRental?.vendor.logoUrl} />
           </Stack>
         </Group>
         <Divider />
@@ -46,7 +48,7 @@ const RentalDetails = () => {
               color="var(--mantine-color-blue-7)"
             />
             <Text size="sm" fw={500} c="gray.7">
-              Manuel
+              {bookingRental?.carDetail[0].transmission}
             </Text>
           </Group>
           <Group gap={6} wrap="nowrap">
@@ -55,29 +57,22 @@ const RentalDetails = () => {
               color="var(--mantine-color-blue-7)"
             />
             <Text size="sm" fw={500} c="gray.7">
-              Benzin/Dizel
+              {bookingRental?.carDetail[0].fuel}
             </Text>
           </Group>
           <Group gap={6} wrap="nowrap">
             <IconArmchair size={16} color="var(--mantine-color-blue-7)" />
             <Text size="sm" fw={500} c="gray.7">
-              5
+              {bookingRental?.carDetail[0].seats}
             </Text>
           </Group>
         </Group>
         <Divider />
         <Group wrap="nowrap">
-          <Group w="50%" gap={4} c="yellow.7">
+          <Group w="50%" gap={4} c="green.7">
             <IconClockFilled size={16} />
             <Text size="sm" fw={500} lh={1}>
               Anında Onay
-            </Text>
-          </Group>
-
-          <Group w="50%" gap={4} c="green.7">
-            <IconCircleDashedCheck size={16} />
-            <Text size="sm" fw={500} lh={1}>
-              Ücretsiz İptal
             </Text>
           </Group>
         </Group>
@@ -88,7 +83,7 @@ const RentalDetails = () => {
               Alış Tarihi ve Yeri
             </Text>
             <Text size="sm" c="gray">
-              23 Haz, Pzt
+              {localeDateFormat(rentalSearch?.pickupDate, locale)}
             </Text>
             <Text
               size="sm"
@@ -100,10 +95,11 @@ const RentalDetails = () => {
               px={8}
               style={{ borderRadius: 4 }}
             >
-              10:00
+              {rentalSearch?.pickupTime}
             </Text>
             <Text size="sm" mt={4}>
-              İstanbul, İstanbul Havalimanı
+              {bookingRental?.officeInfo.dropoffLocation.address.city},{" "}
+              {bookingRental?.officeInfo.dropoffLocation.address.country},
             </Text>
           </Stack>
           <Stack gap={0} align="flex-end">
@@ -111,7 +107,7 @@ const RentalDetails = () => {
               Bırakış Tarihi ve Yeri
             </Text>
             <Text size="sm" c="gray">
-              20 Haz, Cum
+              {localeDateFormat(rentalSearch?.pickupDate, locale)}
             </Text>
             <Text
               size="sm"
@@ -123,10 +119,11 @@ const RentalDetails = () => {
               px={8}
               style={{ borderRadius: 4 }}
             >
-              10:00
+              {rentalSearch?.deliveryTime}
             </Text>
             <Text size="sm" mt={4} ta="right">
-              İstanbul, İstanbul Havalimanı
+              {bookingRental?.officeInfo.dropoffLocation.address.city},{" "}
+              {bookingRental?.officeInfo.dropoffLocation.address.country},
             </Text>
           </Stack>
         </SimpleGrid>
@@ -134,26 +131,29 @@ const RentalDetails = () => {
         <Stack gap={4}>
           <Group justify="space-between">
             <Text size="sm" fw={500}>
-              Araç Teslim Şekli:
+              {t("Vehicle Delivery Method")}:
             </Text>
             <Text size="sm" fw={500} c="blue">
-              Havalimanı içi ofis
+              {bookingRental?.officeInfo.dropoffLocation.deliveryType}
             </Text>
           </Group>
           <Group justify="space-between">
             <Text size="sm" fw={500}>
-              Depozito:
+              {t("Deposit")}:
             </Text>
             <Text size="sm" fw={500} c="blue">
-              {(4500).toLocaleString(locale)} TRY
+              {(bookingRental?.priceDetail[0].provision || 0).toLocaleString(
+                locale
+              )}{" "}
+              {bookingRental?.priceDetail[0].currency}
             </Text>
           </Group>
           <Group justify="space-between">
             <Text size="sm" fw={500}>
-              Toplam Kilometre Limiti:
+              {t("Total Kilometer Limit")}:
             </Text>
             <Text size="sm" fw={500} c="blue">
-              1500 KM
+              {bookingRental?.rules.totalRangeLimit} KM
             </Text>
           </Group>
         </Stack>

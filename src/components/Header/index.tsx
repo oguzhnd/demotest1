@@ -46,7 +46,7 @@ const Header = () => {
     <Container size="xl" w="100%" h="100%">
       <Group h="100%" justify="space-between">
         <Link href="/">
-          <Image src="/ntt_logo_dark.png" h={matchesSm ? 40 : 48} />
+          <Image src="/ntt_logo_dark.png" h={matchesSm ? 40 : 48} w="auto" />
         </Link>
 
         {!matchesSm && <NavLinks />}

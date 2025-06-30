@@ -18,6 +18,7 @@ import { useRouter } from "@/i18n/navigation";
 import LanguageSelector from "../LanguageSelector";
 import CurrencySelector from "../CurrencySelector";
 import HelpMenu from "../HelpMenu";
+import { useMediaQuery } from "@mantine/hooks";
 
 const MobileDrawer = () => {
   const t = useTranslations();
@@ -26,6 +27,8 @@ const MobileDrawer = () => {
   const { openModal } = useModalManager();
 
   const { push } = useRouter();
+
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   const handleClose = useCallback(() => {
     closeDrawer("mobileDrawer");
@@ -39,7 +42,7 @@ const MobileDrawer = () => {
       size="sm"
       title={
         <Anchor c="dark" size="xl" fw={600}>
-          <Image src="/ntt_logo.jpg" h={60} />
+          <Image src="/ntt_logo_dark.png" h={matchesSm ? 40 : 48} w="auto" />
         </Anchor>
       }
     >

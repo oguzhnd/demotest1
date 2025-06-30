@@ -131,6 +131,7 @@ const HotelSearch: FC<{
         <Stack w="100%" gap={8}>
           <Grid
             w="100%"
+            maw="100%"
             columns={10}
             gutter={0}
             style={{

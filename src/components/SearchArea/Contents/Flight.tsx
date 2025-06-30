@@ -41,9 +41,17 @@ export interface FlightSearchFormProps {
 export const convertDate = (date: any) => {
   const d = date ? new Date(date) : null;
 
-  return isDate(d)
-    ? [d.getFullYear(), d.getMonth() + 1, d.getDate()].join("-")
-    : null;
+  if (isDate(d)) {
+    let month: string | number = d.getMonth() + 1;
+    let day: string | number = d.getDate();
+
+    month = month < 10 ? `0${month}` : `${month}`;
+    day = day < 10 ? `0${day}` : `${day}`;
+
+    return [d.getFullYear(), month, day].join("-");
+  }
+
+  return null;
 };
 
 const FlightSearch: FC<{
@@ -81,7 +89,7 @@ const FlightSearch: FC<{
       try {
         startLoading();
 
-        console.log(values)
+        console.log(values);
 
         const val = {
           dep:
