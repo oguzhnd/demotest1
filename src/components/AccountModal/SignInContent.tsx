@@ -35,6 +35,8 @@ const SignInContent = () => {
         username: "TEST",
         password: "b4c7j%3h9YFZ",
       });
+
+      push("/account")
     } catch (err) {
       console.error(err);
     } finally {

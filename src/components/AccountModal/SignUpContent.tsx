@@ -4,9 +4,12 @@ import { useTranslations } from "next-intl";
 import React, { useCallback } from "react";
 import FloatingLabelTextInput from "../@FormElements/FloatingLabelTextInput";
 import FloatingLabelPasswordInput from "../@FormElements/FloatingLabelPasswordInput";
+import { useRouter } from "next/router";
 
 const SignUpContent = () => {
   const t = useTranslations();
+
+  const { push } = useRouter();
 
   const form = useForm({
     initialValues: {
@@ -16,7 +19,9 @@ const SignUpContent = () => {
     },
   });
 
-  const handleSubmit = useCallback(() => {}, []);
+  const handleSubmit = useCallback(() => {
+    push("/account");
+  }, []);
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -35,7 +40,11 @@ const SignUpContent = () => {
           )}
           {...form.getInputProps("confirm", { type: "checkbox" })}
         />
-        <Button type="submit" color="green" disabled={!form.getValues().confirm}>
+        <Button
+          type="submit"
+          color="green"
+          disabled={!form.getValues().confirm}
+        >
           {t("Sign Up")}
         </Button>
       </Stack>

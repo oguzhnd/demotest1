@@ -61,6 +61,7 @@ const MobileDrawer = () => {
           size="sm"
           fw={400}
           leftSection={<IconFileDescription size={16} />}
+          onClick={() => openModal("queryTransaction")}
         >
           {t("My Reservations")}
         </Button>

@@ -4,7 +4,15 @@ import FlightContent from "@/components/AccountPageElements/MyTravels/FlightCont
 import HotelContent from "@/components/AccountPageElements/MyTravels/HotelContent";
 import RentalContent from "@/components/AccountPageElements/MyTravels/RentalContent";
 import { SearchAreaTypes } from "@/components/SearchArea";
-import { Box, Paper, Stack, Tabs, Text } from "@mantine/core";
+import {
+  Box,
+  Group,
+  Paper,
+  ScrollArea,
+  Stack,
+  Tabs,
+  Text,
+} from "@mantine/core";
 import { useTranslations } from "next-intl";
 import { FC, useState } from "react";
 
@@ -61,32 +69,36 @@ const MyTravels = () => {
 
       <Tabs variant="outline" value={value} onChange={setValue}>
         <Tabs.List mb="sm">
-          {tabs.map((tab, i) => (
-            <Tabs.Tab
-              key={`tab-${i}`}
-              value={tab.key}
-              leftSection={
-                <Box
-                  w={52}
-                  h={40}
-                  style={{
-                    display: "inline-block",
-                    backgroundImage: "url('/icon_sprite.png')",
-                    backgroundSize: "260px 450px",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition:
-                      value === tab.key
-                        ? tab.spritePos.active
-                        : tab.spritePos.default,
-                  }}
-                />
-              }
-            >
-              <Text size="sm" fw={500}>
-                {t(tab.label)}
-              </Text>
-            </Tabs.Tab>
-          ))}
+          <ScrollArea offsetScrollbars scrollbarSize={7}>
+            <Group wrap="nowrap">
+              {tabs.map((tab, i) => (
+                <Tabs.Tab
+                  key={`tab-${i}`}
+                  value={tab.key}
+                  leftSection={
+                    <Box
+                      w={52}
+                      h={40}
+                      style={{
+                        display: "inline-block",
+                        backgroundImage: "url('/icon_sprite.png')",
+                        backgroundSize: "260px 450px",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition:
+                          value === tab.key
+                            ? tab.spritePos.active
+                            : tab.spritePos.default,
+                      }}
+                    />
+                  }
+                >
+                  <Text size="sm" fw={500}>
+                    {t(tab.label)}
+                  </Text>
+                </Tabs.Tab>
+              ))}
+            </Group>
+          </ScrollArea>
         </Tabs.List>
 
         {tabs.map(({ key, content: Content, spritePos }, i) => (

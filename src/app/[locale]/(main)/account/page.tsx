@@ -40,6 +40,7 @@ import PassportDrawer from "@/components/AccountPageElements/MyProfile/PassportD
 import { useDrawerManager } from "@/store/managers/drawer";
 import MileCardDrawer from "@/components/AccountPageElements/MyProfile/MileCardDrawer";
 import BillingInformationDrawer from "@/components/AccountPageElements/MyProfile/BillingInformationDrawer";
+import { useMediaQuery } from "@mantine/hooks";
 
 export interface PassportType {
   number: string;
@@ -109,47 +110,70 @@ const MyAccount = () => {
     },
   });
 
-  const addPassport = useCallback((passport: PassportType) => {
-    form.setFieldValue(
-      "passports",
-      concat(form.getValues().passports, passport)
-    );
-  }, [form]);
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
-  const removePassport = useCallback((index: number) => {
-    const clonedValue = cloneDeep(form.getValues().passports);
+  const addPassport = useCallback(
+    (passport: PassportType) => {
+      form.setFieldValue(
+        "passports",
+        concat(form.getValues().passports, passport)
+      );
+    },
+    [form]
+  );
 
-    clonedValue.splice(index, 1);
+  const removePassport = useCallback(
+    (index: number) => {
+      const clonedValue = cloneDeep(form.getValues().passports);
 
-    form.setFieldValue("passports", clonedValue);
-  }, [form]);
+      clonedValue.splice(index, 1);
 
-  const addMileCard = useCallback((value: MileCardType) => {
-    form.setFieldValue("mileCards", concat(form.getValues().mileCards, value));
-  }, [form]);
+      form.setFieldValue("passports", clonedValue);
+    },
+    [form]
+  );
 
-  const removeMileCard = useCallback((index: number) => {
-    const clonedValue = cloneDeep(form.getValues().mileCards);
+  const addMileCard = useCallback(
+    (value: MileCardType) => {
+      form.setFieldValue(
+        "mileCards",
+        concat(form.getValues().mileCards, value)
+      );
+    },
+    [form]
+  );
 
-    clonedValue.splice(index, 1);
+  const removeMileCard = useCallback(
+    (index: number) => {
+      const clonedValue = cloneDeep(form.getValues().mileCards);
 
-    form.setFieldValue("mileCards", clonedValue);
-  }, [form]);
+      clonedValue.splice(index, 1);
 
-  const addBillingInformation = useCallback((value: BillingInformationType) => {
-    form.setFieldValue(
-      "billingInformations",
-      concat(form.getValues().billingInformations, value)
-    );
-  }, [form]);
+      form.setFieldValue("mileCards", clonedValue);
+    },
+    [form]
+  );
 
-  const removeBillingInformation = useCallback((index: number) => {
-    const clonedValue = cloneDeep(form.getValues().billingInformations);
+  const addBillingInformation = useCallback(
+    (value: BillingInformationType) => {
+      form.setFieldValue(
+        "billingInformations",
+        concat(form.getValues().billingInformations, value)
+      );
+    },
+    [form]
+  );
 
-    clonedValue.splice(index, 1);
+  const removeBillingInformation = useCallback(
+    (index: number) => {
+      const clonedValue = cloneDeep(form.getValues().billingInformations);
 
-    form.setFieldValue("billingInformations", clonedValue);
-  }, [form]);
+      clonedValue.splice(index, 1);
+
+      form.setFieldValue("billingInformations", clonedValue);
+    },
+    [form]
+  );
 
   return (
     <Stack>
@@ -186,7 +210,11 @@ const MyAccount = () => {
           </Button>
         </Group>
       </Group>
-      <SimpleGrid cols={4} spacing="xs">
+      <SimpleGrid cols={{
+        base: 1,
+        xs: 2,
+        sm: 4
+      }} spacing="xs">
         <TextInput
           classNames={{
             root: classes.inputRoot,

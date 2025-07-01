@@ -78,10 +78,10 @@ const MileCardDrawer: FC<{
             />
           </Stack>
           <Group gap={8} wrap="nowrap">
-            <Button fullWidth variant="default" onClick={handleClose}>
+            <Button variant="default" onClick={handleClose}>
               {t("Cancel")}
             </Button>
-            <Button fullWidth color="green" type="submit">
+            <Button color="green" type="submit">
               {t("Save")}
             </Button>
           </Group>
