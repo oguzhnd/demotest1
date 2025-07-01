@@ -42,7 +42,7 @@ const blogs = [
 const Blogs = () => {
   const t = useTranslations();
 
-  const { push } = useRouter()
+  const { push } = useRouter();
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
@@ -75,31 +75,46 @@ const Blogs = () => {
                     withBorder
                     style={{ overflow: "hidden" }}
                   >
-                    <SimpleGrid h="100%" cols={2} spacing={0}>
-                      <Image h="100%" w="100%" src={blog.image} />
+                    <SimpleGrid
+                      h="100%"
+                      cols={{
+                        base: 1,
+                        sm: 2,
+                      }}
+                      spacing={0}
+                    >
+                      <Image
+                        h={matchesSm ? 120 : "100%"}
+                        w="100%"
+                        src={blog.image}
+                      />
                       <Stack
                         gap="sm"
-                        justify="space-between"
+                        justify={matchesSm ? "flex-start" : "space-between"}
                         align="flex-start"
                         px={36}
-                        py={60}
+                        py={matchesSm ? 16 : 60}
                       >
                         <Stack gap={4}>
                           <Text
-                            size="xl"
+                            size={matchesSm ? "lg" : "xl"}
                             c="white"
                             fw={500}
                             lineClamp={matchesSm ? 2 : undefined}
                           >
                             {blog.title}
                           </Text>
-                          <Text c="gray.2" lineClamp={2}>
+                          <Text
+                            size={matchesSm ? "sm" : "md"}
+                            c="gray.2"
+                            lineClamp={2}
+                          >
                             {blog.content}
                           </Text>
                         </Stack>
                         <Button
                           variant="white"
-                          size="compact-lg"
+                          size={matchesSm ? "compact-md" : "compact-lg"}
                           radius="xl"
                           px="md"
                           onClick={() => push("/blog/1")}
@@ -149,8 +164,13 @@ const Blogs = () => {
                         {blogs[0].content}
                       </Text>
                     </Stack>
-                    <Button size="compact-xs" radius="xl" px="md" h={26}
-                          onClick={() => push("/blog/1")}>
+                    <Button
+                      size="compact-xs"
+                      radius="xl"
+                      px="md"
+                      h={26}
+                      onClick={() => push("/blog/1")}
+                    >
                       {t("Review")}
                     </Button>
                   </Stack>
@@ -179,8 +199,13 @@ const Blogs = () => {
                         {blogs[1].content}
                       </Text>
                     </Stack>
-                    <Button size="compact-xs" radius="xl" px="md" h={26}
-                          onClick={() => push("/blog/1")}>
+                    <Button
+                      size="compact-xs"
+                      radius="xl"
+                      px="md"
+                      h={26}
+                      onClick={() => push("/blog/1")}
+                    >
                       {t("Review")}
                     </Button>
                   </Stack>

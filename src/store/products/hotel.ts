@@ -3,7 +3,7 @@ import { HotelListFiltersForm } from "@/components/HotelPageElements/HotelListFi
 import { create } from "zustand";
 
 export interface HotelType {
-  hotelID: "c68fe42a-9f44-48e8-9863-31cc272b06a7";
+  hotelID: string;
   providerID: "100910";
   title: "Xanadu Resort";
   longitude: "31.117466";

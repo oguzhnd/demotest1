@@ -67,7 +67,7 @@ const HotelMapView: FC<{
           top={0}
           left={0}
         >
-          <IconMapPinFilled size={30} color="var(--mantine-color-dark-7)" />
+          <IconMapPinFilled size={30} color="var(--mantine-color-orange-7)" />
           <Button size="xs">{t("Show on Map")}</Button>
         </Stack>
       </Paper>

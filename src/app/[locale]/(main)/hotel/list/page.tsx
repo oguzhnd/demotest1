@@ -35,7 +35,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { join } from "path";
 import { useCallback, useEffect, useState } from "react";
 
-const filterHotelData = (hotel: HotelType, filters: HotelListFiltersForm) => {
+const filterHotelData = (hotel: HotelType, filters: HotelListFiltersForm): boolean => {
   if (filters.boardGroups.length > 0) {
     let result = true;
     const boardGroups = hotel.hotelBoardGroups.split(",");

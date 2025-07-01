@@ -29,13 +29,13 @@ export const navLinks: NavLinkProps[] = [
     label: "Contact",
     path: "/contact",
   },
-  {
-    label: "Campaigns",
-    path: "/campaigns",
-    anchorProps: {
-      c: "yellow"
-    }
-  },
+  // {
+  //   label: "Campaigns",
+  //   path: "/campaigns",
+  //   anchorProps: {
+  //     c: "yellow"
+  //   }
+  // },
 ];
 
 const NavLinks = () => {

@@ -34,7 +34,7 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery, useScrollIntoView } from "@mantine/hooks";
 import {
   IconChevronRight,
   IconMapPin,
@@ -68,6 +68,23 @@ const HotelDetail = () => {
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
   const matchesXs = useMediaQuery("(max-width: 36em)");
+
+  const { scrollIntoView: scrollToHome, targetRef: homeTarget } =
+    useScrollIntoView<HTMLDivElement>({
+      offset: 60,
+    });
+  const { scrollIntoView: scrollToRooms, targetRef: roomsTarget } =
+    useScrollIntoView<HTMLDivElement>({
+      offset: 60,
+    });
+  const { scrollIntoView: scrollToDetails, targetRef: detailsTarget } =
+    useScrollIntoView<HTMLDivElement>({
+      offset: 60,
+    });
+  const { scrollIntoView: scrollToAmenities, targetRef: amenitiesTarget } =
+    useScrollIntoView<HTMLDivElement>({
+      offset: 60,
+    });
 
   const getHotelDetails = useCallback(async () => {
     if (loading) {
@@ -189,12 +206,25 @@ const HotelDetail = () => {
               </Stack>
               <Group gap="xs"></Group>
             </Stack>
-            <Button radius="xl" mb="xs">
+            <Button radius="xl" mb="xs" onClick={() => scrollToRooms()}>
               Tekliflere Bak
             </Button>
           </Group>
 
-          <Tabs defaultValue="Ana Sayfa">
+          <Tabs
+            defaultValue="Ana Sayfa"
+            onChange={(value) => {
+              if (value === "Ana Sayfa") {
+                scrollToHome()
+              } else if (value === "Odalar") {
+                scrollToRooms();
+              } else if (value === "Detaylar") {
+                scrollToDetails();
+              } else if (value === "Olanaklar") {
+                scrollToAmenities();
+              }
+            }}
+          >
             <Tabs.List>
               <Parent
                 w="100%"
@@ -223,18 +253,20 @@ const HotelDetail = () => {
             </Tabs.List>
           </Tabs>
 
-          <Stack gap="xl">
+          <Stack ref={homeTarget} gap="xl">
             <HotelImages hotelDetails={hotelDetails} />
 
-            {groupRooms && hotelDetails?.room_groups && (
-              <Rooms
-                groupRooms={groupRooms}
-                rooms={hotelDetails?.room_groups}
-                handleRoomSelect={(room) => handleRoomSelect(room)}
-              />
-            )}
+            <Box ref={roomsTarget}>
+              {groupRooms && hotelDetails?.room_groups && (
+                <Rooms
+                  groupRooms={groupRooms}
+                  rooms={hotelDetails?.room_groups}
+                  handleRoomSelect={(room) => handleRoomSelect(room)}
+                />
+              )}
+            </Box>
 
-            <Stack>
+            <Stack ref={detailsTarget}>
               {hotelDetails?.description_struct.map(
                 (
                   struct: {
@@ -257,7 +289,7 @@ const HotelDetail = () => {
               )}
             </Stack>
 
-            <Stack gap={8}>
+            <Stack ref={amenitiesTarget} gap={8}>
               <Text size="lg" fw={500}>
                 Olanaklar
               </Text>

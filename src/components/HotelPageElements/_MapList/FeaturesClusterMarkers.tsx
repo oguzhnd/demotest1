@@ -19,6 +19,7 @@ type TreeClusterMarkerProps = {
   position: google.maps.LatLngLiteral;
   size: number;
   sizeAsText: string;
+  properties: any
 };
 
 export const FeaturesClusterMarker = ({

@@ -34,7 +34,7 @@ const HotelCard: FC<
       h="100%"
       className={classes.selectedHotelCard}
       onMouseEnter={setOpenedCard}
-      onClick={() => push("/hotel/detail/1")}
+      onClick={() => push("/hotel/detail/1395157")}
     >
       <Group
         gap="xs"

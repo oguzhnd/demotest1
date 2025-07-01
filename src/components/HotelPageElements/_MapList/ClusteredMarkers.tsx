@@ -15,7 +15,7 @@ type ClusteredMarkersProps = {
 const superclusterOptions: Supercluster.Options<any, ClusterProperties> = {
   extent: 256,
   radius: 80,
-  maxZoom: 15,
+  maxZoom: 14,
 };
 
 export const ClusteredMarkers = ({
@@ -41,6 +41,7 @@ export const ClusteredMarkers = ({
             position={{ lat, lng }}
             size={clusterProperties.point_count}
             sizeAsText={String(clusterProperties.point_count_abbreviated)}
+            properties={feature.properties}
           />
         ) : (
           <FeatureMarker
@@ -50,6 +51,7 @@ export const ClusteredMarkers = ({
             selected={selectedHotel === feature.id}
             active={activeHotel === feature.id}
             onMarkerClick={(_, featureId) => onClick(featureId)}
+            properties={feature.properties}
           />
         );
       })}
