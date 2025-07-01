@@ -1,5 +1,7 @@
 "use client";
 
+import HotelImages from "@/components/HotelPageElements/HotelDetails/HotelImages";
+import HotelMapView from "@/components/HotelPageElements/HotelDetails/HotelMapView";
 import Rooms, {
   RoomDetailType,
 } from "@/components/HotelPageElements/HotelDetails/Rooms";
@@ -55,8 +57,6 @@ const HotelDetail = () => {
   const { hotelSearch } = useSearchStore();
   const { setBookingHotel, setBookingOffer, setBookingRoom } = useHotelStore();
 
-  const { openModal } = useModalManager();
-
   const [loading, startLoading, stopLoading] = useLoading();
   const [hotel, setHotel] = useState<HotelType | undefined>(undefined);
   const [groupRooms, setGroupRooms] = useState<
@@ -67,6 +67,7 @@ const HotelDetail = () => {
   const [searchId, setSearchId] = useState<string | undefined>("");
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
+  const matchesXs = useMediaQuery("(max-width: 36em)");
 
   const getHotelDetails = useCallback(async () => {
     if (loading) {
@@ -223,141 +224,7 @@ const HotelDetail = () => {
           </Tabs>
 
           <Stack gap="xl">
-            <Grid gutter="xs">
-              <Grid.Col
-                span={{
-                  base: 12,
-                  sm: 6,
-                }}
-              >
-                <Image
-                  alt="hotel-1"
-                  h={matchesSm ? 200 : 500}
-                  radius="md"
-                  src={hotelDetails?.images[0].replace("{size}", "x500")}
-                />
-              </Grid.Col>
-              <Grid.Col
-                span={{
-                  base: 12,
-                  sm: 3,
-                }}
-              >
-                <SimpleGrid
-                  cols={{
-                    base: 3,
-                    sm: 1,
-                  }}
-                  spacing="xs"
-                >
-                  <Image
-                    alt="hotel-1"
-                    h={matchesSm ? 100 : 160}
-                    radius="md"
-                    src={hotelDetails?.images[1].replace("{size}", "x500")}
-                  />
-                  <Image
-                    alt="hotel-1"
-                    h={matchesSm ? 100 : 160}
-                    radius="md"
-                    src={hotelDetails?.images[2].replace("{size}", "x500")}
-                  />
-                  <Box pos="relative">
-                    <Image
-                      alt="hotel-1"
-                      h={matchesSm ? 100 : 160}
-                      radius="md"
-                      src={hotelDetails?.images[3].replace("{size}", "x500")}
-                    />
-                    <Stack
-                      pos="absolute"
-                      top={0}
-                      left={0}
-                      w="100%"
-                      h="100%"
-                      bg="#00000088"
-                      style={{
-                        borderRadius: "var(--mantine-radius-md)",
-                        cursor: "pointer",
-                      }}
-                      justify="center"
-                      align="center"
-                    >
-                      <Text fw={500} c="white">
-                        {t("+X Images", {
-                          count: hotelDetails?.images.length - 3,
-                        })}
-                      </Text>
-                    </Stack>
-                  </Box>
-                </SimpleGrid>
-              </Grid.Col>
-              <Grid.Col
-                span={{
-                  base: 12,
-                  sm: 3,
-                }}
-              >
-                <Stack h="100%" gap="xs">
-                  <Paper
-                    radius="md"
-                    style={{ flexShrink: 0, overflow: "hidden" }}
-                  >
-                    <Stack gap={0} p="sm" bg="yellow.1">
-                      <Group wrap="nowrap">
-                        <IconSpeakerphone size={20} style={{ flexShrink: 0 }} />
-                        <Text size="sm">
-                          Kaçırmayın! Hemen rezervasyonunuzu yapın ve en iyi
-                          fiyatları yakalayın!
-                        </Text>
-                      </Group>
-                    </Stack>
-                    <Group>
-                      <Anchor
-                        size="sm"
-                        w="100%"
-                        bg="dark"
-                        px="sm"
-                        py="xs"
-                        ta="center"
-                        c="white"
-                      >
-                        Şimdi Rezervasyon Yapın
-                      </Anchor>
-                    </Group>
-                  </Paper>
-                  <Paper
-                    pos="relative"
-                    h="100%"
-                    bg="gray.2"
-                    mih={100}
-                    radius="md"
-                    style={{ overflow: "hidden", cursor: "pointer" }}
-                    onClick={() => openModal("hotelMapDetail")}
-                  >
-                    <Image
-                      h="100%"
-                      src={`https://maps.googleapis.com/maps/api/staticmap?key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API}&center=${hotelDetails?.latitude},${hotelDetails?.longitude}&size=400x400&zoom=13`}
-                    />
-                    <Stack
-                      pos="absolute"
-                      w="100%"
-                      h="100%"
-                      justify="center"
-                      align="center"
-                      top={0}
-                      left={0}
-                    >
-                      <IconMapPinFilled
-                        size={30}
-                        color="var(--mantine-color-dark-7)"
-                      />
-                      <Button size="xs">{t("Show on Map")}</Button>
-                    </Stack>
-                  </Paper>
-                </Stack>
-              </Grid.Col>
-            </Grid>
+            <HotelImages hotelDetails={hotelDetails} />
 
             {groupRooms && hotelDetails?.room_groups && (
               <Rooms
@@ -395,7 +262,12 @@ const HotelDetail = () => {
                 Olanaklar
               </Text>
 
-              <Box style={{ columnCount: 3, gap: 30 }}>
+              <Box
+                style={{
+                  columnCount: matchesXs ? 1 : matchesSm ? 2 : 3,
+                  gap: 30,
+                }}
+              >
                 {hotelDetails?.amenity_groups.map(
                   (
                     group: {
@@ -415,7 +287,13 @@ const HotelDetail = () => {
                         {group.group_name}
                       </Text>
 
-                      <SimpleGrid cols={4} spacing={4}>
+                      <SimpleGrid
+                        cols={{
+                          base: 3,
+                          sm: 4,
+                        }}
+                        spacing={4}
+                      >
                         {group.non_free_amenities?.map((e, j) => (
                           <Tooltip key={`item-${j}`} label={t("Paid")}>
                             <Paper
@@ -451,6 +329,8 @@ const HotelDetail = () => {
                 )}
               </Box>
             </Stack>
+
+            {matchesSm && <HotelMapView hotelDetails={hotelDetails} />}
           </Stack>
         </Stack>
       </Container>

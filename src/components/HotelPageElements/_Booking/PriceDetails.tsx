@@ -45,7 +45,7 @@ const PriceDetails = () => {
           </Group>
           <Group justify="space-between">
             <Group gap={4} c="gray.7">
-              <Text size="sm">Komisyom</Text>
+              <Text size="sm">Komisyon</Text>
             </Group>
 
             <Text size="sm" fw={500}>

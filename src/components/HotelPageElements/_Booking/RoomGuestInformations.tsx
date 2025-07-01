@@ -17,6 +17,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import React from "react";
@@ -27,10 +28,14 @@ const RoomGuestInformations = () => {
 
   const { bookingHotel, bookingOffer, bookingRoom } = useHotelStore();
 
+  const matchesSm = useMediaQuery("(max-width: 48em)")
+  
+  const Parent = matchesSm ? Stack : Group
+
   return (
     <Paper withBorder p="md">
-      <Group wrap="nowrap" align="flex-start">
-        <Image w={200} h={120} radius="md" src={bookingRoom} />
+      <Parent wrap="nowrap" align="flex-start">
+        <Image w={matchesSm ? "100%" : 200} h={120} radius="md" src={bookingRoom} />
         <Stack mih={120} w="100%" gap={4}>
           <Text size="sm" fw={600} c="blue">
             {bookingRoom?.roomName}
@@ -79,30 +84,30 @@ const RoomGuestInformations = () => {
             {bookingRoom?.travellers.map((traveller, i) => {
               if (traveller.type === 1) {
                 return (
-                  <Group key={`traveller-${i}`} gap={4}>
+                  <Parent key={`traveller-${i}`} gap={4}>
                     <Text size="xs" fw={500} c="gray.7" w={70}>
                       {t("Adult")}
                     </Text>
                     <TextInput placeholder={t("Name")} />
                     <TextInput placeholder={t("Surname")} />
-                  </Group>
+                  </Parent>
                 );
               } else if (traveller.type === 2) {
                 return (
-                  <Group key={`traveller-${i}`} gap={4}>
+                  <Parent key={`traveller-${i}`} gap={4}>
                     <Text size="xs" fw={500} c="gray.7" w={70}>
                       {t("Child")}
                     </Text>
                     <TextInput placeholder={t("Name")} />
                     <TextInput placeholder={t("Surname")} />
                     <DatePickerInput placeholder={t("Birth Date")} />
-                  </Group>
+                  </Parent>
                 );
               }
             })}
           </Stack>
         </Stack>
-      </Group>
+      </Parent>
     </Paper>
   );
 };

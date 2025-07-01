@@ -10,10 +10,10 @@ const PromoBanner = () => {
   const { promoBanner } = useGeneralStore();
 
   return (
-    <Paper bg="blue.0" py="xs">
-      <Group gap="xs" justify="center">
-        <IconConfetti size={20} color="var(--mantine-color-blue-7)" />
-        <Text size="sm" fw={500}>
+    <Paper bg="blue.0" py="xs" px="md">
+      <Group gap="xs" justify="center" wrap="nowrap">
+        <IconConfetti size={20} color="var(--mantine-color-blue-7)" style={{ flexShrink: 0 }} />
+        <Text size="sm" fw={500} lh={1.2}>
           {promoBanner}
         </Text>
         <Button ml="sm" size="compact-sm" rightSection={<IconChevronRight size={14} />}>
