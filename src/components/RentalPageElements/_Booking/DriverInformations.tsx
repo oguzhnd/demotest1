@@ -34,16 +34,36 @@ const DriverInformations = () => {
             </Text>
           </Group>
           <Grid gutter="xs">
-            <Grid.Col span={3}>
+            <Grid.Col
+              span={{
+                base: 12,
+                md: 3,
+              }}
+            >
               <TextInput label={t("Name")} />
             </Grid.Col>
-            <Grid.Col span={3}>
+            <Grid.Col
+              span={{
+                base: 12,
+                md: 3,
+              }}
+            >
               <TextInput label={t("Surname")} />
             </Grid.Col>
-            <Grid.Col span={2}>
+            <Grid.Col
+              span={{
+                base: 12,
+                md: 2,
+              }}
+            >
               <DatePickerInput label={t("Birth Date")} />
             </Grid.Col>
-            <Grid.Col span={4}>
+            <Grid.Col
+              span={{
+                base: 12,
+                md: 4,
+              }}
+            >
               <Group wrap="nowrap" align="flex-end" gap={4}>
                 <Select
                   w={140}
@@ -76,16 +96,31 @@ const DriverInformations = () => {
               {t("Rental Evaluation Analysis")}
             </Text>
             <Grid gutter="xs">
-            <Grid.Col span={3}>
-              <TextInput label={t("Identity Information")} />
-            </Grid.Col>
-            <Grid.Col span={3}>
-              <DatePickerInput label={t("Birth Date")} />
-            </Grid.Col>
-            <Grid.Col span={3}>
-              <DatePickerInput label={t("Driver's License Issuance Date")} />
-            </Grid.Col>
-          </Grid>
+              <Grid.Col
+                span={{
+                  base: 12,
+                  md: 3,
+                }}
+              >
+                <TextInput label={t("Identity Information")} />
+              </Grid.Col>
+              <Grid.Col
+                span={{
+                  base: 12,
+                  md: 3,
+                }}
+              >
+                <DatePickerInput label={t("Birth Date")} />
+              </Grid.Col>
+              <Grid.Col
+                span={{
+                  base: 12,
+                  md: 3,
+                }}
+              >
+                <DatePickerInput label={t("Driver's License Issuance Date")} />
+              </Grid.Col>
+            </Grid>
             <Text size="sm" c="gray">
               Araç Kiralama Değerlendirme Analizi, (Sadece Avis/Budget
               firmalarına özel) KKB Kredi Kayıt Bürosu A.Ş üzerinden T.C. Kimlik
@@ -99,11 +134,11 @@ const DriverInformations = () => {
               KKB tarafından işbu sorgulama neticesinde işlenen üye bilgilerinin
               gizliliğini sağlanması hususunda Yolcu360 Bilişim A.Ş. `&apos;nin
               herhangi bir sorumluluğu bulunmamaktadır. Bu bölümdeki Analiz
-              süreci Yolcu360 Bilişim A.Ş.`&apos;nin inisiyatifinde hazırlanmamış/
-              zorunlu tutulmamış olup Analiz sürecinde işlenecek kişisel
-              verilerinize ilişkin işleme amaç, yöntem ve hukuki sebepleri
-              Yolcu360 tarafından belirlenmediği gibi bu bölümde toplanan
-              veriler de Yolcu360 nezdinde saklanmayacaktır.
+              süreci Yolcu360 Bilişim A.Ş.`&apos;nin inisiyatifinde
+              hazırlanmamış/ zorunlu tutulmamış olup Analiz sürecinde işlenecek
+              kişisel verilerinize ilişkin işleme amaç, yöntem ve hukuki
+              sebepleri Yolcu360 tarafından belirlenmediği gibi bu bölümde
+              toplanan veriler de Yolcu360 nezdinde saklanmayacaktır.
             </Text>
           </Stack>
         </Paper>

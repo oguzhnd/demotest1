@@ -28,10 +28,20 @@ const ContactInformations = () => {
           </Text>
         </Group>
         <Grid gutter="xs">
-          <Grid.Col span={3}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 3,
+            }}
+          >
             <TextInput label={t("E-Mail")} />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 3,
+            }}
+          >
             <Group wrap="nowrap" gap={4} align="flex-start">
               <Select
                 w={100}
@@ -50,10 +60,18 @@ const ContactInformations = () => {
         </Grid>
         <Group gap={4} c="gray.7">
           <IconInfoCircle size={14} />
-          <Text size="xs" lh={1}>{t("We will forward your flight and ticket information via e-mail and free SMS")}</Text>
+          <Text size="xs" lh={1}>
+            {t(
+              "We will forward your flight and ticket information via e-mail and free SMS"
+            )}
+          </Text>
         </Group>
         <Divider />
-        <Checkbox label={t("I would like to be informed about flight notifications, opportunities and campaigns within the scope of the Consent Text")} />
+        <Checkbox
+          label={t(
+            "I would like to be informed about flight notifications, opportunities and campaigns within the scope of the Consent Text"
+          )}
+        />
       </Stack>
     </Paper>
   );

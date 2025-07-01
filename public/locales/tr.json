@@ -288,5 +288,7 @@
   "manual": "Manuel",
   "diesel": "Dizel",
   "gas": "Gaz",
-  "fromOffice": "Ofisten"
+  "fromOffice": "Ofisten",
+  "Flight Time": "Uçuş Süresi",
+  "Wait Time": "Bekleme Süresi"
 }

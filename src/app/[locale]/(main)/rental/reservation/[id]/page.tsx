@@ -12,15 +12,24 @@ import { useRentalStore } from "@/store/products/rental";
 import { useSearchStore } from "@/store/search";
 import { xiorInstance } from "@/utils/xior";
 import { Container, Grid, Paper, Stack } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import React, { useCallback, useEffect } from "react";
 
 const FlightReservation = () => {
   const { push } = useRouter();
 
+  const matchesMd = useMediaQuery("(max-width: 62em)");
+
   return (
     <Container w="100%" size="xl" py={20}>
       <Grid>
-        <Grid.Col span={9}>
+        <Grid.Col
+          span={{
+            base: 12,
+            md: 9,
+          }}
+          order={matchesMd ? 2 : 1}
+        >
           <Stack>
             <ExtraProducts />
             <ContactInformations />
@@ -29,7 +38,13 @@ const FlightReservation = () => {
             <Payment onSubmit={() => push("/rental/reservation/completed")} />
           </Stack>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col
+          span={{
+            base: 12,
+            md: 3,
+          }}
+          order={matchesMd ? 1 : 2}
+        >
           <Stack>
             <RentalDetails />
             <PriceDetails />

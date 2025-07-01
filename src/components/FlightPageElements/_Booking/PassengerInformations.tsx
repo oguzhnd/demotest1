@@ -1,3 +1,4 @@
+import { useFlightStore } from "@/store/products/flight";
 import { localeDateFormat } from "@/utils/tools";
 import {
   Button,
@@ -7,6 +8,7 @@ import {
   Image,
   Modal,
   Paper,
+  ScrollArea,
   Select,
   Stack,
   Table,
@@ -51,53 +53,64 @@ const PassengersModal: FC<{
   ]);
 
   return (
-    <Modal size="lg" opened={opened} onClose={onClose} title={t("My Passengers")}>
+    <Modal
+      size="lg"
+      opened={opened}
+      onClose={onClose}
+      title={t("My Passengers")}
+    >
       <Stack>
-        <Table
-          withTableBorder
-          withColumnBorders
-          styles={{
-            th: {
-              fontWeight: 500,
-            },
-          }}
-        >
-          <Table.Thead bg="gray.1">
-            <Table.Tr>
-              <Table.Th>{t("Name")}</Table.Th>
-              <Table.Th>{t("Surname")}</Table.Th>
-              <Table.Th>{t("Birth Date")}</Table.Th>
-              <Table.Th>{t("TC Identity Number")}</Table.Th>
-              <Table.Th>{t("Gender")}</Table.Th>
-              <Table.Th></Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {passengers.map((passenger, i) => (
-              <Table.Tr key={`passenger-${i}`}>
-                <Table.Td>{passenger.name}</Table.Td>
-                <Table.Td>{passenger.surname}</Table.Td>
-                <Table.Td>{localeDateFormat(passenger.birthDate)}</Table.Td>
-                <Table.Td>{passenger.identityNumber}</Table.Td>
-                <Table.Td>
-                  {t(passenger.gender === "male" ? "Male" : "Female")}
-                </Table.Td>
-                <Table.Td>
-                  <Button
-                    size="compact-sm"
-                    variant="light"
-                    onClick={() => {
-                      onSelect(passenger);
-                      onClose();
-                    }}
-                  >
-                    {t("Select")}
-                  </Button>
-                </Table.Td>
+        <ScrollArea offsetScrollbars scrollbarSize={7}>
+          <Table
+            withTableBorder
+            withColumnBorders
+            styles={{
+              th: {
+                fontWeight: 500,
+                whiteSpace: "nowrap",
+              },
+              td: {
+                whiteSpace: "nowrap",
+              },
+            }}
+          >
+            <Table.Thead bg="gray.1">
+              <Table.Tr>
+                <Table.Th>{t("Name")}</Table.Th>
+                <Table.Th>{t("Surname")}</Table.Th>
+                <Table.Th>{t("Birth Date")}</Table.Th>
+                <Table.Th>{t("TC Identity Number")}</Table.Th>
+                <Table.Th>{t("Gender")}</Table.Th>
+                <Table.Th></Table.Th>
               </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
+            </Table.Thead>
+            <Table.Tbody>
+              {passengers.map((passenger, i) => (
+                <Table.Tr key={`passenger-${i}`}>
+                  <Table.Td>{passenger.name}</Table.Td>
+                  <Table.Td>{passenger.surname}</Table.Td>
+                  <Table.Td>{localeDateFormat(passenger.birthDate)}</Table.Td>
+                  <Table.Td>{passenger.identityNumber}</Table.Td>
+                  <Table.Td>
+                    {t(passenger.gender === "male" ? "Male" : "Female")}
+                  </Table.Td>
+                  <Table.Td>
+                    <Button
+                      size="compact-sm"
+                      variant="light"
+                      onClick={() => {
+                        onSelect(passenger);
+                        onClose();
+                      }}
+                    >
+                      {t("Select")}
+                    </Button>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
+        </ScrollArea>
       </Stack>
     </Modal>
   );
@@ -108,6 +121,8 @@ const PassengerInformations = () => {
 
   const [opened, setOpened] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+
+  const { bookingFlight, returnFlight } = useFlightStore();
 
   const form = useForm<PassengerType>({
     initialValues: {
@@ -161,35 +176,60 @@ const PassengerInformations = () => {
           )}
         </Group>
         <Grid gutter="xs">
-          <Grid.Col span={2}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 2,
+            }}
+          >
             <TextInput
               readOnly={isSaved}
               label={t("Name")}
               {...form.getInputProps("name")}
             />
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 2,
+            }}
+          >
             <TextInput
               readOnly={isSaved}
               label={t("Surname")}
               {...form.getInputProps("surname")}
             />
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 2,
+            }}
+          >
             <DatePickerInput
               readOnly={isSaved}
               label={t("Birth Date")}
               {...form.getInputProps("birthDate")}
             />
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 2,
+            }}
+          >
             <TextInput
               readOnly={isSaved}
               label={t("TC Identity Number")}
               {...form.getInputProps("identityNumber")}
             />
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 2,
+            }}
+          >
             <Select
               readOnly={isSaved}
               style={{
@@ -213,22 +253,28 @@ const PassengerInformations = () => {
               {...form.getInputProps("gender")}
             />
           </Grid.Col>
-          <Grid.Col span={2}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 2,
+            }}
+          >
             <Stack gap={2}>
               <Text size="sm" fw={500}>
                 {t("Luggage allowance")}
               </Text>
               <Group gap={4}>
-                <Image
-                  src="https://cdn.enuygun.com/ucak-bileti/v-18aac/assets/images/airline-icon/PC.png"
-                  w={16}
-                  h={16}
-                />
-                <Text size="xs">Gidiş (İstanbul-Düsseldorf)</Text>
-              </Group>
-              <Group gap={4}>
                 <IconBriefcase2Filled size={16} />
-                <Text size="xs">1 parça el çantası (40x30x15 cm)</Text>
+                <Text size="xs">
+                  {
+                    bookingFlight?.AlternativePrices[bookingFlight.packetIndex]
+                      .Bag[0].BaggageValue
+                  }{" "}
+                  {
+                    bookingFlight?.AlternativePrices[bookingFlight.packetIndex]
+                      .Bag[0].BaggageUnit
+                  }
+                </Text>
               </Group>
             </Stack>
           </Grid.Col>

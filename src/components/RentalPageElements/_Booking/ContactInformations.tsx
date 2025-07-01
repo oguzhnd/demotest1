@@ -28,10 +28,20 @@ const ContactInformations = () => {
           </Text>
         </Group>
         <Grid gutter="xs">
-          <Grid.Col span={3}>
+          <Grid.Col
+            span={{
+              base: 12,
+              md: 3,
+            }}
+          >
             <TextInput label={t("E-Mail")} />
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col
+            span={{
+              base: 12,
+              md: 3,
+            }}
+          >
             <Group wrap="nowrap" gap={4} align="flex-start">
               <Select
                 w={100}

@@ -288,5 +288,7 @@
   "manual": "Manual",
   "diesel": "Diesel",
   "gas": "Gas",
-  "fromOffice": "From Office"
+  "fromOffice": "From Office",
+  "Flight Time": "Flight Time",
+  "Wait Time": "Wait Time"
 }

@@ -51,14 +51,15 @@ const FlightListCard: FC<{
       withBorder
     >
       <Stack gap={0}>
-        <Parent
+        <Group
           wrap={matchesSm ? "wrap" : "nowrap"}
           align="center"
+          justify={matchesSm ? "space-between" : undefined}
           gap={matchesSm ? "xs" : "xl"}
-          py="lg"
-          px="xl"
+          py={matchesSm ? "md" : "lg"}
+          px={matchesSm ? "md" : "xl"}
         >
-          <Stack gap={0} align={matchesSm ? "center" : "left"}>
+          <Stack gap={0} align={"left"}>
             <Text size="lg" fw={500} w={130} truncate>
               {flight.dTime}
             </Text>
@@ -73,7 +74,7 @@ const FlightListCard: FC<{
             </Text>
           </Stack>
 
-          {matchesSm && <IconChevronDown size={16} />}
+          {matchesSm && <IconChevronRight size={16} />}
 
           <Stack pos="relative" w="100%" align="center" visibleFrom="sm">
             <Text size="xs" c="gray.7">
@@ -114,7 +115,7 @@ const FlightListCard: FC<{
             />
           </Stack>
 
-          <Stack gap={0} align={matchesSm ? "center" : "right"}>
+          <Stack gap={0} align={"right"}>
             <Text ta="right" size="lg" fw={500} w={130} truncate>
               {flight.aTime}
             </Text>
@@ -144,7 +145,13 @@ const FlightListCard: FC<{
             {t("Details")}
           </Button>
 
-          <Text w={120} size="lg" fw={600} ta="right" style={{ whiteSpace: "nowrap", flexShrink: 0 }}>
+          <Text
+            w={120}
+            size="lg"
+            fw={600}
+            ta="right"
+            style={{ whiteSpace: "nowrap", flexShrink: 0 }}
+          >
             {(+flight.totalPrice).toLocaleString(locale)} TRY
           </Text>
 
@@ -152,19 +159,29 @@ const FlightListCard: FC<{
             radius="xl"
             variant="light"
             rightSection={
-              <IconChevronDown
-                size={20}
-                style={{
-                  transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
-                  transition: "transform .2s ease",
-                }}
-              />
+              flight.AlternativePrices.length > 1 ? (
+                <IconChevronDown
+                  size={20}
+                  style={{
+                    transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform .2s ease",
+                  }}
+                />
+              ) : (
+                <IconChevronRight size={20} />
+              )
             }
-            onClick={() => setExpanded((v) => !v)}
+            onClick={() => {
+              if (flight.AlternativePrices.length > 1) {
+                setExpanded((v) => !v);
+              } else if (flight.AlternativePrices.length === 1) {
+                onSelect?.(0);
+              }
+            }}
           >
             {t("Select")}
           </Button>
-        </Parent>
+        </Group>
 
         <Collapse in={expanded}>
           <SimpleGrid

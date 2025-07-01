@@ -36,7 +36,10 @@ const RentalListCard: FC<{
   const { push } = useRouter();
 
   const matchesXs = useMediaQuery("(max-width: 36em)");
+  const matchesSm = useMediaQuery("(max-width: 48em)");
   const matchesMd = useMediaQuery("(max-width: 62em)");
+
+  const Parent = matchesSm ? Stack : Group
 
   return (
     <Paper p="md" withBorder className={classes.rentalListCard}>
@@ -45,13 +48,13 @@ const RentalListCard: FC<{
         justify="space-between"
         align="stretch"
       >
-        <Stack>
+        <Stack w={matchesSm ? "100%" : undefined} align={matchesSm ? "center" : undefined}>
           <Text fw={500}>
             {rental.carDetail[0].brand} {rental.carDetail[0].model}
           </Text>
-          <Group>
+          <Parent align={matchesSm ? "center" : undefined}>
             <Image w={202} src={rental.carDetail[0].image.medium} />
-            <Stack gap="xs">
+            <Stack align={matchesSm ? "center" : undefined} gap="xs">
               <Group>
                 <Group gap={6}>
                   <IconManualGearboxFilled
@@ -84,7 +87,7 @@ const RentalListCard: FC<{
                   {rental.officeInfo.pickupLocation.deliveryType}
                 </Text>
               </Group>
-              <Group>
+              <Parent align={matchesSm ? "center" : undefined}>
                 <Group gap={6}>
                   <Text size="sm" fw={500} c="blue">
                     {t("Deposit")}
@@ -102,9 +105,9 @@ const RentalListCard: FC<{
                     {rental.rules.totalRangeLimit} KM
                   </Text>
                 </Group>
-              </Group>
+              </Parent>
             </Stack>
-          </Group>
+          </Parent>
 
           <Group>
             <Image w="auto" radius="sm" h={30} src={rental.vendor.logoUrl} />
