@@ -94,7 +94,7 @@ const SearchArea: FC<{
   const InitialContent = tabs.find((e) => e.key === initialType)?.content
 
   return initialType && InitialContent ? (
-    <Paper bg="#051422" radius={0}>
+    <Paper bg="blue.1" radius={0}>
       <Container size="xl" py={20}>
         <InitialContent compact />
       </Container>

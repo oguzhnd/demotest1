@@ -1,9 +1,11 @@
 "use client";
 
 import {
+  ActionIcon,
   Divider,
   Group,
   LoadingOverlay,
+  Modal,
   Popover,
   ScrollArea,
   Stack,
@@ -19,6 +21,7 @@ import {
   IconMapPin,
   IconPlaneDeparture,
   IconSearch,
+  IconX,
 } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 import { FlightSearchFormProps } from "../Contents/Flight";
@@ -67,7 +70,7 @@ const AirportOption: FC<AirportType> = ({ type, city, airport, onClick }) => {
 };
 
 const AirportInput: FC<{
-  disabled?: boolean
+  disabled?: boolean;
   label: string;
   title?: string;
   description?: string;
@@ -109,67 +112,103 @@ const AirportInput: FC<{
     }
   }, [searchValue]);
 
-  return (
-    <Popover width={300} shadow="lg" opened={opened} onChange={setOpened}>
-      <Popover.Target>
-        <Stack
-          className={classes.searchInputTarget}
-          data-compact={compact}
-          data-focused={opened}
-          data-disabled={disabled}
-          gap={0}
-          px="sm"
-          py="xs"
-          style={{
-            [matchesSm ? "borderBottom" : "borderRight"]:
-              "1px solid var(--mantine-color-gray-3)",
-          }}
-          onClick={() => setOpened((o) => !o)}
+  const Target = (
+    <Stack
+      className={classes.searchInputTarget}
+      data-compact={compact}
+      data-focused={opened}
+      data-disabled={disabled}
+      gap={0}
+      px="sm"
+      py="xs"
+      style={{
+        [matchesSm ? "borderBottom" : "borderRight"]:
+          "1px solid var(--mantine-color-gray-3)",
+      }}
+      onClick={() => setOpened((o) => !o)}
+    >
+      <Text size="sm" c={compact ? "gray.7" : undefined}>
+        {label && t(label)}
+      </Text>
+      {!compact && (
+        <Text
+          size="xl"
+          fw={!title ? 600 : 700}
+          c={!title ? "gray.5" : undefined}
         >
-          <Text size="sm" c={compact ? "blue.7" : undefined}>
-            {label && t(label)}
-          </Text>
-          {!compact && (
-            <Text size="xl" fw={!title ? 600 : 700} c={!title ? "gray.5" : undefined}>
-              {title || t("City or Airport")}
-            </Text>
-          )}
-          <Text size="sm" c={compact ? !title ? "gray.5" : "white" : !title ? "gray.5" : "gray.7"} truncate>
-            {description || t("Click to search")}
-          </Text>
-        </Stack>
-      </Popover.Target>
-      <Popover.Dropdown p={0}>
-        <ScrollArea h={400}>
-          <Stack gap={0}>
+          {title || t("City or Airport")}
+        </Text>
+      )}
+      <Text
+        size="sm"
+        c={
+          compact ? (!title ? "gray.5" : "dark.9") : !title ? "gray.5" : "gray.7"
+        }
+        truncate
+      >
+        {description || t("Click to search")}
+      </Text>
+    </Stack>
+  );
+
+  const Content = (
+    <ScrollArea h={400}>
+      <Stack gap={0}>
+        <Stack bg="white" gap={0} pos="sticky" top={0} style={{ zIndex: 10 }}>
+          <Group wrap="nowrap" gap="xs">
             <TextInput
               value={searchValue}
               onChange={(e) => setSearchValue(e.currentTarget.value)}
+              w="100%"
               leftSection={<IconSearch size={16} />}
               placeholder={t(label)}
               styles={{ input: { border: "none" } }}
             />
-            <Divider />
+            <ActionIcon
+              variant="transparent"
+              color="dark"
+              onClick={() => setOpened(false)}
+              hiddenFrom="sm"
+            >
+              <IconX size={20} />
+            </ActionIcon>
+          </Group>
+          <Divider />
+        </Stack>
 
-            <Stack h="100%" gap={0} pos="relative">
-              <LoadingOverlay h={400} visible={loading} />
-              {list.map((airport, i) => (
-                <AirportOption
-                  key={`airport-${i}`}
-                  {...airport}
-                  onClick={() => {
-                    form.setFieldValue(
-                      label === "From" ? "dep" : "arr",
-                      airport
-                    );
-                    setOpened(false);
-                  }}
-                />
-              ))}
-            </Stack>
-          </Stack>
-        </ScrollArea>
-      </Popover.Dropdown>
+        <Stack h="100%" gap={0} pos="relative">
+          <LoadingOverlay h={400} visible={loading} />
+          {list.map((airport, i) => (
+            <AirportOption
+              key={`airport-${i}`}
+              {...airport}
+              onClick={() => {
+                form.setFieldValue(label === "From" ? "dep" : "arr", airport);
+                setOpened(false);
+              }}
+            />
+          ))}
+        </Stack>
+      </Stack>
+    </ScrollArea>
+  );
+
+  return matchesSm ? (
+    <>
+      {Target}
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        withCloseButton={false}
+        centered
+      >
+        {Content}
+      </Modal>
+    </>
+  ) : (
+    <Popover width={300} shadow="lg" opened={opened} onChange={setOpened}>
+      <Popover.Target>{Target}</Popover.Target>
+      <Popover.Dropdown p={0}>{Content}</Popover.Dropdown>
     </Popover>
   );
 };

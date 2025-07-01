@@ -102,7 +102,7 @@ const RentalSearch: FC<{
         pos="relative"
         wrap="nowrap"
         pb={compact ? 0 : 8}
-        gap={8}
+        gap={20}
         align={compact ? (matchesSm ? "stretch" : "flex-end") : undefined}
       >
         <Grid
@@ -136,7 +136,7 @@ const RentalSearch: FC<{
             <RentalDatesPicker compact={compact} form={form} />
           </Grid.Col>
         </Grid>
-        <Stack h={compact ? 60.59 : "auto"} justify="center">
+        <Stack h={compact ? matchesSm ? 40 : 60.59 : "auto"} justify="center">
           <Group
             justify="center"
             pos={compact ? "relative" : "absolute"}

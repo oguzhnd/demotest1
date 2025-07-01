@@ -125,7 +125,7 @@ const HotelSearch: FC<{
         pos="relative"
         wrap="nowrap"
         pb={compact ? 0 : 8}
-        gap={8}
+        gap={20}
         align={compact ? (matchesSm ? "stretch" : "flex-end") : undefined}
       >
         <Stack w="100%" gap={8}>
@@ -196,7 +196,7 @@ const HotelSearch: FC<{
             </Grid.Col>
           </Grid>
         </Stack>
-        <Stack h={compact ? 60.59 : "auto"} justify="center">
+        <Stack h={compact ? matchesSm ? 40 : 60.59 : "auto"} justify="center">
           <Group
             justify="center"
             pos={compact ? "relative" : "absolute"}

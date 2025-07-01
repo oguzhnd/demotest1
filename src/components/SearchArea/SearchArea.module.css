@@ -76,11 +76,11 @@
   }
 
   &[data-compact="true"] {
-    background: #1e2c39;
+    background: #fff;
 
     &:hover,
     &[data-focused="true"] {
-      background-color: #293b4d;
+      background-color: var(--mantine-color-gray-0);
     }
   }
 

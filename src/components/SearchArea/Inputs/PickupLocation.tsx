@@ -1,9 +1,11 @@
 "use client";
 
 import {
+  ActionIcon,
   Divider,
   Group,
   LoadingOverlay,
+  Modal,
   Popover,
   ScrollArea,
   Stack,
@@ -15,7 +17,7 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 
 import classes from "../SearchArea.module.css";
 import { useTranslations } from "next-intl";
-import { IconSearch } from "@tabler/icons-react";
+import { IconSearch, IconX } from "@tabler/icons-react";
 import { useListState, useMediaQuery } from "@mantine/hooks";
 import { RentalSearchForm } from "../Contents/Rental";
 import { useLoading } from "@/utils/hooks/useLoading";
@@ -67,7 +69,7 @@ const PickupLocation: FC<{
         Language: locale,
       });
 
-      console.log(res)
+      console.log(res);
 
       listHandlers.setState(isArray(res.data) ? res.data : []);
     } catch (err) {
@@ -83,62 +85,91 @@ const PickupLocation: FC<{
     }
   }, [searchValue]);
 
-  return (
-    <Popover width={270} shadow="lg" opened={opened} onChange={setOpened}>
-      <Popover.Target>
-        <Stack
-          className={classes.searchInputTarget}
-          data-compact={compact}
-          data-focused={opened}
-          gap={0}
-          px="sm"
-          py="xs"
-          style={{
-            [matchesSm ? "borderBottom" : "borderRight"]:
-              "1px solid var(--mantine-color-gray-3)",
-          }}
-          onClick={() => setOpened((o) => !o)}
-        >
-          <Text size="sm" c={compact ? "blue.7" : undefined}>
-            {label && t(label)}
-          </Text>
-          {!compact && (
-            <Text size="xl" fw={700} truncate>
-              {value?.name}
-            </Text>
-          )}
-          <Text size="sm" c={compact ? "white" : "gray.7"}>
-            {value?.name}
-          </Text>
-        </Stack>
-      </Popover.Target>
-      <Popover.Dropdown p={0}>
-        <ScrollArea h={400}>
-          <Stack gap={0}>
+  const Target = (
+    <Stack
+      className={classes.searchInputTarget}
+      data-compact={compact}
+      data-focused={opened}
+      gap={0}
+      px="sm"
+      py="xs"
+      style={{
+        [matchesSm ? "borderBottom" : "borderRight"]:
+          "1px solid var(--mantine-color-gray-3)",
+      }}
+      onClick={() => setOpened((o) => !o)}
+    >
+      <Text size="sm" c={compact ? "gray.7" : undefined}>
+        {label && t(label)}
+      </Text>
+      {!compact && (
+        <Text size="xl" fw={700} truncate>
+          {value?.name}
+        </Text>
+      )}
+      <Text size="sm" c={compact ? "dark.9" : "gray.7"}>
+        {value?.name}
+      </Text>
+    </Stack>
+  );
+
+  const Content = (
+    <ScrollArea h={400}>
+      <Stack gap={0}>
+        <Stack bg="white" gap={0} pos="sticky" top={0} style={{ zIndex: 10 }}>
+          <Group wrap="nowrap" gap="xs">
             <TextInput
               value={searchValue}
               onChange={(e) => setSearchValue(e.currentTarget.value)}
+              w="100%"
               leftSection={<IconSearch size={16} />}
               placeholder={t(label)}
               styles={{ input: { border: "none" } }}
             />
-            <Divider />
+            <ActionIcon
+              variant="transparent"
+              color="dark"
+              onClick={() => setOpened(false)}
+              hiddenFrom="sm"
+            >
+              <IconX size={20} />
+            </ActionIcon>
+          </Group>
+          <Divider />
+        </Stack>
 
-            <Stack gap={0}>
-              <LoadingOverlay h={400} visible={loading} />
-              {list.map((location, i) => (
-                <LocationOption
-                  key={`location-${i}`}
-                  {...location}
-                  onClick={() => {
-                    onChange(pick(location, ["id", "city", "country", "name"]));
-                  }}
-                />
-              ))}
-            </Stack>
-          </Stack>
-        </ScrollArea>
-      </Popover.Dropdown>
+        <Stack gap={0}>
+          <LoadingOverlay h={400} visible={loading} />
+          {list.map((location, i) => (
+            <LocationOption
+              key={`location-${i}`}
+              {...location}
+              onClick={() => {
+                onChange(pick(location, ["id", "city", "country", "name"]));
+              }}
+            />
+          ))}
+        </Stack>
+      </Stack>
+    </ScrollArea>
+  );
+
+  return matchesSm ? (
+    <>
+      {Target}
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        withCloseButton={false}
+        centered
+      >
+        {Content}
+      </Modal>
+    </>
+  ) : (
+    <Popover width={270} shadow="lg" opened={opened} onChange={setOpened}>
+      <Popover.Target>{Target}</Popover.Target>
+      <Popover.Dropdown p={0}>{Content}</Popover.Dropdown>
     </Popover>
   );
 };
