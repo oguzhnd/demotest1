@@ -171,6 +171,7 @@ const FlightDatePicker: FC<{
     <DatePicker
       numberOfColumns={matchesSm ? 1 : 2}
       type={form.getValues().type === "one-way" ? "default" : "range"}
+      minDate={new Date()}
       value={
         form.getValues().type === "one-way"
           ? form.getValues().departureDate

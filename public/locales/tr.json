@@ -290,5 +290,7 @@
   "gas": "Gaz",
   "fromOffice": "Ofisten",
   "Flight Time": "Uçuş Süresi",
-  "Wait Time": "Bekleme Süresi"
+  "Wait Time": "Bekleme Süresi",
+  "Dropoff Location": "Teslim Ediş Yeri",
+  "Different Dropoff Location": "Farklı Teslim Ediş Yeri"
 }

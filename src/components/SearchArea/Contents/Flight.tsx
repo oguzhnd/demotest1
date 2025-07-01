@@ -156,7 +156,7 @@ const FlightSearch: FC<{
                 value="one-way"
                 label={t("One Way")}
                 icon={CheckIcon}
-                c={compact ? "white" : undefined}
+                c={compact ? "dark" : undefined}
               />
               <Radio
                 className={classes.flightTypeRadio}
@@ -164,7 +164,7 @@ const FlightSearch: FC<{
                 value="round-trip"
                 label={t("Round Trip")}
                 icon={CheckIcon}
-                c={compact ? "white" : undefined}
+                c={compact ? "dark" : undefined}
               />
             </Group>
           </Radio.Group>

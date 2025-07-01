@@ -222,6 +222,7 @@ const RentalDatesPicker: FC<{
     <Stack>
       <DatePicker
         numberOfColumns={matchesSm ? 1 : 2}
+      minDate={new Date()}
         type={"range"}
         value={[form.getValues().pickupDate, form.getValues().deliveryDate]}
         onChange={(dates) => {

@@ -107,7 +107,7 @@ const PickupLocation: FC<{
           {value?.name}
         </Text>
       )}
-      <Text size="sm" c={compact ? "dark.9" : "gray.7"}>
+      <Text size="sm" c={compact ? "dark.9" : "gray.7"} truncate>
         {value?.name}
       </Text>
     </Stack>

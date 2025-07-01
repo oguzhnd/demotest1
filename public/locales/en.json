@@ -290,5 +290,7 @@
   "gas": "Gas",
   "fromOffice": "From Office",
   "Flight Time": "Flight Time",
-  "Wait Time": "Wait Time"
+  "Wait Time": "Wait Time",
+  "Dropoff Location": "Dropoff Location",
+  "Different Dropoff Location": "Different Dropoff Location"
 }

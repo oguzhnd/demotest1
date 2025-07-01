@@ -116,7 +116,10 @@ const PassengersModal: FC<{
   );
 };
 
-const PassengerInformations = () => {
+const PassengerInformations: FC<{
+  label: string;
+  type: "adult" | "child" | "baby";
+}> = ({ label, type }) => {
   const t = useTranslations();
 
   const [opened, setOpened] = useState(false);
@@ -134,6 +137,14 @@ const PassengerInformations = () => {
     },
   });
 
+  const Bag = bookingFlight?.AlternativePrices[
+    bookingFlight.packetIndex
+  ].Bag.find(
+    (e) =>
+      e.PassengerType ===
+      (type === "adult" ? "ADT" : type === "child" ? "INF" : "INF")
+  );
+
   return (
     <Paper withBorder p="md">
       <PassengersModal
@@ -148,7 +159,7 @@ const PassengerInformations = () => {
       <Stack>
         <Group justify="space-between">
           <Text size="sm" fw={500}>
-            {t("Adult")}
+            {label}
           </Text>
 
           {isSaved ? (
@@ -266,14 +277,7 @@ const PassengerInformations = () => {
               <Group gap={4}>
                 <IconBriefcase2Filled size={16} />
                 <Text size="xs">
-                  {
-                    bookingFlight?.AlternativePrices[bookingFlight.packetIndex]
-                      .Bag[0].BaggageValue
-                  }{" "}
-                  {
-                    bookingFlight?.AlternativePrices[bookingFlight.packetIndex]
-                      .Bag[0].BaggageUnit
-                  }
+                  {Bag?.BaggageValue} {Bag?.BaggageUnit}
                 </Text>
               </Group>
             </Stack>

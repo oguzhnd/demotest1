@@ -34,10 +34,9 @@ const HotelReservation = () => {
           order={matchesMd ? 2 : 1}
         >
           <Stack>
-            <ReservationInformations />
+            {/* <ReservationInformations /> */}
             <RoomGuestInformations />
             <SpecialRequests />
-
             
             <Payment onSubmit={() => push("/hotel/reservation/completed")} />
           </Stack>

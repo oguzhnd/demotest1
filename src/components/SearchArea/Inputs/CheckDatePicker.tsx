@@ -138,6 +138,7 @@ const CheckDatePicker: FC<{
       numberOfColumns={matchesSm ? 1 : 2}
       type={"range"}
       value={[checkIn, checkOut]}
+      minDate={new Date()}
       onChange={(dates) =>
         onChange([getValidDate(dates[0]), getValidDate(dates[1])])
       }

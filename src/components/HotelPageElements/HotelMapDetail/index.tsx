@@ -174,8 +174,8 @@ const HotelMapDetail = () => {
             properties={{
               name: bookingHotel.title,
               price:
-                +bookingHotel.roomDetail[0].priceDetail.salesPrice *
-                bookingHotel.roomDetail[0].night,
+                +bookingHotel?.roomDetail?.[0]?.priceDetail.salesPrice *
+                bookingHotel?.roomDetail?.[0]?.night,
             }}
           />
         )}

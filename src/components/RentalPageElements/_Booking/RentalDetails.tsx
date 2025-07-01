@@ -32,12 +32,12 @@ const RentalDetails = () => {
       <Stack gap="xs">
         <Group>
           <Image w={100} src={bookingRental?.carDetail[0].image.medium} />
-          <Stack gap={0}>
+          <Stack gap={0} align="flex-start">
             <Text size="sm" fw={500}>
               {bookingRental?.carDetail[0].brand}{" "}
               {bookingRental?.carDetail[0].model}
             </Text>
-            <Image h={24} src={bookingRental?.vendor.logoUrl} />
+            <Image h={24} w="auto" src={bookingRental?.vendor.logoUrl} />
           </Stack>
         </Group>
         <Divider />

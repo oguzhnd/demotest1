@@ -136,7 +136,7 @@ const FlightList = () => {
 
   const { flightSearch } = useSearchStore();
 
-  const [loading, startLoading, stopLoading] = useLoading(true);
+  const [loading, startLoading, stopLoading] = useLoading();
   const [opened, setOpened] = useState(false);
 
   const [currentFlightList, flightListHandlers] = useListState<FlightType>([]);
@@ -177,13 +177,13 @@ const FlightList = () => {
     limit,
   ]);
 
-  useEffect(() => {
-    startLoading();
-    setCurrentFlightList();
-  }, [flightFilters, flightList, departureSelected]);
-
   const checkFlightList = useCallback(async () => {
+    if (loading) {
+      return true;
+    }
+
     startLoading();
+    
     try {
       setDepartureSelected(false);
       setBookingFlight(undefined);
@@ -216,7 +216,7 @@ const FlightList = () => {
     } finally {
       stopLoading();
     }
-  }, [xiorInstance, flightSearch]);
+  }, [xiorInstance, flightSearch, loading]);
 
   const handleSelectFlight = useCallback(
     (flight: FlightType, packetIndex: number) => {
@@ -241,6 +241,11 @@ const FlightList = () => {
     },
     [flightSearch, departureSelected]
   );
+
+  useEffect(() => {
+    startLoading();
+    setCurrentFlightList();
+  }, [flightFilters, flightList, departureSelected]);
 
   useEffect(() => {
     checkFlightList();
@@ -334,7 +339,7 @@ const FlightList = () => {
                 <Group>
                   <Text fw={500}>{t("Return Flight")}</Text>
 
-                  <Group gap={4} c="gray">
+                  {/* <Group gap={4} c="gray">
                     <Text size="sm" lh={1}>
                       AYT
                     </Text>
@@ -342,9 +347,10 @@ const FlightList = () => {
                     <Text size="sm" lh={1}>
                       SAW
                     </Text>
-                  </Group>
+                  </Group> */}
                 </Group>
               )}
+
               {loading
                 ? Array(4)
                     .fill("")
@@ -365,7 +371,7 @@ const FlightList = () => {
                 <FlightLoading ref={ref} />
               )}
 
-              {currentFlightList.length === 0 && !loading && <FlightNotFound />}
+              {(currentFlightList.length === 0 && !loading) && <FlightNotFound />}
             </Stack>
           </Grid.Col>
         </Grid>
