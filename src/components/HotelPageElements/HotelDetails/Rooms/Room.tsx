@@ -21,7 +21,7 @@ const Room: FC<{
     boardName: "Ultra All Inclusive";
   };
   details: RoomDetailType;
-  onSelect: () => void
+  onSelect: () => void;
 }> = ({ details, room, onSelect }) => {
   const t = useTranslations();
   const locale = useLocale();
@@ -33,6 +33,7 @@ const Room: FC<{
   return matchesSm ? (
     <Paper p="sm" bg="gray.1">
       <Stack>
+        <Text>{details.roomName}</Text>
         <Group gap={0}>
           <IconUserFilled size={14} color="var(--mantine-color-gray-7)" />
           <IconUserFilled size={14} color="var(--mantine-color-gray-7)" />

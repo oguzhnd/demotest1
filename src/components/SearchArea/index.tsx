@@ -8,6 +8,7 @@ import {
   Group,
   Image,
   Paper,
+  ScrollArea,
   Stack,
   Tabs,
   Text,
@@ -91,7 +92,7 @@ const SearchArea: FC<{
     return (sp === "" ? "hotel" : sp) as SearchAreaTypes;
   }, [pathname]);
 
-  const InitialContent = tabs.find((e) => e.key === initialType)?.content
+  const InitialContent = tabs.find((e) => e.key === initialType)?.content;
 
   return initialType && InitialContent ? (
     <Paper bg="blue.1" radius={0}>
@@ -105,38 +106,42 @@ const SearchArea: FC<{
         <Paper p="lg" mt="md" pt={60}>
           <Tabs pos="relative" value={searchType} variant="pills">
             <Group>
-              <Paper className={classes.searchTabs} shadow="sm" px="sm">
+              <Paper className={classes.searchTabs} shadow="sm" px="sm" maw="calc(100vw - 72px)">
                 <Tabs.List>
-                  {tabs.map(
-                    ({ icon: Icon, label, key, path, spritePos }, i) => (
-                      <Tabs.Tab
-                        className={classes.tab}
-                        key={`tab-${i}`}
-                        value={key}
-                        onClick={() => push(path)}
-                      >
-                        <Stack align="center" gap={6} pb={4}>
-                          <Box
-                            w={52}
-                            h={40}
-                            style={{
-                              display: "inline-block",
-                              backgroundImage: "url('/icon_sprite.png')",
-                              backgroundSize: "260px 450px",
-                              backgroundRepeat: "no-repeat",
-                              backgroundPosition:
-                                searchType === key
-                                  ? spritePos.active
-                                  : spritePos.default,
-                            }}
-                          />
-                          <Text size="sm" className={classes.tabLabel}>
-                            {t(label)}
-                          </Text>
-                        </Stack>
-                      </Tabs.Tab>
-                    )
-                  )}
+                  <ScrollArea>
+                    <Group wrap="nowrap">
+                      {tabs.map(
+                        ({ icon: Icon, label, key, path, spritePos }, i) => (
+                          <Tabs.Tab
+                            className={classes.tab}
+                            key={`tab-${i}`}
+                            value={key}
+                            onClick={() => push(path)}
+                          >
+                            <Stack align="center" gap={6} pb={4}>
+                              <Box
+                                w={52}
+                                h={40}
+                                style={{
+                                  display: "inline-block",
+                                  backgroundImage: "url('/icon_sprite.png')",
+                                  backgroundSize: "260px 450px",
+                                  backgroundRepeat: "no-repeat",
+                                  backgroundPosition:
+                                    searchType === key
+                                      ? spritePos.active
+                                      : spritePos.default,
+                                }}
+                              />
+                              <Text size="sm" className={classes.tabLabel}>
+                                {t(label)}
+                              </Text>
+                            </Stack>
+                          </Tabs.Tab>
+                        )
+                      )}
+                    </Group>
+                  </ScrollArea>
                 </Tabs.List>
               </Paper>
             </Group>
