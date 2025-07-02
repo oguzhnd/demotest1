@@ -51,7 +51,7 @@ const tabs: {
     },
     icon: IconBuilding,
     label: "Hotel",
-    path: "/",
+    path: "/hotel",
     content: HotelSearch,
   },
   {

@@ -18,7 +18,7 @@ const BlogCard = () => {
       onClick={() => push("/blog/1")}
     >
       <Stack gap={0}>
-        <Image src="https://www.hotelchick.com/upload/Blog/ac0daa25c49382bc86eb109d6b0f9ee9.jpg" />
+        <Image h={200} src="https://www.hotelchick.com/upload/Blog/ac0daa25c49382bc86eb109d6b0f9ee9.jpg" />
 
         <Stack gap="xs" p="md">
           <Text fw={600} lh={1.2}>

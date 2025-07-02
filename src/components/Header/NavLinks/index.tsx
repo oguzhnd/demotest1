@@ -10,8 +10,12 @@ export interface NavLinkProps {
 
 export const navLinks: NavLinkProps[] = [
   {
-    label: "Hotel",
+    label: "Home Page",
     path: "/",
+  },
+  {
+    label: "Hotel",
+    path: "/hotel",
   },
   {
     label: "Flight",
@@ -29,13 +33,13 @@ export const navLinks: NavLinkProps[] = [
     label: "Contact",
     path: "/contact",
   },
-  // {
-  //   label: "Campaigns",
-  //   path: "/campaigns",
-  //   anchorProps: {
-  //     c: "yellow"
-  //   }
-  // },
+  {
+    label: "Campaigns",
+    path: "/campaigns",
+    anchorProps: {
+      c: "yellow"
+    }
+  },
 ];
 
 const NavLinks = () => {

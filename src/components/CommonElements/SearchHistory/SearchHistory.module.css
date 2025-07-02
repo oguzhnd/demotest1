@@ -1,0 +1,19 @@
+.tab {
+  font-weight: 500;
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-xl);
+
+  &[data-active="true"] {
+    background: var(--mantine-color-blue-7);
+    border-color: var(--mantine-color-blue-7);
+  }
+}
+
+.card {
+  cursor: pointer;
+  transition: background-color .2s ease;
+
+  &:hover {
+    background: var(--mantine-color-gray-0);
+  }
+}

@@ -1,4 +1,12 @@
-import { Container, SimpleGrid, Stack, Tabs, Text } from "@mantine/core";
+import {
+  Container,
+  Group,
+  ScrollArea,
+  SimpleGrid,
+  Stack,
+  Tabs,
+  Text,
+} from "@mantine/core";
 import { useTranslations } from "next-intl";
 import React from "react";
 
@@ -96,11 +104,15 @@ const PopularAirports = () => {
           classNames={{ tab: classes.mostVisitedTab }}
         >
           <Tabs.List mb="md">
-            {keys(items).map((tab, i) => (
-              <Tabs.Tab key={`tab-${i}`} value={tab}>
-                {t(tab)}
-              </Tabs.Tab>
-            ))}
+            <ScrollArea offsetScrollbars scrollbarSize={7}>
+              <Group gap="xs" wrap="nowrap">
+                {keys(items).map((tab, i) => (
+                  <Tabs.Tab key={`tab-${i}`} value={tab}>
+                    {t(tab)}
+                  </Tabs.Tab>
+                ))}
+              </Group>
+            </ScrollArea>
           </Tabs.List>
 
           {keys(items).map((tab, i) => (

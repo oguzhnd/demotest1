@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "@/i18n/navigation";
 import {
   ActionIcon,
   Anchor,
@@ -30,24 +31,31 @@ const footerLinks = [
     links: [
       {
         name: "About Us",
+        href: "/about-us",
       },
       {
         name: "Help Center",
+        href: "/help-center",
       },
       {
         name: "Terms of Service",
+        href: "/terms-of-service",
       },
       {
         name: "Privacy Policy",
+        href: "/privacy-policy",
       },
       {
         name: "Travel Stories",
+        href: "/travel-stories",
       },
       {
         name: "Corporate Ticketing",
+        href: "/corporate-ticketing",
       },
       {
         name: "Documents",
+        href: "/documents",
       },
     ],
   },
@@ -56,12 +64,15 @@ const footerLinks = [
     links: [
       {
         name: "Hotel",
+        href: "/hotel"
       },
       {
         name: "Flight",
+        href: "/flight"
       },
       {
         name: "Car Rental",
+        href: "/rental"
       },
     ],
   },
@@ -70,9 +81,11 @@ const footerLinks = [
     links: [
       {
         name: "Affiliate Program",
+        href: "/affiliate-program",
       },
       {
         name: "Advertise with Us",
+        href: "/advertise-with-us",
       },
     ],
   },
@@ -81,6 +94,7 @@ const footerLinks = [
     links: [
       {
         name: "Contact Us",
+        href: "/contact",
       },
     ],
   },
@@ -89,16 +103,18 @@ const footerLinks = [
 const Footer = () => {
   const t = useTranslations();
 
-  const matchesSm = useMediaQuery("(max-width: 48em)")
+  const matchesSm = useMediaQuery("(max-width: 48em)");
 
   return (
     <Paper bg="black" py={40} radius={0}>
       <Container size="xl">
         <Grid w="100%" gutter={0}>
-          <Grid.Col span={{
-            base: 12,
-            sm: 4
-          }}>
+          <Grid.Col
+            span={{
+              base: 12,
+              sm: 4,
+            }}
+          >
             <Stack justify="space-between">
               <Stack gap={4}>
                 <Group justify="flex-start">
@@ -150,21 +166,28 @@ const Footer = () => {
             </Stack>
           </Grid.Col>
           {footerLinks.map((links, i) => (
-            <Grid.Col key={`links-${i}`} span={{
-              base: 12,
-              xs: 6,
-              sm: 2
-            }}>
-              <Stack mt={matchesSm ? 20 :0}>
+            <Grid.Col
+              key={`links-${i}`}
+              span={{
+                base: 12,
+                xs: 6,
+                sm: 2,
+              }}
+            >
+              <Stack mt={matchesSm ? 20 : 0}>
                 <Text fw={500} c="white">
                   {t(links.label)}
                 </Text>
 
                 <Stack gap={6} align="flex-start">
                   {links.links.map((link, j) => (
-                    <Anchor key={`link-${i}-${j}`} size="sm" c="gray.6">
+                    <Link
+                      key={`link-${i}-${j}`}
+                      href={link.href}
+                      style={{ fontSize: 14, color: "var(--mantine-color-gray-6)", textDecoration: "none" }}
+                    >
                       {t(link.name)}
-                    </Anchor>
+                    </Link>
                   ))}
                 </Stack>
               </Stack>

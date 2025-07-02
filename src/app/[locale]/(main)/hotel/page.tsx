@@ -4,44 +4,44 @@ import Blogs from "@/components/CommonElements/Blog";
 import Campaigns from "@/components/CommonElements/Campaigns";
 import FAQ from "@/components/CommonElements/FAQ";
 import SearchHistory from "@/components/CommonElements/SearchHistory";
-import FlightTickets from "@/components/FlightPageElements/FlightTickets";
-import PopularCities from "@/components/FlightPageElements/PopularCities";
+import MostVisitedDestinations from "@/components/HotelPageElements/MostVisitedDestinations";
+import SelectedHotels from "@/components/HotelPageElements/SelectedHotels";
 import SearchArea from "@/components/SearchArea";
 import { Stack } from "@mantine/core";
 import { useTranslations } from "next-intl";
 
-const FlightSearch = () => {
+const HotelPage = () => {
   const t = useTranslations();
 
   return (
-    <Stack>
+    <Stack gap={0}>
       <SearchArea />
-      <PopularCities />
-      <FlightTickets />
-      <Campaigns tabs={["flight"]} />
+      <SelectedHotels />
+      <MostVisitedDestinations />
+      <Campaigns tabs={["hotel"]} />
       <Blogs />
       <FAQ
         items={[
           {
-            question: "NTT GO, en uygun uçak bileti fiyatlarını nasıl sunuyor?",
+            question: "NTT GO en uygun otel fiyatlarını nasıl sunuyor?",
             answer:
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, temporibus corporis, sapiente, repudiandae a ex debitis nostrum possimus culpa excepturi fugiat laboriosam. Voluptatem dolores at debitis rerum laborum facilis mollitia?",
           },
           {
-            question: "NTT GO, işlemlerimin güvenliğini nasıl sağlıyor?",
+            question: "NTT GO’da otel rezervasyonumu nasıl yapabilirim?",
             answer:
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, temporibus corporis, sapiente, repudiandae a ex debitis nostrum possimus culpa excepturi fugiat laboriosam. Voluptatem dolores at debitis rerum laborum facilis mollitia?",
           },
           {
-            question: "NTT GO’da aradığım tüm havayolları ve tüm uçuşları bulabilir miyim?",
+            question: "NTT GO'da yurt dışı otel rezervasyonu yapabilir miyim?",
             answer:
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, temporibus corporis, sapiente, repudiandae a ex debitis nostrum possimus culpa excepturi fugiat laboriosam. Voluptatem dolores at debitis rerum laborum facilis mollitia?",
           },
         ]}
       />
-      <SearchHistory tabs={["flight"]} />
+      <SearchHistory tabs={["hotel"]} />
     </Stack>
   );
 };
 
-export default FlightSearch;
+export default HotelPage;

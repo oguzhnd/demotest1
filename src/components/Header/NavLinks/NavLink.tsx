@@ -2,7 +2,7 @@ import React, { FC, useEffect, useMemo } from "react";
 import { NavLinkProps } from ".";
 import { Anchor, Button } from "@mantine/core";
 import { useTranslations } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 
 import classes from "../Header.module.css";
 import { useHover } from "@mantine/hooks";
@@ -26,16 +26,15 @@ const NavLink: FC<NavLinkProps> = ({ label, path, anchorProps }) => {
   }, [isActive, hovered]);
 
   return (
-    <Anchor
+    <Link
       ref={ref}
-      c="dark"
-      size="compact-md"
-      variant="transparent"
-      onClick={() => push(path)}
-      {...anchorProps}
+      style={{ textDecoration: "none", color: "var(--mantine-color-dark-7)" }}
+      href={path}
+      // onClick={() => push(path)}
+      // {...anchorProps}
     >
       {t(label)}
-    </Anchor>
+    </Link>
   );
 };
 

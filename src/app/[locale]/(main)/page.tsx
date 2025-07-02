@@ -1,6 +1,8 @@
 "use client";
 
 import Blogs from "@/components/CommonElements/Blog";
+import Campaigns from "@/components/CommonElements/Campaigns";
+import SearchHistory from "@/components/CommonElements/SearchHistory";
 import MostVisitedDestinations from "@/components/HotelPageElements/MostVisitedDestinations";
 import SelectedHotels from "@/components/HotelPageElements/SelectedHotels";
 import SearchArea from "@/components/SearchArea";
@@ -13,9 +15,9 @@ const HomePage = () => {
   return (
     <Stack gap={0}>
       <SearchArea />
-      <SelectedHotels />
-      <MostVisitedDestinations />
+      <Campaigns />
       <Blogs />
+      <SearchHistory />
     </Stack>
   );
 };

@@ -134,7 +134,7 @@ const HotelListCard: FC<{
 
           <Group w="100%" align="flex-end" justify="space-between">
             <Stack gap={0}>
-              {hotel.hotelBoardGroups.split(",").map((board, i) => (
+              {hotel.hotelBoardGroups.split(",").slice(0, 3).map((board, i) => (
                 <Text key={`board-${i}`} size="xs" fw={500} c="green">
                   {board}
                 </Text>
