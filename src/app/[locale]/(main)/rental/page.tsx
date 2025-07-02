@@ -3,6 +3,7 @@
 import Blogs from "@/components/CommonElements/Blog";
 import Campaigns from "@/components/CommonElements/Campaigns";
 import FAQ from "@/components/CommonElements/FAQ";
+import Links from "@/components/CommonElements/Links";
 import SearchHistory from "@/components/CommonElements/SearchHistory";
 import PopularAirports from "@/components/RentalPageElements/PopularAirports";
 import PopularLocations from "@/components/RentalPageElements/PopularLocations";
@@ -20,6 +21,7 @@ const RentalSearch = () => {
       <PopularAirports />
       <Campaigns tabs={["rental"]} />
       <Blogs />
+      <Links />
       <FAQ
         items={[
           {

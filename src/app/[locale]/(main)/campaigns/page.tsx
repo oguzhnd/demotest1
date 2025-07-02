@@ -1,9 +1,18 @@
-import React from 'react'
+"use client"
 
-const Campaigns = () => {
+import Campaigns from "@/components/CommonElements/Campaigns";
+import { Container, Stack, Text } from "@mantine/core";
+import { useTranslations } from "next-intl";
+import React from "react";
+
+const CampaignsPage = () => {
+  const t = useTranslations();
+
   return (
-    <div>Campaigns</div>
-  )
-}
+    <Container size="xl" w="100%" py={20}>
+      <Campaigns seeAll />
+    </Container>
+  );
+};
 
-export default Campaigns
+export default CampaignsPage;

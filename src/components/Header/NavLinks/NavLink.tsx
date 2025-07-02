@@ -28,7 +28,10 @@ const NavLink: FC<NavLinkProps> = ({ label, path, anchorProps }) => {
   return (
     <Link
       ref={ref}
-      style={{ textDecoration: "none", color: "var(--mantine-color-dark-7)" }}
+      style={{
+        textDecoration: "none",
+        color: `var(--mantine-color-${anchorProps?.c || "dark"}-7)`,
+      }}
       href={path}
       // onClick={() => push(path)}
       // {...anchorProps}

@@ -54,7 +54,7 @@ const Header = () => {
         <MobileDrawer />
         <ActionIcon
           size="lg"
-          hiddenFrom="md"
+          hiddenFrom="lg"
           variant="subtle"
           color="dark"
           onClick={() => openDrawer("mobileDrawer")}
@@ -64,7 +64,7 @@ const Header = () => {
 
         <QueryTransactionModal />
 
-        <Stack visibleFrom="md" h="100%" gap={6} align="center">
+        <Stack visibleFrom="lg" h="100%" gap={6} align="center">
           <Group gap={0} wrap="nowrap">
             <svg
               width="40"

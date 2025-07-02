@@ -3,6 +3,7 @@
 import Blogs from "@/components/CommonElements/Blog";
 import Campaigns from "@/components/CommonElements/Campaigns";
 import FAQ from "@/components/CommonElements/FAQ";
+import Links from "@/components/CommonElements/Links";
 import SearchHistory from "@/components/CommonElements/SearchHistory";
 import MostVisitedDestinations from "@/components/HotelPageElements/MostVisitedDestinations";
 import SelectedHotels from "@/components/HotelPageElements/SelectedHotels";
@@ -20,6 +21,7 @@ const HotelPage = () => {
       <MostVisitedDestinations />
       <Campaigns tabs={["hotel"]} />
       <Blogs />
+      <Links />
       <FAQ
         items={[
           {

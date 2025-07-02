@@ -3,6 +3,7 @@
 import Blogs from "@/components/CommonElements/Blog";
 import Campaigns from "@/components/CommonElements/Campaigns";
 import FAQ from "@/components/CommonElements/FAQ";
+import Links from "@/components/CommonElements/Links";
 import SearchHistory from "@/components/CommonElements/SearchHistory";
 import FlightTickets from "@/components/FlightPageElements/FlightTickets";
 import PopularCities from "@/components/FlightPageElements/PopularCities";
@@ -20,6 +21,7 @@ const FlightSearch = () => {
       <FlightTickets />
       <Campaigns tabs={["flight"]} />
       <Blogs />
+      <Links />
       <FAQ
         items={[
           {

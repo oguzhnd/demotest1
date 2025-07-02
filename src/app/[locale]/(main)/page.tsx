@@ -2,6 +2,8 @@
 
 import Blogs from "@/components/CommonElements/Blog";
 import Campaigns from "@/components/CommonElements/Campaigns";
+import FAQ from "@/components/CommonElements/FAQ";
+import Links from "@/components/CommonElements/Links";
 import SearchHistory from "@/components/CommonElements/SearchHistory";
 import MostVisitedDestinations from "@/components/HotelPageElements/MostVisitedDestinations";
 import SelectedHotels from "@/components/HotelPageElements/SelectedHotels";
@@ -15,9 +17,31 @@ const HomePage = () => {
   return (
     <Stack gap={0}>
       <SearchArea />
+      <SelectedHotels />
+      <MostVisitedDestinations />
       <Campaigns />
       <Blogs />
-      <SearchHistory />
+      <Links />
+      <FAQ
+        items={[
+          {
+            question: "NTT GO en uygun otel fiyatlarını nasıl sunuyor?",
+            answer:
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, temporibus corporis, sapiente, repudiandae a ex debitis nostrum possimus culpa excepturi fugiat laboriosam. Voluptatem dolores at debitis rerum laborum facilis mollitia?",
+          },
+          {
+            question: "NTT GO’da otel rezervasyonumu nasıl yapabilirim?",
+            answer:
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, temporibus corporis, sapiente, repudiandae a ex debitis nostrum possimus culpa excepturi fugiat laboriosam. Voluptatem dolores at debitis rerum laborum facilis mollitia?",
+          },
+          {
+            question: "NTT GO'da yurt dışı otel rezervasyonu yapabilir miyim?",
+            answer:
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, temporibus corporis, sapiente, repudiandae a ex debitis nostrum possimus culpa excepturi fugiat laboriosam. Voluptatem dolores at debitis rerum laborum facilis mollitia?",
+          },
+        ]}
+      />
+      <SearchHistory /> 
     </Stack>
   );
 };
