@@ -1,5 +1,5 @@
 import { useFlightStore } from "@/store/products/flight";
-import { localeDateFormat } from "@/utils/tools";
+import { isTcIdentity, localeDateFormat } from "@/utils/tools";
 import {
   Button,
   Checkbox,
@@ -24,6 +24,7 @@ import {
   IconUsers,
   IconX,
 } from "@tabler/icons-react";
+import moment from "moment";
 import { useTranslations } from "next-intl";
 import React, { FC, useState } from "react";
 
@@ -128,12 +129,18 @@ const PassengerInformations: FC<{
   const { bookingFlight, returnFlight } = useFlightStore();
 
   const form = useForm<PassengerType>({
+    validateInputOnBlur: true,
+    
     initialValues: {
       name: "",
       surname: "",
       gender: "male",
       birthDate: null,
       identityNumber: "",
+    },
+    validate: {
+      identityNumber: (value) =>
+        isTcIdentity(value) ? null : t("Invalid identity number"),
     },
   });
 
@@ -220,6 +227,11 @@ const PassengerInformations: FC<{
             <DatePickerInput
               readOnly={isSaved}
               label={t("Birth Date")}
+              maxDate={
+                type === "adult"
+                  ? moment(new Date()).subtract(18, "y").toDate()
+                  : new Date()
+              }
               {...form.getInputProps("birthDate")}
             />
           </Grid.Col>
@@ -232,6 +244,7 @@ const PassengerInformations: FC<{
             <TextInput
               readOnly={isSaved}
               label={t("TC Identity Number")}
+              maxLength={11}
               {...form.getInputProps("identityNumber")}
             />
           </Grid.Col>

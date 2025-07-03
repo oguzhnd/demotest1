@@ -9,6 +9,7 @@ import RentalNotFound from "@/components/RentalPageElements/RentalNotFound";
 import SearchArea from "@/components/SearchArea";
 import { convertDate } from "@/components/SearchArea/Contents/Flight";
 import { useRouter } from "@/i18n/navigation";
+import { useModalManager } from "@/store/managers/modal";
 import { useFlightStore } from "@/store/products/flight";
 import { RentalType, useRentalStore } from "@/store/products/rental";
 import { useSearchStore } from "@/store/search";
@@ -100,8 +101,9 @@ const RentalList = () => {
   } = useRentalStore();
 
   const { rentalSearch } = useSearchStore();
+  const { closeModal } = useModalManager();
 
-  const [loading, startLoading, stopLoading] = useLoading(true);
+  const [loading, startLoading, stopLoading] = useLoading();
   const [opened, setOpened] = useState(false);
 
   const [currentRentalList, rentalListHandlers] = useListState<RentalType>([]);
@@ -136,6 +138,8 @@ const RentalList = () => {
 
   const checkFlightList = useCallback(async () => {
     startLoading();
+    closeModal("rentalLoadingModal");
+
     try {
       setBookingRental(undefined);
 

@@ -19,6 +19,7 @@ import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { useLoading } from "@/utils/hooks/useLoading";
 import { useSearchStore } from "@/store/search";
+import { useModalManager } from "@/store/managers/modal";
 
 export interface RentalSearchForm {
   differentDropoff: false;
@@ -52,6 +53,7 @@ const RentalSearch: FC<{
   const [inputsLoading, setInputsLoading] = useState(true);
   const [loading, startLoading, stopLoading] = useLoading();
 
+  const { openModal } = useModalManager();
   const { rentalSearch, setSearch } = useSearchStore();
 
   const form = useForm<RentalSearchForm>({
@@ -78,9 +80,9 @@ const RentalSearch: FC<{
 
   const handleSubmit = useCallback(
     async (values: RentalSearchForm) => {
+      startLoading();
+      openModal("rentalLoadingModal");
       try {
-        startLoading();
-
         console.log(values);
 
         setSearch("rentalSearch", values);

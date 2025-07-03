@@ -41,6 +41,7 @@ const Header = () => {
   const { openModal } = useModalManager();
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
+  const matchesMd = useMediaQuery("(max-width: 64em)");
 
   return (
     <Container size="xl" w="100%" h="100%">
@@ -49,7 +50,7 @@ const Header = () => {
           <Image src="/ntt_logo_dark.png" h={matchesSm ? 36 : 48} w="auto" />
         </Link>
 
-        {!matchesSm && <NavLinks />}
+        {!matchesMd && <NavLinks />}
 
         <MobileDrawer />
         <ActionIcon

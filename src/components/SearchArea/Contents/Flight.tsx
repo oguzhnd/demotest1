@@ -23,6 +23,7 @@ import { isDate, isUndefined } from "lodash";
 import { useLoading } from "@/utils/hooks/useLoading";
 import { useFlightStore } from "@/store/products/flight";
 import { useSearchStore } from "@/store/search";
+import { useModalManager } from "@/store/managers/modal";
 
 export interface FlightSearchFormProps {
   type: "one-way" | "round-trip";
@@ -62,6 +63,7 @@ const FlightSearch: FC<{
   const { push } = useRouter();
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
+  const { openModal } = useModalManager();
   const { setFlightList, setFilterOpt } = useFlightStore();
   const { flightSearch, setSearch } = useSearchStore();
 
@@ -91,9 +93,9 @@ const FlightSearch: FC<{
 
   const handleSubmit = useCallback(
     async (values: FlightSearchFormProps) => {
+      startLoading();
+      openModal("flightLoadingModal");
       try {
-        startLoading();
-
         console.log(values);
 
         const val = {

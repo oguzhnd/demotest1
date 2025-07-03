@@ -99,7 +99,7 @@ const PickupLocation: FC<{
       }}
       onClick={() => setOpened((o) => !o)}
     >
-      <Text size="sm" c={compact ? "gray.7" : undefined}>
+      <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
         {label && t(label)}
       </Text>
       {!compact && (

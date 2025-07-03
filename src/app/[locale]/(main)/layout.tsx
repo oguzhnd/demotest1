@@ -3,6 +3,9 @@
 import AccountModal from "@/components/AccountModal";
 import LoginWarning from "@/components/CommonElements/LoginWarning";
 import Footer from "@/components/Footer";
+import FlightLoadingModal from "@/components/GlobalLoadings/FlightLoadingModal";
+import HotelLoadingModal from "@/components/GlobalLoadings/HotelLoadingModal";
+import RentalLoadingModal from "@/components/GlobalLoadings/RentalLoadingModal";
 import Header from "@/components/Header";
 import MobileHeader from "@/components/Header/Drawer";
 import PromoBanner from "@/components/Header/PromoBanner";
@@ -47,6 +50,10 @@ const MainLayout: FC<{
 
           <LoginWarning />
           <Footer />
+
+          <HotelLoadingModal />
+          <FlightLoadingModal />
+          <RentalLoadingModal />
 
           <Affix position={{ bottom: 20, right: 20 }}>
             <Stack gap="xs">

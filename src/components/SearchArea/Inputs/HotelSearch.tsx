@@ -151,6 +151,7 @@ const HotelSeachInput: FC<{
             ? "gray.5"
             : "gray.7"
         }
+        truncate
       >
         {(compact
           ? form.getValues().hotel?.name

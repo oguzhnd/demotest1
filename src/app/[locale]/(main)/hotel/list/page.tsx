@@ -13,6 +13,7 @@ import ShowOnMap from "@/components/HotelPageElements/ShowOnMap";
 import SearchArea from "@/components/SearchArea";
 import { convertDate } from "@/components/SearchArea/Contents/Flight";
 import { useRouter } from "@/i18n/navigation";
+import { useModalManager } from "@/store/managers/modal";
 import { HotelType, useHotelStore } from "@/store/products/hotel";
 import { useSearchStore } from "@/store/search";
 import { useLoading } from "@/utils/hooks/useLoading";
@@ -35,7 +36,10 @@ import { useLocale, useTranslations } from "next-intl";
 import { join } from "path";
 import { useCallback, useEffect, useState } from "react";
 
-const filterHotelData = (hotel: HotelType, filters: HotelListFiltersForm): boolean => {
+const filterHotelData = (
+  hotel: HotelType,
+  filters: HotelListFiltersForm
+): boolean => {
   if (filters.boardGroups.length > 0) {
     let result = true;
     const boardGroups = hotel.hotelBoardGroups.split(",");
@@ -88,6 +92,7 @@ const HotelList = () => {
     setHotelList,
   } = useHotelStore();
   const { hotelSearch } = useSearchStore();
+  const { closeModal } = useModalManager();
 
   const [loading, startLoading, stopLoading] = useLoading();
   const [opened, setOpened] = useState(false);
@@ -115,12 +120,14 @@ const HotelList = () => {
     stopLoading();
   }, [hotelList, hotelFilters, limit]);
 
-  const checkFlightList = useCallback(async () => {
+  const checkHotelList = useCallback(async () => {
     if (loading) {
       return true;
     }
 
     startLoading();
+    closeModal("hotelLoadingModal")
+
     try {
       setBookingHotel(undefined);
 
@@ -164,7 +171,7 @@ const HotelList = () => {
   }, [hotelFilters, hotelList]);
 
   useEffect(() => {
-    checkFlightList();
+    checkHotelList();
   }, [hotelSearch]);
 
   return (

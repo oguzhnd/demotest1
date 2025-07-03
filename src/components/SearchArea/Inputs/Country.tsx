@@ -65,7 +65,7 @@ const CountrySelect: FC<{
       style={{ borderRight: "1px solid var(--mantine-color-gray-3)" }}
       onClick={() => setOpened((o) => !o)}
     >
-      <Text size="sm" c={compact ? "gray.7" : undefined}>
+      <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
         {label && t(label)}
       </Text>
       {!compact && (
@@ -73,7 +73,7 @@ const CountrySelect: FC<{
           Türkiye
         </Text>
       )}
-      <Text size="sm" c={compact ? "dark.9" : "gray.7"}>
+      <Text size="sm" c={compact ? "dark.9" : "gray.7"} truncate>
         TR
       </Text>
     </Stack>

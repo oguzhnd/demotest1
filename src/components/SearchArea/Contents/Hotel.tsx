@@ -17,6 +17,7 @@ import { useHotelStore } from "@/store/products/hotel";
 import { xiorInstance } from "@/utils/xior";
 import { useLoading } from "@/utils/hooks/useLoading";
 import { isNull, isUndefined, merge } from "lodash";
+import { useModalManager } from "@/store/managers/modal";
 
 export interface HotelSearchFormProps {
   hotel: SearchHotelType | undefined;
@@ -42,6 +43,7 @@ const HotelSearch: FC<{
   const [inputsLoading, setInputsLoading] = useState(true);
   const [loading, startLoading, stopLoading] = useLoading();
 
+  const { openModal } = useModalManager();
   const { hotelSearch, setSearch } = useSearchStore();
   const { setBookingHotel } = useHotelStore();
 
@@ -77,6 +79,7 @@ const HotelSearch: FC<{
   const handleSubmit = useCallback(
     async (values: HotelSearchFormProps) => {
       startLoading();
+      openModal("hotelLoadingModal");
       try {
         console.log(values);
 

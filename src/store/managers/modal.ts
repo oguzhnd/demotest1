@@ -21,6 +21,15 @@ export const useModalManager = create<ModalManager>((set, get) => ({
       opened: false,
     },
     queryTransaction: {
+      opened: false,
+    },
+    hotelLoadingModal: {
+      opened: false,
+    },
+    flightLoadingModal: {
+      opened: false
+    },
+    rentalLoadingModal: {
       opened: false
     }
   },

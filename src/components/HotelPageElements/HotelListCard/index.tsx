@@ -19,7 +19,7 @@ import {
   IconWaterpolo,
   IconX,
 } from "@tabler/icons-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import React, { FC } from "react";
 
 import classes from "../Hotel.module.css";
@@ -32,6 +32,7 @@ const HotelListCard: FC<{
   hotel: HotelType;
   style?: MantineStyleProp;
 }> = ({ onSelect, onClose, hotel, style }) => {
+  const t = useTranslations();
   const locale = useLocale();
 
   const { push } = useRouter();
@@ -48,7 +49,7 @@ const HotelListCard: FC<{
       className={classes.hotelListCard}
       style={style}
     >
-      <Parent gap={0} wrap="nowrap">
+      <Parent pos="relative" gap={0} wrap="nowrap" align="stretch" h="100%">
         {/* <Carousel w={matchesSm ? "100%" : 300}>
           {Array(3)
             .fill("")
@@ -65,22 +66,26 @@ const HotelListCard: FC<{
             ))}
         </Carousel> */}
 
-        <Image
-          miw={matchesSm ? "100%" : 300}
+        <Box
+          h="auto"
           w={matchesSm ? "100%" : 300}
-          h={200}
-          src={hotel.image_key_full}
-        />
+          mah={270}
+          style={{ flexShrink: 0 }}
+        >
+          <Image
+          h="100%"
+            // miw={matchesSm ? "100%" : 300}
+            // w={matchesSm ? "100%" : 300}
+            // h="100%"
+            // mih={200}
+            src={hotel.image_key_full}
+          />
+        </Box>
         <Stack
           w="100%"
-          h={matchesSm ? undefined : 200}
+          mih={matchesSm ? undefined : 200}
           p="md"
           justify="space-between"
-          onClick={(e) => {
-            if ((e.target as any).id !== "ignore") {
-              onSelect();
-            }
-          }}
         >
           <Stack gap={8}>
             <Stack gap={0}>
@@ -134,11 +139,14 @@ const HotelListCard: FC<{
 
           <Group w="100%" align="flex-end" justify="space-between">
             <Stack gap={0}>
-              {hotel.hotelBoardGroups.split(",").slice(0, 3).map((board, i) => (
-                <Text key={`board-${i}`} size="xs" fw={500} c="green">
-                  {board}
-                </Text>
-              ))}
+              {hotel.hotelBoardGroups
+                .split(",")
+                .slice(0, 3)
+                .map((board, i) => (
+                  <Text key={`board-${i}`} size="xs" fw={500} c="green">
+                    {board}
+                  </Text>
+                ))}
               <Group mt={4} gap={4}>
                 <Text
                   size="xs"
@@ -179,6 +187,9 @@ const HotelListCard: FC<{
                 )}{" "}
                 TRY
               </Text>
+              <Button mt={8} onClick={() => onSelect?.()} radius="xl">
+                {t("See the rooms")}
+              </Button>
             </Stack>
           </Group>
         </Stack>

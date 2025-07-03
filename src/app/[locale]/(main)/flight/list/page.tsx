@@ -10,6 +10,7 @@ import ReservationNotice from "@/components/FlightPageElements/ReservationNotice
 import SearchArea from "@/components/SearchArea";
 import { convertDate } from "@/components/SearchArea/Contents/Flight";
 import { useRouter } from "@/i18n/navigation";
+import { useModalManager } from "@/store/managers/modal";
 import { FlightType, useFlightStore } from "@/store/products/flight";
 import { useSearchStore } from "@/store/search";
 import { useLoading } from "@/utils/hooks/useLoading";
@@ -135,6 +136,7 @@ const FlightList = () => {
   } = useFlightStore();
 
   const { flightSearch } = useSearchStore();
+  const { closeModal } = useModalManager();
 
   const [loading, startLoading, stopLoading] = useLoading();
   const [opened, setOpened] = useState(false);
@@ -166,6 +168,7 @@ const FlightList = () => {
     list = filter(list, (e) => filterFlightData(e, flightFilters));
     setIsMore(list.length > limit);
 
+    console.log("1")
     flightListHandlers.setState(list);
     stopLoading();
   }, [
@@ -182,8 +185,10 @@ const FlightList = () => {
       return true;
     }
 
+    console.log("3")
     startLoading();
-    
+    closeModal("flightLoadingModal");
+
     try {
       setDepartureSelected(false);
       setBookingFlight(undefined);
@@ -214,6 +219,7 @@ const FlightList = () => {
     } catch (err) {
       console.error(err);
     } finally {
+    console.log("1")
       stopLoading();
     }
   }, [xiorInstance, flightSearch, loading]);
@@ -250,6 +256,8 @@ const FlightList = () => {
   useEffect(() => {
     checkFlightList();
   }, [flightSearch]);
+
+  console.log(loading)
 
   return (
     <Stack>
@@ -295,11 +303,9 @@ const FlightList = () => {
                   </Button>
                 </Group>
               </ScrollArea>
-
               <Text size="lg" fw={500}>
                 {currentFlightList.length} {t("Flights Found")}
               </Text>
-
               {departureSelected && bookingFlight && (
                 <Paper p="sm" bg="gray.0" withBorder radius="md">
                   <Stack gap={8}>
@@ -334,7 +340,6 @@ const FlightList = () => {
                 </Paper>
               )}
               {departureSelected && bookingFlight && <Divider />}
-
               {departureSelected && bookingFlight && (
                 <Group>
                   <Text fw={500}>{t("Return Flight")}</Text>
@@ -350,7 +355,6 @@ const FlightList = () => {
                   </Group> */}
                 </Group>
               )}
-
               {loading
                 ? Array(4)
                     .fill("")
@@ -366,12 +370,14 @@ const FlightList = () => {
                         }
                       />
                     ))}
-
               {!loading && isMore && currentFlightList.length > 1 && (
                 <FlightLoading ref={ref} />
               )}
+              {`${loading}`},{`${currentFlightList.length}`},{" "}
 
-              {(currentFlightList.length === 0 && !loading) && <FlightNotFound />}
+              {`${currentFlightList.length === 0 && !loading}`}
+
+              {currentFlightList.length === 0 && !loading && <FlightNotFound />}
             </Stack>
           </Grid.Col>
         </Grid>

@@ -64,16 +64,16 @@ const RoomsAndGuestsInput: FC<{
           "1px solid var(--mantine-color-gray-3)",
       }}
     >
-      <Text size="sm" c={compact ? "gray.7" : undefined}>
+      <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
         {t("Rooms & Guests")}
       </Text>
       {!compact && (
-        <Text size="xl" fw={700}>
+        <Text size="xl" fw={700} truncate>
           {totalGuest} {t("Guest")}
         </Text>
       )}
-      <Text size="sm" c={compact ? "dark.9" : "gray.7"}>
-        {form.getValues().rooms.length} {t("Room")}
+      <Text size="sm" c={compact ? "dark.9" : "gray.7"} truncate>
+        {compact && `${totalGuest} ${t("Guest")},`} {form.getValues().rooms.length} {t("Room")}
       </Text>
     </Stack>
   );

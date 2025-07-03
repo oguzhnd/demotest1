@@ -1,3 +1,4 @@
+import { isTcIdentity } from "@/utils/tools";
 import {
   Button,
   Checkbox,
@@ -12,7 +13,9 @@ import {
   TextInput,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
+import { useForm } from "@mantine/form";
 import { IconInfoCircle } from "@tabler/icons-react";
+import moment from "moment";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { IMaskInput } from "react-imask";
@@ -20,9 +23,25 @@ import { IMaskInput } from "react-imask";
 const DriverInformations = () => {
   const t = useTranslations();
 
-  const [identityInformation, setIdentityInformation] = useState<
-    "tcIdentity" | "passport"
-  >("tcIdentity");
+  const form = useForm({
+    validateInputOnBlur: true,
+
+    initialValues: {
+      name: "",
+      surname: "",
+      birthDate: null,
+      identityInformation: "tcIdentity",
+      identityNumber: "",
+    },
+    validate: {
+      identityNumber: (v, r) =>
+        r.identityInformation === "tcIdentity"
+          ? isTcIdentity(v)
+            ? null
+            : true
+          : null,
+    },
+  });
 
   return (
     <Stack>
@@ -40,7 +59,7 @@ const DriverInformations = () => {
                 md: 3,
               }}
             >
-              <TextInput label={t("Name")} />
+              <TextInput label={t("Name")} {...form.getInputProps("name")} />
             </Grid.Col>
             <Grid.Col
               span={{
@@ -48,7 +67,10 @@ const DriverInformations = () => {
                 md: 3,
               }}
             >
-              <TextInput label={t("Surname")} />
+              <TextInput
+                label={t("Surname")}
+                {...form.getInputProps("surname")}
+              />
             </Grid.Col>
             <Grid.Col
               span={{
@@ -56,7 +78,11 @@ const DriverInformations = () => {
                 md: 2,
               }}
             >
-              <DatePickerInput label={t("Birth Date")} />
+              <DatePickerInput
+                label={t("Birth Date")}
+                maxDate={moment(new Date()).subtract(18, "y").toDate()}
+                {...form.getInputProps("birthDate")}
+              />
             </Grid.Col>
             <Grid.Col
               span={{
@@ -67,10 +93,7 @@ const DriverInformations = () => {
               <Group wrap="nowrap" align="flex-end" gap={4}>
                 <Select
                   w={140}
-                  value={identityInformation}
-                  onChange={(v) =>
-                    setIdentityInformation(v as "tcIdentity" | "passport")
-                  }
+                  {...form.getInputProps("identityInformation")}
                   data={[
                     {
                       value: "tcIdentity",
@@ -83,13 +106,13 @@ const DriverInformations = () => {
                   ]}
                   label={t("Identity Information")}
                 />
-                <TextInput />
+                <TextInput {...form.getInputProps("identityNumber")} />
               </Group>
             </Grid.Col>
           </Grid>
         </Stack>
       </Paper>
-      {identityInformation === "tcIdentity" && (
+      {form.getValues().identityInformation === "tcIdentity" && (
         <Paper withBorder p="md" bg="green.0">
           <Stack>
             <Text size="sm" fw={500}>
@@ -102,7 +125,10 @@ const DriverInformations = () => {
                   md: 3,
                 }}
               >
-                <TextInput label={t("Identity Information")} />
+                <TextInput
+                  label={t("Identity Information")}
+                  {...form.getInputProps("identityNumber")}
+                />
               </Grid.Col>
               <Grid.Col
                 span={{
@@ -110,7 +136,11 @@ const DriverInformations = () => {
                   md: 3,
                 }}
               >
-                <DatePickerInput label={t("Birth Date")} />
+                <DatePickerInput
+                  label={t("Birth Date")}
+                  maxDate={moment(new Date()).subtract(18, "y").toDate()}
+                  {...form.getInputProps("birthDate")}
+                />
               </Grid.Col>
               <Grid.Col
                 span={{
@@ -118,7 +148,7 @@ const DriverInformations = () => {
                   md: 3,
                 }}
               >
-                <DatePickerInput label={t("Driver's License Issuance Date")} />
+                <DatePickerInput label={t("Driver's License Issuance Date")} maxDate={new Date()} />
               </Grid.Col>
             </Grid>
             <Text size="sm" c="gray">

@@ -11,6 +11,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
+import { isEmail, useForm } from "@mantine/form";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import React from "react";
@@ -18,6 +19,20 @@ import { IMaskInput } from "react-imask";
 
 const ContactInformations = () => {
   const t = useTranslations();
+
+  const form = useForm({
+    validateInputOnBlur: true,
+
+    initialValues: {
+      email: "",
+      phoneCode: "+90",
+      phoneNumber: "",
+    },
+
+    validate: {
+      email: isEmail(t("Invalid e-mail"))
+    }
+  });
 
   return (
     <Paper withBorder p="md">
@@ -34,7 +49,7 @@ const ContactInformations = () => {
               sm: 3,
             }}
           >
-            <TextInput label={t("E-Mail")} />
+            <TextInput label={t("E-Mail")} {...form.getInputProps("email")} />
           </Grid.Col>
           <Grid.Col
             span={{
@@ -51,8 +66,13 @@ const ContactInformations = () => {
                 }}
                 label={t("Country Code")}
                 data={["+1", "+90"]}
+                {...form.getInputProps("phoneCode")}
               />
-              <Input.Wrapper w="100%" label={t("Phone Number")}>
+              <Input.Wrapper
+                w="100%"
+                label={t("Phone Number")}
+                {...form.getInputProps("phoneNumber")}
+              >
                 <Input component={IMaskInput} mask="000 000 00 00" />
               </Input.Wrapper>
             </Group>

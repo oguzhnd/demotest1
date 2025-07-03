@@ -128,7 +128,7 @@ const AirportInput: FC<{
       }}
       onClick={() => setOpened((o) => !o)}
     >
-      <Text size="sm" c={compact ? "gray.7" : undefined}>
+      <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
         {label && t(label)}
       </Text>
       {!compact && (
@@ -136,6 +136,7 @@ const AirportInput: FC<{
           size="xl"
           fw={!title ? 600 : 700}
           c={!title ? "gray.5" : undefined}
+          truncate
         >
           {title || t("City or Airport")}
         </Text>

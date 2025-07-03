@@ -56,11 +56,11 @@ const FlightDatePicker: FC<{
           }}
           onClick={() => setOpened((o) => !o)}
         >
-          <Text size="sm" c={compact ? "gray.7" : undefined}>
+          <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
             {t("Departure")}
           </Text>
           {!compact && (
-            <Text size="xl" fw={700}>
+            <Text size="xl" fw={700} truncate>
               {getValidDate(
                 form.getValues()?.departureDate
               )?.toLocaleDateString(locale, {
@@ -70,7 +70,7 @@ const FlightDatePicker: FC<{
               })}
             </Text>
           )}
-          <Text size="sm" c={compact ? "dark" : "gray.7"}>
+          <Text size="sm" c={compact ? "dark" : "gray.7"} truncate>
             {compact
               ? getValidDate(
                   form.getValues()?.departureDate
@@ -114,7 +114,7 @@ const FlightDatePicker: FC<{
           }}
         >
           {form.getValues().type === "round-trip" && (
-            <Text size="sm" c={compact ? "gray.7" : undefined}>
+            <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
               {t("Return")}
             </Text>
           )}
@@ -127,7 +127,7 @@ const FlightDatePicker: FC<{
                 c={compact ? "gray.7" : "gray.7"}
               >
                 <IconPlus size={compact ? 16 : 20} />
-                <Text size={compact ? "sm" : "md"} fw={500} lh={1}>
+                <Text size={compact ? "sm" : "md"} fw={500} lh={1} truncate>
                   {t("Add Return")}
                 </Text>
               </Group>
@@ -135,7 +135,7 @@ const FlightDatePicker: FC<{
           ) : (
             <>
               {!compact && (
-                <Text size="xl" fw={700}>
+                <Text size="xl" fw={700} truncate>
                   {getValidDate(
                     form.getValues()?.returnDate
                   )?.toLocaleDateString(locale, {
@@ -146,7 +146,7 @@ const FlightDatePicker: FC<{
                 </Text>
               )}
 
-              <Text size="sm" c={compact ? "dark.9" : "gray.7"}>
+              <Text size="sm" c={compact ? "dark.9" : "gray.7"} truncate>
                 {compact
                   ? getValidDate(
                       form.getValues()?.returnDate

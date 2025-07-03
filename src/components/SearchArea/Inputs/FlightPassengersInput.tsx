@@ -48,15 +48,15 @@ const FlightPassengersInput: FC<{
       py="xs"
       onClick={() => setOpened((o) => !o)}
     >
-      <Text size="sm" c={compact ? "gray.7" : undefined}>
+      <Text size="sm" c={compact ? "gray.7" : undefined}truncate>
         {t("Passengers & Class")}
       </Text>
       {!compact && (
-        <Text size="xl" fw={700}>
+        <Text size="xl" fw={700} truncate>
           {totalPassengers} Yolcu
         </Text>
       )}
-      <Text size="sm" c={compact ? "dark.9" : "gray.7"}>
+      <Text size="sm" c={compact ? "dark.9" : "gray.7"} truncate>
         {compact && `${totalPassengers} Yolcu, `}
         {form.getValues().class === "business" ? t("Business") : t("Economy")}
       </Text>

@@ -67,7 +67,7 @@ const Payment: FC<{
               sm: 3,
             }}
           >
-            <DatePickerInput label={t("Expiration Date")} />
+            <DatePickerInput label={t("Expiration Date")} minDate={new Date()} />
           </Grid.Col>
           <Grid.Col
             span={{

@@ -105,11 +105,11 @@ const CheckDatePicker: FC<{
             setOpened((o) => !o);
           }}
         >
-          <Text size="sm" c={compact ? "gray.7" : undefined}>
+          <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
             {t("Check-Out")}
           </Text>
           {!compact && (
-            <Text size="xl" fw={700}>
+            <Text size="xl" fw={700} truncate>
               {getValidDate(checkOut)?.toLocaleDateString(locale, {
                 day: "2-digit",
                 month: "short",
@@ -118,7 +118,7 @@ const CheckDatePicker: FC<{
             </Text>
           )}
 
-          <Text size="sm" c={compact ? "dark.9" : "gray.7"}>
+          <Text size="sm" c={compact ? "dark.9" : "gray.7"} truncate>
             {compact
               ? getValidDate(checkOut)?.toLocaleDateString(locale, {
                   day: "2-digit",
@@ -141,11 +141,11 @@ const CheckDatePicker: FC<{
       value={[checkIn, checkOut]}
       minDate={new Date()}
       onChange={(dates) => {
-        const date1 = getValidDate(dates[0])
-        const date2 = getValidDate(dates[1])
+        const date1 = getValidDate(dates[0]);
+        const date2 = getValidDate(dates[1]);
 
         onChange([date1, date2]);
-        
+
         if (isDate(date1) && isDate(date2)) {
           setOpened(false);
         }

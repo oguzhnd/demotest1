@@ -147,11 +147,11 @@ const RentalDatesPicker: FC<{
             setOpened((o) => !o);
           }}
         >
-          <Text size="sm" c={compact ? "gray.7" : undefined}>
+          <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
             {t("Delivery Date")}
           </Text>
           {!compact && (
-            <Text size="xl" fw={700}>
+            <Text size="xl" fw={700} truncate>
               {getValidDate(form.getValues().deliveryDate)?.toLocaleDateString(
                 locale,
                 {
@@ -163,7 +163,7 @@ const RentalDatesPicker: FC<{
             </Text>
           )}
 
-          <Text size="sm" c={compact ? "dark.9" : "gray.7"}>
+          <Text size="sm" c={compact ? "dark.9" : "gray.7"} truncate>
             {compact
               ? getValidDate(form.getValues().deliveryDate)?.toLocaleDateString(
                   locale,
@@ -202,15 +202,15 @@ const RentalDatesPicker: FC<{
           }}
           onClick={() => setOpened((o) => !o)}
         >
-          <Text size="sm" c={compact ? "gray.7" : undefined}>
+          <Text size="sm" c={compact ? "gray.7" : undefined} truncate>
             {t("Delivery Time")}
           </Text>
           {!compact ? (
-            <Text size="xl" fw={700}>
+            <Text size="xl" fw={700} truncate>
               {form.getValues().deliveryTime}
             </Text>
           ) : (
-            <Text size="sm" c="dark.9">
+            <Text size="sm" c="dark.9" truncate>
               {form.getValues().deliveryTime}
             </Text>
           )}

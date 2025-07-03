@@ -216,7 +216,9 @@ const HotelListMap = () => {
           >
             {t("Filters")}
           </Button>
-          <Text fw={500}>Paris, Fransa</Text>
+          <Text fw={500}>
+            {hotelSearch.hotel?.city}, {hotelSearch.hotel?.country}
+          </Text>
         </Group>
 
         <ActionIcon
