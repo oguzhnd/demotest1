@@ -8,9 +8,3 @@ export type CastleFeatureProps = {
 
 // @ts-ignore
 export type CastlesGeojson = FeatureCollection<Point, CastleFeatureProps>;
-
-export async function loadCastlesGeojson(): Promise<CastlesGeojson> {
-  const url = new URL("./castles.json", import.meta.url);
-
-  return await fetch(url).then((res) => res.json());
-}

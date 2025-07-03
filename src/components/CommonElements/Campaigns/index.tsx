@@ -17,7 +17,100 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useRouter } from "@/i18n/navigation";
 import { flatten, values } from "lodash";
 
-type CampaignTypes = "hotel" | "flight" | "rental";
+export type CampaignTypes = "hotel" | "flight" | "rental";
+
+export const campaigns: Record<CampaignTypes, CampaignCardProps[]> = {
+  hotel: [
+    {
+      id: "1",
+      type: "hotel",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/otel-kampanyasi-67402.webp",
+      title: "Otel rezervasyonlarında 7.500 TL'ye varan indirimi kaçırma",
+    },
+    {
+      id: "2",
+      type: "hotel",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/otel-kampanyasi-67402.webp",
+      title: "Otel rezervasyonlarında 7.500 TL'ye varan indirimi kaçırma",
+    },
+    {
+      id: "3",
+      type: "hotel",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/otel-kampanyasi-67402.webp",
+      title: "Otel rezervasyonlarında 7.500 TL'ye varan indirimi kaçırma",
+    },
+    {
+      id: "4",
+      type: "hotel",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/otel-kampanyasi-67402.webp",
+      title: "Otel rezervasyonlarında 7.500 TL'ye varan indirimi kaçırma",
+    },
+  ],
+  flight: [
+    {
+      id: "5",
+      type: "flight",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/air-arabia-67680.webp",
+      title: "Air Arabia'nın 109$'dan başlayan uçak biletlerini kaçırma!",
+    },
+    {
+      id: "6",
+      type: "flight",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/air-arabia-67680.webp",
+      title: "Air Arabia'nın 109$'dan başlayan uçak biletlerini kaçırma!",
+    },
+    {
+      id: "7",
+      type: "flight",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/air-arabia-67680.webp",
+      title: "Air Arabia'nın 109$'dan başlayan uçak biletlerini kaçırma!",
+    },
+    {
+      id: "8",
+      type: "flight",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/air-arabia-67680.webp",
+      title: "Air Arabia'nın 109$'dan başlayan uçak biletlerini kaçırma!",
+    },
+  ],
+  rental: [
+    {
+      id: "9",
+      type: "rental",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/arac-kiralama-66630.webp",
+      title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
+    },
+    {
+      id: "10",
+      type: "rental",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/arac-kiralama-66630.webp",
+      title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
+    },
+    {
+      id: "11",
+      type: "rental",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/arac-kiralama-66630.webp",
+      title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
+    },
+    {
+      id: "12",
+      type: "rental",
+      image:
+        "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/arac-kiralama-66630.webp",
+      title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
+    },
+  ],
+};
 
 const Campaigns: FC<{ tabs?: CampaignTypes[]; seeAll?: boolean }> = ({
   tabs = ["hotel", "flight", "rental"],
@@ -26,75 +119,6 @@ const Campaigns: FC<{ tabs?: CampaignTypes[]; seeAll?: boolean }> = ({
   const t = useTranslations();
 
   const { push } = useRouter();
-
-  const campaigns: Record<CampaignTypes, CampaignCardProps[]> = {
-    hotel: [
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/otel-kampanyasi-67402.webp",
-        title: "Otel rezervasyonlarında 7.500 TL'ye varan indirimi kaçırma",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/otel-kampanyasi-67402.webp",
-        title: "Otel rezervasyonlarında 7.500 TL'ye varan indirimi kaçırma",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/otel-kampanyasi-67402.webp",
-        title: "Otel rezervasyonlarında 7.500 TL'ye varan indirimi kaçırma",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/otel-kampanyasi-67402.webp",
-        title: "Otel rezervasyonlarında 7.500 TL'ye varan indirimi kaçırma",
-      },
-    ],
-    flight: [
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/air-arabia-67680.webp",
-        title: "Air Arabia'nın 109$'dan başlayan uçak biletlerini kaçırma!",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/air-arabia-67680.webp",
-        title: "Air Arabia'nın 109$'dan başlayan uçak biletlerini kaçırma!",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/air-arabia-67680.webp",
-        title: "Air Arabia'nın 109$'dan başlayan uçak biletlerini kaçırma!",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/air-arabia-67680.webp",
-        title: "Air Arabia'nın 109$'dan başlayan uçak biletlerini kaçırma!",
-      },
-    ],
-    rental: [
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/arac-kiralama-66630.webp",
-        title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/arac-kiralama-66630.webp",
-        title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/arac-kiralama-66630.webp",
-        title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
-      },
-      {
-        image:
-          "https://cdn2.enuygun.com/media/lib/1x400/uploads/image/arac-kiralama-66630.webp",
-        title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
-      },
-    ],
-  };
 
   return (
     <Container size="xl" w="100%" py={20}>

@@ -122,6 +122,8 @@ const HotelDetail = () => {
 
       setGroupRooms(res.data.groupRooms);
       setHotel(res.data.hotelData[0]);
+      
+      setBookingHotel(res.data.hotelData[0])
     } catch (err) {
       console.error(err);
     } finally {

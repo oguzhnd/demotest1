@@ -23,6 +23,7 @@ import { getValidDate } from "@/utils/tools";
 import { UseFormReturnType } from "@mantine/form";
 import { RentalSearchForm } from "../Contents/Rental";
 import { useMediaQuery } from "@mantine/hooks";
+import { isDate } from "lodash";
 
 const RentalDatesPicker: FC<{
   compact?: boolean;
@@ -222,12 +223,19 @@ const RentalDatesPicker: FC<{
     <Stack>
       <DatePicker
         numberOfColumns={matchesSm ? 1 : 2}
-      minDate={new Date()}
+        minDate={new Date()}
         type={"range"}
         value={[form.getValues().pickupDate, form.getValues().deliveryDate]}
         onChange={(dates) => {
-          form.setFieldValue("pickupDate", getValidDate(dates[0]));
-          form.setFieldValue("deliveryDate", getValidDate(dates[1]));
+          const date1 = getValidDate(dates[0]);
+          const date2 = getValidDate(dates[1]);
+
+          form.setFieldValue("pickupDate", date1);
+          form.setFieldValue("deliveryDate", date2);
+
+          if (isDate(date1) && isDate(date2)) {
+            setOpened(false);
+          }
         }}
       />
       <Group wrap="nowrap" gap="xs">
@@ -269,9 +277,7 @@ const RentalDatesPicker: FC<{
         withCloseButton={false}
         centered
       >
-        <Center>
-          {Content}
-        </Center>
+        <Center>{Content}</Center>
       </Modal>
     </>
   ) : (

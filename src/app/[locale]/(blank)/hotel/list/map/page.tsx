@@ -1,6 +1,8 @@
 "use client";
 
-import HotelListFilters, { HotelListFiltersForm } from "@/components/HotelPageElements/HotelListFilters";
+import HotelListFilters, {
+  HotelListFiltersForm,
+} from "@/components/HotelPageElements/HotelListFilters";
 import { useRouter } from "@/i18n/navigation";
 import {
   ActionIcon,
@@ -240,7 +242,11 @@ const HotelListMap = () => {
         mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID}
         style={{ width: "100%", height: "calc(100vh - 60px)" }}
         defaultCenter={center}
-        defaultZoom={7}
+        center={center}
+        onCenterChanged={(event) => {
+          setCenter(event.detail.center);
+        }}
+        defaultZoom={12}
         gestureHandling={"greedy"}
         mapTypeControl={false}
         streetViewControl={false}
@@ -260,7 +266,7 @@ const HotelListMap = () => {
       {activeHotel && activeHotelData && (
         <HotelListCard
           hotel={activeHotelData}
-          onSelect={() => push("/hotel/detail/1")}
+          onSelect={() => push(`/hotel/detail/${activeHotelData.providerID}`)}
           onClose={() => setActiveHotel(null)}
           style={{
             width: matchesSm ? "calc(100% - 32px)" : undefined,

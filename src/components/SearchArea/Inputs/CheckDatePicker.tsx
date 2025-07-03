@@ -21,6 +21,7 @@ import { DatePicker } from "@mantine/dates";
 import { locale } from "dayjs";
 import { getValidDate } from "@/utils/tools";
 import { useMediaQuery } from "@mantine/hooks";
+import { isDate } from "lodash";
 
 const CheckDatePicker: FC<{
   compact?: boolean;
@@ -139,9 +140,16 @@ const CheckDatePicker: FC<{
       type={"range"}
       value={[checkIn, checkOut]}
       minDate={new Date()}
-      onChange={(dates) =>
-        onChange([getValidDate(dates[0]), getValidDate(dates[1])])
-      }
+      onChange={(dates) => {
+        const date1 = getValidDate(dates[0])
+        const date2 = getValidDate(dates[1])
+
+        onChange([date1, date2]);
+        
+        if (isDate(date1) && isDate(date2)) {
+          setOpened(false);
+        }
+      }}
     />
   );
 
@@ -149,14 +157,12 @@ const CheckDatePicker: FC<{
     <>
       {Target}
       <Modal
-      size="xs"
+        size="xs"
         opened={opened}
         onClose={() => setOpened(false)}
         centered
       >
-        <Center>
-          {Content}
-        </Center>
+        <Center>{Content}</Center>
       </Modal>
     </>
   ) : (

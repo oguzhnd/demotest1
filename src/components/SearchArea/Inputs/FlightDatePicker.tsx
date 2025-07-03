@@ -23,6 +23,7 @@ import { getValidDate } from "@/utils/tools";
 import { UseFormReturnType } from "@mantine/form";
 import { FlightSearchFormProps } from "../Contents/Flight";
 import { useMediaQuery } from "@mantine/hooks";
+import { isDate } from "lodash";
 
 const FlightDatePicker: FC<{
   compact?: boolean;
@@ -181,9 +182,16 @@ const FlightDatePicker: FC<{
         if (form.getValues().type === "one-way") {
           form.setFieldValue("departureDate", getValidDate(dates as string));
           form.setFieldValue("returnDate", null);
+          setOpened(false);
         } else {
-          form.setFieldValue("departureDate", getValidDate(dates[0]));
-          form.setFieldValue("returnDate", getValidDate(dates[1]));
+          const date1 = getValidDate(dates[0]);
+          const date2 = getValidDate(dates[1]);
+          form.setFieldValue("departureDate", date1);
+          form.setFieldValue("returnDate", date2);
+
+          if (isDate(date1) && isDate(date2)) {
+            setOpened(false);
+          }
         }
       }}
     />
