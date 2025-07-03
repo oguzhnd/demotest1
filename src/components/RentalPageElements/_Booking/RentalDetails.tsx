@@ -48,7 +48,7 @@ const RentalDetails = () => {
               color="var(--mantine-color-blue-7)"
             />
             <Text size="sm" fw={500} c="gray.7">
-              {bookingRental?.carDetail[0].transmission}
+              {bookingRental?.carDetail[0].transmission && t(bookingRental?.carDetail[0].transmission)}
             </Text>
           </Group>
           <Group gap={6} wrap="nowrap">
@@ -57,7 +57,7 @@ const RentalDetails = () => {
               color="var(--mantine-color-blue-7)"
             />
             <Text size="sm" fw={500} c="gray.7">
-              {bookingRental?.carDetail[0].fuel}
+              {bookingRental?.carDetail[0].fuel && t(bookingRental?.carDetail[0].fuel)}
             </Text>
           </Group>
           <Group gap={6} wrap="nowrap">
@@ -134,7 +134,7 @@ const RentalDetails = () => {
               {t("Vehicle Delivery Method")}:
             </Text>
             <Text size="sm" fw={500} c="blue">
-              {bookingRental?.officeInfo.dropoffLocation.deliveryType}
+              {bookingRental?.officeInfo.dropoffLocation.deliveryType && t(bookingRental?.officeInfo.dropoffLocation.deliveryType)}
             </Text>
           </Group>
           <Group justify="space-between">

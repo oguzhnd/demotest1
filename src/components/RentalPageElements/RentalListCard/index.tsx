@@ -62,7 +62,7 @@ const RentalListCard: FC<{
                     color="var(--mantine-color-blue-7)"
                   />
                   <Text size="sm" fw={500} c="gray.7">
-                    {rental.carDetail[0].transmission}
+                    {t(rental.carDetail[0].transmission)}
                   </Text>
                 </Group>
                 <Group gap={6}>
@@ -71,7 +71,7 @@ const RentalListCard: FC<{
                     color="var(--mantine-color-blue-7)"
                   />
                   <Text size="sm" fw={500} c="gray.7">
-                    {rental.carDetail[0].fuel}
+                    {t(rental.carDetail[0].fuel)}
                   </Text>
                 </Group>
                 <Group gap={6}>
@@ -84,7 +84,7 @@ const RentalListCard: FC<{
               <Group gap={6}>
                 <IconKey size={16} color="var(--mantine-color-blue-7)" />
                 <Text size="sm" fw={500} c="gray.7">
-                  {rental.officeInfo.pickupLocation.deliveryType}
+                  {t(rental.officeInfo.pickupLocation.deliveryType)}
                 </Text>
               </Group>
               <Parent align={matchesSm ? "center" : undefined}>

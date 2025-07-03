@@ -54,7 +54,7 @@ const RentalListFilters = () => {
           label={t("Gear Type")}
           options={filterOpt?.transmission?.map((e) => ({
             value: e.value,
-            label: e.value,
+            label: t(e.value),
             count: e.count
           }))}
           {...form.getInputProps("transmission")}
@@ -78,7 +78,7 @@ const RentalListFilters = () => {
           label={t("Fuel Type")}
           options={filterOpt?.fuel?.map((e) => ({
             value: e.value,
-            label: e.value,
+            label: t(e.value),
             count: e.count
           }))}
           {...form.getInputProps("fuel")}
