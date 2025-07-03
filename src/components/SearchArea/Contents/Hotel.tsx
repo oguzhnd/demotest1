@@ -85,23 +85,7 @@ const HotelSearch: FC<{
         if (values.hotel?.type === "City") {
           push("/hotel/list");
         } else if (values.hotel?.type === "Hotel") {
-          const val = {
-            product: "1",
-            hotel: values.hotel.id,
-            name: values.hotel?.name,
-            checkIn: convertDate(values.checkIn),
-            checkOut: convertDate(values.checkOut),
-            rooms: hotelSearch.rooms.map((e) => ({
-              adult: `${e.adult}`,
-              child: e.child,
-            })),
-            language: locale,
-          };
-
-          const res = await xiorInstance.post("/searchHotel", val);
-
-          console.log(res);
-
+          push(`/hotel/detail/${values.hotel.id}`);
           // setBookingHotel(res.hotelData[0])
         }
       } catch (err) {
