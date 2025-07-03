@@ -52,19 +52,12 @@ const HotelDetail = () => {
   const locale = useLocale();
 
   const params = useParams();
-  const { push } = useRouter();
 
   const { hotelSearch } = useSearchStore();
-  const { setBookingHotel, setBookingOffer, setBookingRoom } = useHotelStore();
+  const { openModal, closeModal } = useModalManager();
 
   const [loading, startLoading, stopLoading] = useLoading();
-  const [hotel, setHotel] = useState<HotelType | undefined>(undefined);
-  const [groupRooms, setGroupRooms] = useState<
-    Record<string, RoomDetailType[]> | undefined
-  >(undefined);
   const [hotelDetails, setHotelDetails] = useState<any | undefined>(undefined);
-
-  const [searchId, setSearchId] = useState<string | undefined>("");
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
   const matchesXs = useMediaQuery("(max-width: 36em)");
@@ -92,6 +85,7 @@ const HotelDetail = () => {
     }
 
     startLoading();
+    openModal("hotelLoadingModal");
 
     try {
       const resDetails = await xiorInstance.post("/getHotelInfo", {
@@ -99,66 +93,16 @@ const HotelDetail = () => {
         language: locale,
       });
 
-      console.log(resDetails);
+      console.log("getHotelInfo", resDetails);
 
       setHotelDetails(resDetails.data.result);
-
-      const res = await xiorInstance.post("/searchHotel", {
-        product: "1",
-        hotel: params.id,
-        name: resDetails.data.result.name,
-        checkIn: convertDate(hotelSearch.checkIn),
-        checkOut: convertDate(hotelSearch.checkOut),
-        rooms: hotelSearch.rooms.map((e) => ({
-          adult: `${e.adult}`,
-          child: e.child,
-        })),
-        language: locale,
-      });
-
-      console.log(res);
-
-      setSearchId(res.data.searchId);
-
-      setGroupRooms(res.data.groupRooms);
-      setHotel(res.data.hotelData[0]);
-      
-      setBookingHotel(res.data.hotelData[0])
     } catch (err) {
       console.error(err);
     } finally {
       stopLoading();
+      closeModal("hotelLoadingModal");
     }
   }, [loading, xiorInstance, params.id, hotelSearch]);
-
-  const handleRoomSelect = useCallback(
-    async (room: RoomDetailType) => {
-      startLoading();
-
-      try {
-        const res = await xiorInstance.post("/getOfferDetail", {
-          tempId: hotel?.hotelID,
-          searchId: searchId,
-          roomId: room.roomId,
-        });
-
-        console.log(res);
-
-        if (res.data.error === false) {
-          setBookingHotel(res.data.hotelDetail);
-          setBookingOffer(res.data.offers[0]);
-          setBookingRoom(room);
-
-          push(`/hotel/reservation/${res.data.offers[0].offerId}`);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        stopLoading();
-      }
-    },
-    [hotel, searchId]
-  );
 
   useEffect(() => {
     getHotelDetails();
@@ -168,8 +112,6 @@ const HotelDetail = () => {
 
   return (
     <Stack pos="relative">
-      <LoadingOverlay visible={loading} />
-
       <HotelMapDetail />
 
       <SearchArea type="hotel" />
@@ -180,9 +122,9 @@ const HotelDetail = () => {
               <Stack gap={0}>
                 <Group>
                   <Text size="xl" fw={500}>
-                    {hotel?.title}
+                    {hotelDetails?.name}
                   </Text>
-                  <Text
+                  {/* <Text
                     size="sm"
                     c="white"
                     fw={500}
@@ -192,18 +134,18 @@ const HotelDetail = () => {
                     lh={1}
                     style={{ borderRadius: 8 }}
                   >
-                    {hotel?.rating}
-                  </Text>
+                    {hotelDetails?.rating}
+                  </Text> */}
                   <Rating
                     size="xs"
                     fractions={2}
-                    value={hotel?.stars}
-                    count={Math.ceil(hotel?.stars || 0)}
+                    value={hotelDetails?.star_rating}
+                    count={Math.ceil(hotelDetails?.star_rating || 0)}
                     readOnly
                   />
                 </Group>
                 <Text size="xs" c="gray">
-                  {hotel?.address}
+                  {hotelDetails?.address}
                 </Text>
               </Stack>
               <Group gap="xs"></Group>
@@ -217,7 +159,7 @@ const HotelDetail = () => {
             defaultValue="Ana Sayfa"
             onChange={(value) => {
               if (value === "Ana Sayfa") {
-                scrollToHome()
+                scrollToHome();
               } else if (value === "Odalar") {
                 scrollToRooms();
               } else if (value === "Detaylar") {
@@ -259,13 +201,7 @@ const HotelDetail = () => {
             <HotelImages hotelDetails={hotelDetails} />
 
             <Box ref={roomsTarget}>
-              {groupRooms && hotelDetails?.room_groups && (
-                <Rooms
-                  groupRooms={groupRooms}
-                  rooms={hotelDetails?.room_groups}
-                  handleRoomSelect={(room) => handleRoomSelect(room)}
-                />
-              )}
+              <Rooms hotelName={hotelDetails?.name} />
             </Box>
 
             <Stack ref={detailsTarget}>

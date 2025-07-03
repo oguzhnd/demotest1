@@ -7,6 +7,8 @@ import {
   Group,
   HoverCard,
   Image,
+  Loader,
+  Paper,
   Stack,
   Table,
   Text,
@@ -19,10 +21,16 @@ import {
   IconUserFilled,
 } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
-import React, { FC } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import Room from "./Room";
 import { entries, isEqual } from "lodash";
 import { localeDateFormat } from "@/utils/tools";
+import { useLoading } from "@/utils/hooks/useLoading";
+import { xiorInstance } from "@/utils/xior";
+import { useParams } from "next/navigation";
+import { convertDate } from "@/components/SearchArea/Contents/Flight";
+import { useSearchStore } from "@/store/search";
+import { HotelType, useHotelStore } from "@/store/products/hotel";
 
 export interface RoomDetailType {
   roomId: "1a451258-2195-4474-9809-b7088bfcd16d";
@@ -76,16 +84,105 @@ export interface RoomDetailType {
 }
 
 const Rooms: FC<{
-  groupRooms: Record<string, RoomDetailType[]>;
-  rooms: any[];
-  handleRoomSelect: (room: RoomDetailType) => void;
-}> = ({ groupRooms, rooms, handleRoomSelect }) => {
+  hotelName: string;
+}> = ({ hotelName }) => {
   const t = useTranslations();
   const locale = useLocale();
 
-  const { push } = useRouter();
+  const { hotelSearch } = useSearchStore();
+  const { setBookingHotel, setBookingOffer, setBookingRoom } = useHotelStore();
 
-  return (
+  const { push } = useRouter();
+  const params = useParams();
+
+  const [loading, startLoading, stopLoading] = useLoading();
+
+  const [hotel, setHotel] = useState<HotelType | undefined>(undefined);
+  const [groupRooms, setGroupRooms] = useState<
+    Record<string, RoomDetailType[]> | undefined
+  >(undefined);
+  const [searchId, setSearchId] = useState<string | undefined>("");
+
+  const getHotelInformations = useCallback(async () => {
+    if (loading || !hotelName) {
+      return;
+    }
+
+    startLoading();
+
+    try {
+      console.log("hotelName", hotelName);
+      const res = await xiorInstance.post("/searchHotel", {
+        product: "1",
+        hotel: params.id,
+        name: hotelName,
+        checkIn: convertDate(hotelSearch.checkIn),
+        checkOut: convertDate(hotelSearch.checkOut),
+        rooms: hotelSearch.rooms.map((e) => ({
+          adult: `${e.adult}`,
+          child: e.child,
+        })),
+        language: locale,
+      });
+
+      console.log("rooms", res);
+
+      setSearchId(res.data.searchId);
+
+      setGroupRooms(res.data.groupRooms);
+      setHotel(res.data.hotelData[0]);
+
+      setBookingHotel(res.data.hotelData[0]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      stopLoading();
+    }
+  }, [hotelName, loading, xiorInstance, params.id, hotelSearch]);
+
+  const handleRoomSelect = useCallback(
+    async (room: RoomDetailType) => {
+      startLoading();
+
+      try {
+        const res = await xiorInstance.post("/getOfferDetail", {
+          tempId: hotel?.hotelID,
+          searchId: searchId,
+          roomId: room.roomId,
+        });
+
+        console.log(res);
+
+        if (res.data.error === false) {
+          setBookingHotel(res.data.hotelDetail);
+          setBookingOffer(res.data.offers[0]);
+          setBookingRoom(room);
+
+          push(`/hotel/reservation/${res.data.offers[0].offerId}`);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        stopLoading();
+      }
+    },
+    [hotel, searchId]
+  );
+
+  useEffect(() => {
+    getHotelInformations();
+  }, [params.id, hotelName]);
+
+  return loading ? (
+    <Group justify="center">
+      <Paper py="md" px="xl" bg="gray.1">
+        <Stack gap="xs" align="center">
+          <Loader />
+          <Text size="sm" fw={500}>{t("Loading Rooms")}</Text>
+        </Stack>
+      </Paper>
+    </Group>
+  ) : (
     <Group w="100%">
       <Stack w="100%">
         <Grid
