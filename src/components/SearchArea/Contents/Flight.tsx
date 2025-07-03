@@ -19,7 +19,7 @@ import FlightDatePicker from "../Inputs/FlightDatePicker";
 import FlightPassengersInput from "../Inputs/FlightPassengersInput";
 import { useMediaQuery } from "@mantine/hooks";
 import { xiorInstance } from "@/utils/xior";
-import { isDate } from "lodash";
+import { isDate, isUndefined } from "lodash";
 import { useLoading } from "@/utils/hooks/useLoading";
 import { useFlightStore } from "@/store/products/flight";
 import { useSearchStore } from "@/store/search";
@@ -81,6 +81,11 @@ const FlightSearch: FC<{
         baby: 0,
       },
       class: "economy",
+    },
+
+    validate: {
+      dep: (value) => (isUndefined(value) ? true : false),
+      arr: (value) => (isUndefined(value) ? true : false),
     },
   });
 
@@ -241,7 +246,7 @@ const FlightSearch: FC<{
             </Grid.Col>
           </Grid>
         </Stack>
-        <Stack h={compact ? matchesSm ? 40 : 60.59 : "auto"} justify="center">
+        <Stack h={compact ? (matchesSm ? 40 : 60.59) : "auto"} justify="center">
           <Group
             justify="center"
             pos={compact ? "relative" : "absolute"}

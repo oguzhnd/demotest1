@@ -116,6 +116,7 @@ const HotelSeachInput: FC<{
     <Stack
       className={classes.searchInputTarget}
       data-compact={compact}
+      data-error={form.errors.hotel}
       data-focused={opened}
       gap={0}
       px="sm"

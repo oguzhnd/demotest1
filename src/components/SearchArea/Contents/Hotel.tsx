@@ -16,7 +16,7 @@ import { convertDate } from "./Flight";
 import { useHotelStore } from "@/store/products/hotel";
 import { xiorInstance } from "@/utils/xior";
 import { useLoading } from "@/utils/hooks/useLoading";
-import { merge } from "lodash";
+import { isNull, isUndefined, merge } from "lodash";
 
 export interface HotelSearchFormProps {
   hotel: SearchHotelType | undefined;
@@ -47,16 +47,17 @@ const HotelSearch: FC<{
 
   const form = useForm<HotelSearchFormProps>({
     initialValues: {
-      hotel: {
-        id: "60208",
-        type: "City",
-        name: "Antalya",
-        country: "Turkey",
-        countryCode: "TR",
-        city: "Antalya",
-        latitude: "36.90812",
-        longitude: "30.69556",
-      },
+      // {
+      //   id: "60208",
+      //   type: "City",
+      //   name: "Antalya",
+      //   country: "Turkey",
+      //   countryCode: "TR",
+      //   city: "Antalya",
+      //   latitude: "36.90812",
+      //   longitude: "30.69556",
+      // }
+      hotel: undefined,
       checkIn: new Date(),
       checkOut: new Date(),
       rooms: [
@@ -66,6 +67,10 @@ const HotelSearch: FC<{
         },
       ],
       country: "TR",
+    },
+
+    validate: {
+      hotel: (value) => (isUndefined(value) ? true : false),
     },
   });
 
@@ -196,7 +201,7 @@ const HotelSearch: FC<{
             </Grid.Col>
           </Grid>
         </Stack>
-        <Stack h={compact ? matchesSm ? 40 : 60.59 : "auto"} justify="center">
+        <Stack h={compact ? (matchesSm ? 40 : 60.59) : "auto"} justify="center">
           <Group
             justify="center"
             pos={compact ? "relative" : "absolute"}

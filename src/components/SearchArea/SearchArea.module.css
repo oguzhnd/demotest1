@@ -87,6 +87,10 @@
   &[data-disabled="true"] {
     cursor: no-drop;
   }
+
+  &[data-error="true"] {
+    background-color: var(--mantine-color-red-0);
+  }
 }
 
 .airportOption {

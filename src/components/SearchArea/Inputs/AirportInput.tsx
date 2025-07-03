@@ -116,6 +116,7 @@ const AirportInput: FC<{
     <Stack
       className={classes.searchInputTarget}
       data-compact={compact}
+      data-error={form.errors[label === "From" ? "dep" : "arr"]}
       data-focused={opened}
       data-disabled={disabled}
       gap={0}
@@ -142,7 +143,13 @@ const AirportInput: FC<{
       <Text
         size="sm"
         c={
-          compact ? (!title ? "gray.5" : "dark.9") : !title ? "gray.5" : "gray.7"
+          compact
+            ? !title
+              ? "gray.5"
+              : "dark.9"
+            : !title
+            ? "gray.5"
+            : "gray.7"
         }
         truncate
       >
