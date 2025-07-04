@@ -306,5 +306,9 @@
   "Invalid e-mail": "Geçersiz e-posta",
   "Loading Rooms": "Odalar Yükleniyor",
   "Loading": "Yükleniyor",
-  "X Hotels": "{X} Otelleri"
+  "X Hotels": "{X} Otelleri",
+  "Tour": "Tur",
+  "Search Tour": "Tur Ara",
+  "Popular Tours": "Popüler Turlar",
+  "Our selection of tours": "Tur seçimlerimiz"
 }

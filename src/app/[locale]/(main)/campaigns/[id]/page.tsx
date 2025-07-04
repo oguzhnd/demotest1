@@ -5,6 +5,7 @@ import SearchArea from "@/components/SearchArea";
 import FlightSearch from "@/components/SearchArea/Contents/Flight";
 import HotelSearch from "@/components/SearchArea/Contents/Hotel";
 import RentalSearch from "@/components/SearchArea/Contents/Rental";
+import TourSearch from "@/components/SearchArea/Contents/Tour";
 import { useRouter } from "@/i18n/navigation";
 import {
   ActionIcon,
@@ -65,6 +66,8 @@ const CampaignDetails = () => {
               <HotelSearch />
             ) : campaign?.type === "flight" ? (
               <FlightSearch />
+            ) : campaign?.type === "tour" ? (
+              <TourSearch />
             ) : (
               <RentalSearch />
             )}

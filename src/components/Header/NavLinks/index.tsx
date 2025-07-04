@@ -26,6 +26,10 @@ export const navLinks: NavLinkProps[] = [
     path: "/rental",
   },
   {
+    label: "Tour",
+    path: "/tour",
+  },
+  {
     label: "Blog",
     path: "/blog",
   },

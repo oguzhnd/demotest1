@@ -17,7 +17,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useRouter } from "@/i18n/navigation";
 import { flatten, values } from "lodash";
 
-export type CampaignTypes = "hotel" | "flight" | "rental";
+export type CampaignTypes = "hotel" | "flight" | "rental" | "tour";
 
 export const campaigns: Record<CampaignTypes, CampaignCardProps[]> = {
   hotel: [
@@ -110,6 +110,36 @@ export const campaigns: Record<CampaignTypes, CampaignCardProps[]> = {
       title: "Araç kiralamada 3.000 TL'ye varan indirimi kaçırma!",
     },
   ],
+  tour: [
+    {
+      id: "13",
+      type: "tour",
+      image:
+        "https://www.nttrota.com/assets/img/yurt_disi_turlari_diamond.webp",
+      title: "Tur rezervasyonlarında 3.000 TL'ye varan indirimi kaçırma!",
+    },
+    {
+      id: "14",
+      type: "tour",
+      image:
+        "https://www.nttrota.com/assets/img/yurt_disi_turlari_diamond.webp",
+      title: "Tur rezervasyonlarında 3.000 TL'ye varan indirimi kaçırma!",
+    },
+    {
+      id: "15",
+      type: "tour",
+      image:
+        "https://www.nttrota.com/assets/img/yurt_disi_turlari_diamond.webp",
+      title: "Tur rezervasyonlarında 3.000 TL'ye varan indirimi kaçırma!",
+    },
+    {
+      id: "16",
+      type: "tour",
+      image:
+        "https://www.nttrota.com/assets/img/yurt_disi_turlari_diamond.webp",
+      title: "Tur rezervasyonlarında 3.000 TL'ye varan indirimi kaçırma!",
+    },
+  ],
 };
 
 const Campaigns: FC<{ tabs?: CampaignTypes[]; seeAll?: boolean }> = ({
@@ -162,6 +192,10 @@ const Campaigns: FC<{ tabs?: CampaignTypes[]; seeAll?: boolean }> = ({
                       value: "rental",
                       label: "Car Rental",
                     },
+                    {
+                      value: "tour",
+                      label: "Tour",
+                    },
                   ]
                     .filter((e) => tabs.includes(e.value as CampaignTypes))
                     .map((tab, i) => (
@@ -192,7 +226,7 @@ const Campaigns: FC<{ tabs?: CampaignTypes[]; seeAll?: boolean }> = ({
             </SimpleGrid>
           </Tabs.Panel>
 
-          {["hotel", "flight", "rental"].map((tab, i) => (
+          {["hotel", "flight", "rental", "tour"].map((tab, i) => (
             <Tabs.Panel key={`tab-${i}`} value={tab}>
               <SimpleGrid
                 cols={{

@@ -21,14 +21,16 @@ import {
   IconBuilding,
   IconCar,
   IconPlaneDeparture,
+  IconRoute,
   TablerIcon,
 } from "@tabler/icons-react";
 import FlightSearch from "./Contents/Flight";
 import RentalSearch from "./Contents/Rental";
 
 import classes from "./SearchArea.module.css";
+import TourSearch from "./Contents/Tour";
 
-export type SearchAreaTypes = "hotel" | "flight" | "rental";
+export type SearchAreaTypes = "hotel" | "flight" | "rental" | "tour";
 
 const tabs: {
   key: SearchAreaTypes;
@@ -75,6 +77,17 @@ const tabs: {
     label: "Car Rental",
     path: "/rental",
     content: RentalSearch,
+  },
+  {
+    key: "tour",
+    spritePos: {
+      active: "-100px -40px",
+      default: "-100px 0px",
+    },
+    icon: IconRoute,
+    label: "Tour",
+    path: "/tour",
+    content: TourSearch,
   },
 ];
 

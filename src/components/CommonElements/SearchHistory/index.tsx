@@ -17,10 +17,10 @@ import Hotel, { HotelSearchProps } from "./Hotel";
 import Flight, { FlightSearchProps } from "./Flight";
 import Rental, { RentalSearchProps } from "./Rental";
 
-type SearchTabs = "hotel" | "flight" | "rental";
+type SearchTabs = "hotel" | "flight" | "rental" | "tour";
 
 const SearchHistory: FC<{ tabs?: SearchTabs[] }> = ({
-  tabs = ["hotel", "flight", "rental"],
+  tabs = ["hotel", "flight", "rental", "tour"],
 }) => {
   const t = useTranslations();
 
@@ -28,6 +28,7 @@ const SearchHistory: FC<{ tabs?: SearchTabs[] }> = ({
     hotel: HotelSearchProps[];
     flight: FlightSearchProps[];
     rental: RentalSearchProps[];
+    tour: HotelSearchProps[];
   } = {
     hotel: [
       {
@@ -47,6 +48,13 @@ const SearchHistory: FC<{ tabs?: SearchTabs[] }> = ({
         image:
           "https://static.yolcu360.com/thumbnails/87/26/8726242c937b041c8759b292e230535c.png",
         name: "Renault Clio",
+      },
+    ],
+    tour: [
+      {
+        image:
+          "https://academic-tour.com/images/tour/1305_vitrin_791249.jpg",
+        name: "Karadeniz Turu",
       },
     ],
   };
@@ -130,6 +138,19 @@ const SearchHistory: FC<{ tabs?: SearchTabs[] }> = ({
             >
               {history.rental.map((rental, j) => (
                 <Rental key={`rental-${j}`} {...rental} />
+              ))}
+            </SimpleGrid>
+          </Tabs.Panel>
+          <Tabs.Panel value="tour">
+            <SimpleGrid
+              cols={{
+                base: 1,
+                xs: 2,
+                md: 3,
+              }}
+            >
+              {history.tour.map((tour, j) => (
+                <Rental key={`tour-${j}`} {...tour} />
               ))}
             </SimpleGrid>
           </Tabs.Panel>
