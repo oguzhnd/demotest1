@@ -101,7 +101,7 @@ const RentalList = () => {
   } = useRentalStore();
 
   const { rentalSearch } = useSearchStore();
-  const { closeModal } = useModalManager();
+  const { openModal, closeModal } = useModalManager();
 
   const [loading, startLoading, stopLoading] = useLoading();
   const [opened, setOpened] = useState(false);
@@ -138,7 +138,7 @@ const RentalList = () => {
 
   const checkFlightList = useCallback(async () => {
     startLoading();
-    closeModal("rentalLoadingModal");
+    openModal("rentalLoadingModal");
 
     try {
       setBookingRental(undefined);
@@ -166,6 +166,7 @@ const RentalList = () => {
       console.error(err);
     } finally {
       stopLoading();
+    closeModal("rentalLoadingModal");
     }
   }, [xiorInstance, rentalSearch, locale]);
 
@@ -223,7 +224,7 @@ const RentalList = () => {
               </ScrollArea>
 
               {loading
-                ? Array(4)
+                ? Array(5)
                     .fill("")
                     .map((_, i) => <RentalLoading key={`loading-${i}`} />)
                 : currentRentalList.map((rental, i) => (

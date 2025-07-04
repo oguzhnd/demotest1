@@ -7,6 +7,7 @@ import { useForm } from "@mantine/form";
 import { useRouter } from "@/i18n/navigation";
 import { useModalManager } from "@/store/managers/modal";
 import { useGlobalStore } from "@/store/global";
+import { useAccountStore } from "@/store/account";
 
 interface FormProps {
   email: string;
@@ -16,7 +17,7 @@ interface FormProps {
 const SignInContent = () => {
   const t = useTranslations();
 
-  const { makeSignin } = useGlobalStore();
+  const { login } = useAccountStore();
   const { closeModal } = useModalManager();
 
   const { push } = useRouter();
@@ -30,13 +31,9 @@ const SignInContent = () => {
 
   const handleSubmit = useCallback(async (values: FormProps) => {
     try {
-      await makeSignin({
-        agentKey: "I8IZ01IP",
-        username: "TEST",
-        password: "b4c7j%3h9YFZ",
-      });
+      await login(values);
 
-      push("/account")
+      push("/account");
     } catch (err) {
       console.error(err);
     } finally {

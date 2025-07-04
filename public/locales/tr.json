@@ -304,5 +304,7 @@
   "See the rooms": "Odaları gör",
   "Invalid identity number": "Geçersiz kimlik numarası",
   "Invalid e-mail": "Geçersiz e-posta",
-  "Loading Rooms": "Odalar Yükleniyor"
+  "Loading Rooms": "Odalar Yükleniyor",
+  "Loading": "Yükleniyor",
+  "X Hotels": "{X} Otelleri"
 }

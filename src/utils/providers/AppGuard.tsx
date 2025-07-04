@@ -11,21 +11,21 @@ const AppGuardProvider: FC<{
 }> = ({ children }) => {
   const locale = useLocale();
 
-  const { isLogin, token, makeSignin } = useGlobalStore();
+  const { token, makeSignin } = useGlobalStore();
 
   const [initialized, setInitialized] = useState(false);
 
   const handleLogin = useCallback(async () => {
     try {
       await makeSignin({
-        agentKey: "I8IZ01IP",
-        username: "TEST",
-        password: "b4c7j%3h9YFZ",
+        agentKey: process.env.NEXT_PUBLIC_AGENT_KEY || "",
+        username: process.env.NEXT_PUBLIC_USERNAME || "",
+        password: process.env.NEXT_PUBLIC_PASSWORD || "",
       });
     } finally {
       setInitialized(true);
     }
-  }, [makeSignin]);
+  }, [makeSignin, process.env]);
 
   useEffect(() => {
     setAcceptLanguage(locale);
@@ -33,7 +33,7 @@ const AppGuardProvider: FC<{
 
   useEffect(() => {
     handleLogin();
-  }, [token]);
+  }, [token,]);
 
   return initialized ? (
     children

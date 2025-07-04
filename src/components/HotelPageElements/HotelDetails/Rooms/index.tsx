@@ -142,8 +142,6 @@ const Rooms: FC<{
 
   const handleRoomSelect = useCallback(
     async (room: RoomDetailType) => {
-      startLoading();
-
       try {
         const res = await xiorInstance.post("/getOfferDetail", {
           tempId: hotel?.hotelID,
@@ -162,8 +160,6 @@ const Rooms: FC<{
         }
       } catch (err) {
         console.error(err);
-      } finally {
-        stopLoading();
       }
     },
     [hotel, searchId]

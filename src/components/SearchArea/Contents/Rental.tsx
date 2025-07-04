@@ -1,25 +1,13 @@
 import { useRouter } from "@/i18n/navigation";
-import {
-  Button,
-  Checkbox,
-  CheckIcon,
-  Grid,
-  Group,
-  Stack,
-  TextInput,
-} from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
-import { useLocale, useTranslations } from "next-intl";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import classes from "../SearchArea.module.css";
-import AirportInput from "../Inputs/AirportInput";
-import PickupLocation from "../Inputs/PickupLocation";
-import RentalDatesPicker from "../Inputs/RentalDates";
+import { useSearchStore } from "@/store/search";
+import { useLoading } from "@/utils/hooks/useLoading";
+import { Button, Checkbox, CheckIcon, Grid, Group, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
-import { useLoading } from "@/utils/hooks/useLoading";
-import { useSearchStore } from "@/store/search";
-import { useModalManager } from "@/store/managers/modal";
+import { useLocale, useTranslations } from "next-intl";
+import { FC, useCallback, useEffect, useState } from "react";
+import PickupLocation from "../Inputs/PickupLocation";
+import RentalDatesPicker from "../Inputs/RentalDates";
 
 export interface RentalSearchForm {
   differentDropoff: false;
@@ -53,7 +41,6 @@ const RentalSearch: FC<{
   const [inputsLoading, setInputsLoading] = useState(true);
   const [loading, startLoading, stopLoading] = useLoading();
 
-  const { openModal } = useModalManager();
   const { rentalSearch, setSearch } = useSearchStore();
 
   const form = useForm<RentalSearchForm>({
@@ -81,7 +68,6 @@ const RentalSearch: FC<{
   const handleSubmit = useCallback(
     async (values: RentalSearchForm) => {
       startLoading();
-      openModal("rentalLoadingModal");
       try {
         console.log(values);
 

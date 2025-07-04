@@ -29,13 +29,14 @@ import MobileDrawer from "./Drawer";
 import { useGlobalStore } from "@/store/global";
 import { Link, useRouter } from "@/i18n/navigation";
 import QueryTransactionModal from "./QueryTransaction";
+import { useAccountStore } from "@/store/account";
 
 const Header = () => {
   const t = useTranslations();
 
   const { push } = useRouter();
 
-  const { isLogin } = useGlobalStore();
+  const { isLogin } = useAccountStore();
 
   const { openDrawer } = useDrawerManager();
   const { openModal } = useModalManager();

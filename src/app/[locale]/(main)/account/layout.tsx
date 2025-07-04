@@ -21,13 +21,14 @@ import classes from "@/components/AccountPageElements/Account.module.css";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { useGlobalStore } from "@/store/global";
 import { useMediaQuery } from "@mantine/hooks";
+import { useAccountStore } from "@/store/account";
 
 const AccountLayout: FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const t = useTranslations();
 
-  const { makeSignout } = useGlobalStore();
+  const { logout } = useAccountStore();
 
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
@@ -49,7 +50,7 @@ const AccountLayout: FC<{
         value={activeTab}
         onChange={(value) => {
           if (value === "signout") {
-            makeSignout();
+            logout();
             push("/");
           } else {
             push(value === "profile" ? `/account` : `/account/${value}`);
@@ -62,7 +63,11 @@ const AccountLayout: FC<{
           tabLabel: classes.tabLabel,
         }}
       >
-        <ScrollArea miw={matchesSm ? undefined : 200} offsetScrollbars scrollbarSize={7}>
+        <ScrollArea
+          miw={matchesSm ? undefined : 200}
+          offsetScrollbars
+          scrollbarSize={7}
+        >
           <Tabs.List w={matchesSm ? undefined : 200}>
             <Parent wrap="nowrap" gap="xs">
               <Tabs.Tab

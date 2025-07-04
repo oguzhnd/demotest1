@@ -2,28 +2,18 @@
 
 import HotelImages from "@/components/HotelPageElements/HotelDetails/HotelImages";
 import HotelMapView from "@/components/HotelPageElements/HotelDetails/HotelMapView";
-import Rooms, {
-  RoomDetailType,
-} from "@/components/HotelPageElements/HotelDetails/Rooms";
-import { facilities } from "@/components/HotelPageElements/HotelListFilters/Elements/FacilitiesAndFeatures";
+import Rooms from "@/components/HotelPageElements/HotelDetails/Rooms";
 import HotelMapDetail from "@/components/HotelPageElements/HotelMapDetail";
 import SearchArea from "@/components/SearchArea";
-import { convertDate } from "@/components/SearchArea/Contents/Flight";
-import { useRouter } from "@/i18n/navigation";
 import { useModalManager } from "@/store/managers/modal";
-import { HotelType, useHotelStore } from "@/store/products/hotel";
 import { useSearchStore } from "@/store/search";
 import { useLoading } from "@/utils/hooks/useLoading";
 import { xiorInstance } from "@/utils/xior";
 import {
-  Anchor,
   Box,
   Button,
-  Center,
   Container,
-  Grid,
   Group,
-  Image,
   LoadingOverlay,
   Paper,
   Rating,
@@ -34,24 +24,25 @@ import {
   Text,
   Tooltip,
 } from "@mantine/core";
-import { useMediaQuery, useScrollIntoView } from "@mantine/hooks";
 import {
-  IconChevronRight,
-  IconMapPin,
-  IconMapPinFilled,
-  IconSpeakerphone,
-  IconSwimming,
-} from "@tabler/icons-react";
-import { merge } from "lodash";
+  useDocumentTitle,
+  useMediaQuery,
+  useScrollIntoView,
+} from "@mantine/hooks";
+import { IconSwimming } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
+import Head from "next/head";
 import { useParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const HotelDetail = () => {
   const t = useTranslations();
   const locale = useLocale();
 
   const params = useParams();
+
+  const [title, setTitle] = useState(t("Loading"));
+  useDocumentTitle(title);
 
   const { hotelSearch } = useSearchStore();
   const { openModal, closeModal } = useModalManager();
@@ -85,7 +76,6 @@ const HotelDetail = () => {
     }
 
     startLoading();
-    openModal("hotelLoadingModal");
 
     try {
       const resDetails = await xiorInstance.post("/getHotelInfo", {
@@ -93,14 +83,13 @@ const HotelDetail = () => {
         language: locale,
       });
 
-      console.log("getHotelInfo", resDetails);
+      setTitle(resDetails.data.result.name);
 
       setHotelDetails(resDetails.data.result);
     } catch (err) {
       console.error(err);
     } finally {
       stopLoading();
-      closeModal("hotelLoadingModal");
     }
   }, [loading, xiorInstance, params.id, hotelSearch]);
 
@@ -111,7 +100,9 @@ const HotelDetail = () => {
   const Parent = matchesSm ? Stack : Group;
 
   return (
-    <Stack pos="relative">
+    <Stack>
+      <LoadingOverlay visible={loading} pos="fixed" />
+
       <HotelMapDetail />
 
       <SearchArea type="hotel" />

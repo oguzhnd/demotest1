@@ -14,6 +14,7 @@ import { useModalManager } from "@/store/managers/modal";
 import { FlightType, useFlightStore } from "@/store/products/flight";
 import { useSearchStore } from "@/store/search";
 import { useLoading } from "@/utils/hooks/useLoading";
+import { getValidDate } from "@/utils/tools";
 import { xiorInstance } from "@/utils/xior";
 import {
   ActionIcon,
@@ -28,10 +29,11 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { useInViewport, useListState } from "@mantine/hooks";
+import { useDocumentTitle, useInViewport, useListState } from "@mantine/hooks";
 import { IconChevronRight, IconFilter, IconX } from "@tabler/icons-react";
-import { filter, isDate } from "lodash";
-import { useTranslations } from "next-intl";
+import { locale } from "dayjs";
+import { filter } from "lodash";
+import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
 const filterFlightData = (
@@ -122,6 +124,10 @@ const filterFlightData = (
 
 const FlightList = () => {
   const t = useTranslations();
+  const locale = useLocale();
+
+  const [title, setTitle] = useState(t("Loading"));
+  useDocumentTitle(title);
 
   const { push } = useRouter();
 
@@ -136,7 +142,7 @@ const FlightList = () => {
   } = useFlightStore();
 
   const { flightSearch } = useSearchStore();
-  const { closeModal } = useModalManager();
+  const { openModal, closeModal } = useModalManager();
 
   const [loading, startLoading, stopLoading] = useLoading();
   const [opened, setOpened] = useState(false);
@@ -168,7 +174,6 @@ const FlightList = () => {
     list = filter(list, (e) => filterFlightData(e, flightFilters));
     setIsMore(list.length > limit);
 
-    console.log("1")
     flightListHandlers.setState(list);
     stopLoading();
   }, [
@@ -185,9 +190,30 @@ const FlightList = () => {
       return true;
     }
 
-    console.log("3")
     startLoading();
-    closeModal("flightLoadingModal");
+    openModal("flightLoadingModal");
+
+    setTitle(
+      `${flightSearch.dep?.airport?.code} > ${
+        flightSearch.arr?.airport?.code
+      }, ${getValidDate(flightSearch.departureDate)?.toLocaleDateString(
+        locale,
+        {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }
+      )}${
+        flightSearch.returnDate
+          ? " - " +
+            getValidDate(flightSearch.returnDate)?.toLocaleDateString(locale, {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })
+          : ""
+      }`
+    );
 
     try {
       setDepartureSelected(false);
@@ -219,8 +245,8 @@ const FlightList = () => {
     } catch (err) {
       console.error(err);
     } finally {
-    console.log("1")
       stopLoading();
+      closeModal("flightLoadingModal");
     }
   }, [xiorInstance, flightSearch, loading]);
 
@@ -256,8 +282,6 @@ const FlightList = () => {
   useEffect(() => {
     checkFlightList();
   }, [flightSearch]);
-
-  console.log(loading)
 
   return (
     <Stack>
@@ -356,7 +380,7 @@ const FlightList = () => {
                 </Group>
               )}
               {loading
-                ? Array(4)
+                ? Array(5)
                     .fill("")
                     .map((_, i) => <FlightLoading key={`loading-${i}`} />)
                 : currentFlightList
@@ -373,9 +397,6 @@ const FlightList = () => {
               {!loading && isMore && currentFlightList.length > 1 && (
                 <FlightLoading ref={ref} />
               )}
-              {`${loading}`},{`${currentFlightList.length}`},{" "}
-
-              {`${currentFlightList.length === 0 && !loading}`}
 
               {currentFlightList.length === 0 && !loading && <FlightNotFound />}
             </Stack>

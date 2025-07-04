@@ -44,7 +44,21 @@ export default async function LocaleLayout({
     <html lang={locale} className={geist.className} {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript />
-        <link rel="shortcut icon" href="/favicon.svg" />
+        <link
+          rel="shortcut icon"
+          href="/favicon_light.png"
+          media="(prefers-color-scheme:no-preference)"
+        />
+        <link
+          rel="shortcut icon"
+          href="/favicon_light.png"
+          media="(prefers-color-scheme:dark)"
+        />
+        <link
+          rel="shortcut icon"
+          href="/favicon_dark.png"
+          media="(prefers-color-scheme:light)"
+        />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"

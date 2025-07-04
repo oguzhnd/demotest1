@@ -1,23 +1,17 @@
 import { useRouter } from "@/i18n/navigation";
-import { Button, Grid, Group, Stack, TextInput } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
-import { useLocale, useTranslations } from "next-intl";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import classes from "../SearchArea.module.css";
-import AirportInput from "../Inputs/AirportInput";
-import { useForm } from "@mantine/form";
-import HotelSeachInput, { SearchHotelType } from "../Inputs/HotelSearch";
-import CheckDatePicker from "../Inputs/CheckDatePicker";
-import RoomsAndGuestsInput from "../Inputs/RoomsAndGuests";
-import CountrySelect from "../Inputs/Country";
-import { useMediaQuery } from "@mantine/hooks";
 import { useSearchStore } from "@/store/search";
-import { convertDate } from "./Flight";
-import { useHotelStore } from "@/store/products/hotel";
-import { xiorInstance } from "@/utils/xior";
 import { useLoading } from "@/utils/hooks/useLoading";
-import { isNull, isUndefined, merge } from "lodash";
-import { useModalManager } from "@/store/managers/modal";
+import { xiorInstance } from "@/utils/xior";
+import { Button, Grid, Group, Stack } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
+import { isUndefined } from "lodash";
+import { useLocale, useTranslations } from "next-intl";
+import { FC, useCallback, useEffect, useState } from "react";
+import CheckDatePicker from "../Inputs/CheckDatePicker";
+import CountrySelect from "../Inputs/Country";
+import HotelSeachInput, { SearchHotelType } from "../Inputs/HotelSearch";
+import RoomsAndGuestsInput from "../Inputs/RoomsAndGuests";
 
 export interface HotelSearchFormProps {
   hotel: SearchHotelType | undefined;
@@ -43,9 +37,7 @@ const HotelSearch: FC<{
   const [inputsLoading, setInputsLoading] = useState(true);
   const [loading, startLoading, stopLoading] = useLoading();
 
-  const { openModal } = useModalManager();
   const { hotelSearch, setSearch } = useSearchStore();
-  const { setBookingHotel } = useHotelStore();
 
   const form = useForm<HotelSearchFormProps>({
     initialValues: {
@@ -79,7 +71,6 @@ const HotelSearch: FC<{
   const handleSubmit = useCallback(
     async (values: HotelSearchFormProps) => {
       startLoading();
-      openModal("hotelLoadingModal");
       try {
         console.log(values);
 

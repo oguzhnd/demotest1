@@ -1,29 +1,17 @@
 import { useRouter } from "@/i18n/navigation";
-import {
-  Button,
-  CheckIcon,
-  Grid,
-  Group,
-  Radio,
-  Stack,
-  TextInput,
-} from "@mantine/core";
-import { IconCheck, IconSearch } from "@tabler/icons-react";
+import { Button, CheckIcon, Grid, Group, Radio, Stack } from "@mantine/core";
 import { useTranslations } from "next-intl";
-import React, { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 
-import classes from "../SearchArea.module.css";
-import AirportInput, { AirportType } from "../Inputs/AirportInput";
+import { useSearchStore } from "@/store/search";
+import { useLoading } from "@/utils/hooks/useLoading";
 import { useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
+import { isDate, isUndefined } from "lodash";
+import AirportInput, { AirportType } from "../Inputs/AirportInput";
 import FlightDatePicker from "../Inputs/FlightDatePicker";
 import FlightPassengersInput from "../Inputs/FlightPassengersInput";
-import { useMediaQuery } from "@mantine/hooks";
-import { xiorInstance } from "@/utils/xior";
-import { isDate, isUndefined } from "lodash";
-import { useLoading } from "@/utils/hooks/useLoading";
-import { useFlightStore } from "@/store/products/flight";
-import { useSearchStore } from "@/store/search";
-import { useModalManager } from "@/store/managers/modal";
+import classes from "../SearchArea.module.css";
 
 export interface FlightSearchFormProps {
   type: "one-way" | "round-trip";
@@ -63,8 +51,6 @@ const FlightSearch: FC<{
   const { push } = useRouter();
   const matchesSm = useMediaQuery("(max-width: 48em)");
 
-  const { openModal } = useModalManager();
-  const { setFlightList, setFilterOpt } = useFlightStore();
   const { flightSearch, setSearch } = useSearchStore();
 
   const [inputsLoading, setInputsLoading] = useState(true);
@@ -94,7 +80,6 @@ const FlightSearch: FC<{
   const handleSubmit = useCallback(
     async (values: FlightSearchFormProps) => {
       startLoading();
-      openModal("flightLoadingModal");
       try {
         console.log(values);
 

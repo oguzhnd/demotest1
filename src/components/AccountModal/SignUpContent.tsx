@@ -5,13 +5,24 @@ import React, { useCallback } from "react";
 import FloatingLabelTextInput from "../@FormElements/FloatingLabelTextInput";
 import FloatingLabelPasswordInput from "../@FormElements/FloatingLabelPasswordInput";
 import { useRouter } from "next/router";
+import { useAccountStore } from "@/store/account";
+import { useModalManager } from "@/store/managers/modal";
+
+interface FormProps {
+  email: string;
+  password: string;
+  confirm: boolean;
+}
 
 const SignUpContent = () => {
   const t = useTranslations();
 
+  const { login } = useAccountStore();
+  const { closeModal } = useModalManager();
+
   const { push } = useRouter();
 
-  const form = useForm({
+  const form = useForm<FormProps>({
     initialValues: {
       email: "",
       password: "",
@@ -19,8 +30,16 @@ const SignUpContent = () => {
     },
   });
 
-  const handleSubmit = useCallback(() => {
-    push("/account");
+  const handleSubmit = useCallback(async (values: FormProps) => {
+    try {
+      await login(values);
+
+      push("/account");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      closeModal("accountModal");
+    }
   }, []);
 
   return (

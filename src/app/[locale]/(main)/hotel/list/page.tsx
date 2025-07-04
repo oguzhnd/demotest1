@@ -29,7 +29,7 @@ import {
   Skeleton,
   Stack,
 } from "@mantine/core";
-import { useInViewport, useListState } from "@mantine/hooks";
+import { useDocumentTitle, useInViewport, useListState } from "@mantine/hooks";
 import { IconFilter, IconMapPin } from "@tabler/icons-react";
 import { filter, merge, pick } from "lodash";
 import { useLocale, useTranslations } from "next-intl";
@@ -81,6 +81,9 @@ const HotelList = () => {
 
   const { push } = useRouter();
 
+  const [title, setTitle] = useState(t("Loading"));
+  useDocumentTitle(title);
+
   const {
     hotelFilters,
     bookingHotel,
@@ -92,7 +95,7 @@ const HotelList = () => {
     setHotelList,
   } = useHotelStore();
   const { hotelSearch } = useSearchStore();
-  const { closeModal } = useModalManager();
+  const { openModal, closeModal } = useModalManager();
 
   const [loading, startLoading, stopLoading] = useLoading();
   const [opened, setOpened] = useState(false);
@@ -125,8 +128,11 @@ const HotelList = () => {
       return true;
     }
 
+    openModal("hotelLoadingModal");
     startLoading();
-    closeModal("hotelLoadingModal")
+
+    hotelSearch.hotel?.city &&
+      setTitle(t("X Hotels", { X: hotelSearch.hotel?.city }));
 
     try {
       setBookingHotel(undefined);
@@ -162,6 +168,7 @@ const HotelList = () => {
       console.error(err);
     } finally {
       stopLoading();
+      closeModal("hotelLoadingModal");
     }
   }, [loading, xiorInstance, hotelSearch]);
 
@@ -229,7 +236,7 @@ const HotelList = () => {
               )}
 
               {loading
-                ? Array(4)
+                ? Array(5)
                     .fill("")
                     .map((_, i) => <HotelLoading key={`loading-${i}`} />)
                 : currentHotelList.slice(0, limit * page).map((hotel, i) => (

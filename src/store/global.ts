@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface GlobalStore {
-  isLogin: boolean;
+  isAuthenticated: boolean;
   token: string | undefined;
 
   currency: string;
@@ -21,7 +21,7 @@ export interface GlobalStore {
 export const useGlobalStore = create(
   persist<GlobalStore>(
     (set) => ({
-      isLogin: false,
+      isAuthenticated: false,
       token: undefined,
 
       makeSignin: async (data) => {
@@ -29,7 +29,7 @@ export const useGlobalStore = create(
 
         if (!res.data.error) {
           set({
-            isLogin: true,
+            isAuthenticated: true,
             token: res.data.accessToken,
           });
 
@@ -38,7 +38,7 @@ export const useGlobalStore = create(
       },
       makeSignout: async () => {
         set({
-          isLogin: false,
+          isAuthenticated: false,
           token: undefined,
         });
 
