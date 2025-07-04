@@ -8,24 +8,18 @@ import { useLocale, useTranslations } from "next-intl";
 import { FC, useCallback, useEffect, useState } from "react";
 import PickupLocation from "../Inputs/PickupLocation";
 import RentalDatesPicker from "../Inputs/RentalDates";
+import TourLocation from "../Inputs/TourLocation";
+import TourDatePicker from "../Inputs/TourDatePicker";
+import TourTravellersInput from "../Inputs/TourTravellers";
 
 export interface TourSearchForm {
-  pickupLocation?: {
-    name: string;
-    city: string;
-    country: string;
-    id: string;
+  tour: string | undefined;
+  date: Date | null;
+  passengers: {
+    adult: number;
+    child: number;
+    baby: number;
   };
-  dropoffLocation?: {
-    name: string;
-    city: string;
-    country: string;
-    id: string;
-  };
-  pickupDate: Date | null;
-  pickupTime: string;
-  deliveryDate: Date | null;
-  deliveryTime: string;
 }
 
 const TourSearch: FC<{
@@ -40,26 +34,17 @@ const TourSearch: FC<{
   const [inputsLoading, setInputsLoading] = useState(true);
   const [loading, startLoading, stopLoading] = useLoading();
 
-  const { rentalSearch, setSearch } = useSearchStore();
+  const { tourSearch, setSearch } = useSearchStore();
 
   const form = useForm<TourSearchForm>({
     initialValues: {
-      pickupLocation: {
-        name: "İstanbul-Sabiha Gökçen Havalimanı (SAW)",
-        city: "Pendik",
-        country: "Türkiye",
-        id: "30",
+      tour: undefined,
+      date: new Date(),
+      passengers: {
+        adult: 1,
+        child: 0,
+        baby: 0,
       },
-      dropoffLocation: {
-        name: "İstanbul-Sabiha Gökçen Havalimanı (SAW)",
-        city: "Pendik",
-        country: "Türkiye",
-        id: "30",
-      },
-      pickupDate: new Date(),
-      pickupTime: "10:00",
-      deliveryDate: new Date(),
-      deliveryTime: "10:00",
     },
   });
 
@@ -69,26 +54,26 @@ const TourSearch: FC<{
       try {
         console.log(values);
 
-        // setSearch("rentalSearch", values);
+        setSearch("rentalSearch", values);
       } catch (err) {
         console.error(err);
       } finally {
         stopLoading();
 
-        push("/rental/list");
+        push("/tour/list");
       }
     },
     [locale]
   );
 
   const updateSearchForm = useCallback(() => {
-    form.setValues(rentalSearch);
+    form.setValues(tourSearch);
     setInputsLoading(false);
-  }, [rentalSearch]);
+  }, [tourSearch]);
 
   useEffect(() => {
     updateSearchForm();
-  }, [rentalSearch]);
+  }, [tourSearch]);
 
   const Parent = matchesSm ? Stack : compact ? Group : Stack;
 
@@ -104,7 +89,7 @@ const TourSearch: FC<{
         <Stack w="100%" gap={8}>
           <Grid
             w="100%"
-            columns={10}
+            columns={12}
             gutter={0}
             style={{
               borderRadius: "var(--mantine-radius-md)",
@@ -115,21 +100,30 @@ const TourSearch: FC<{
             <Grid.Col
               span={{
                 base: 12,
+                sm: 6,
               }}
             >
-              <PickupLocation
+              <TourLocation
                 compact={compact}
-                label="Pickup Location"
-                {...form.getInputProps("pickupLocation")}
+                label="Location, Category, Region"
+                {...form.getInputProps("tour")}
               />
             </Grid.Col>
             <Grid.Col
               span={{
                 base: 12,
-                sm: 6,
-              }}  
+                sm: 3,
+              }}
             >
-              {/* <RentalDatesPicker compact={compact} form={form} /> */}
+              <TourDatePicker form={form} compact={compact} />
+            </Grid.Col>
+            <Grid.Col
+              span={{
+                base: 12,
+                sm: 3,
+              }}
+            >
+              <TourTravellersInput form={form} compact={compact} />
             </Grid.Col>
           </Grid>
         </Stack>

@@ -121,7 +121,7 @@ const RentalSearch: FC<{
           >
             <Grid.Col
               span={{
-                base: 12,
+                base: 10,
                 sm: form.getValues().differentDropoff ? 2 : 4,
               }}
             >
@@ -134,7 +134,7 @@ const RentalSearch: FC<{
             {form.getValues().differentDropoff && (
               <Grid.Col
                 span={{
-                  base: 12,
+                  base: 10,
                   sm: 2,
                 }}
               >
@@ -147,7 +147,7 @@ const RentalSearch: FC<{
             )}
             <Grid.Col
               span={{
-                base: 12,
+                base: 10,
                 sm: 6,
               }}
             >

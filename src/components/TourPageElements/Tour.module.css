@@ -15,15 +15,16 @@
   }
 }
 
-.flightTicket {
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.rentalListCard {
-  transition: box-shadow .2s ease;
+.tourListCard {
+  transition: box-shadow 0.2s ease;
 
   &:hover {
     box-shadow: var(--mantine-shadow-md);
   }
+}
+
+.selectedTourCard {
+  cursor: pointer;
+  user-select: none;
+  transition: width 0.2s ease;
 }

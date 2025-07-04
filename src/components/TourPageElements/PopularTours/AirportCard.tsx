@@ -28,7 +28,7 @@ const TicketCard: FC<PopularAirportType> = ({
       src={image}
       h={240}
       radius="lg"
-      className={classes.destinationCard}
+      className={classes.locationCard}
     >
       <Stack h="100%" justify="flex-end" p="lg">
         <Group justify="space-between" c="white">

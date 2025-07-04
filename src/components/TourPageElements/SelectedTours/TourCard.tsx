@@ -32,7 +32,7 @@ const HotelCard: FC<
       mx={6}
       w={isOpen ? 300 : 128}
       h="100%"
-      className={classes.selectedHotelCard}
+      className={classes.selectedTourCard}
       onMouseEnter={setOpenedCard}
       onClick={() => push("/hotel/detail/1395157")}
     >

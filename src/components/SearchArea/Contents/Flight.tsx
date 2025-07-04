@@ -172,7 +172,7 @@ const FlightSearch: FC<{
           >
             <Grid.Col
               span={{
-                base: 12,
+                base: 10,
                 sm: 2,
               }}
             >
@@ -195,7 +195,7 @@ const FlightSearch: FC<{
             </Grid.Col>
             <Grid.Col
               span={{
-                base: 12,
+                base: 10,
                 sm: 2,
               }}
             >
@@ -217,7 +217,7 @@ const FlightSearch: FC<{
             </Grid.Col>
             <Grid.Col
               span={{
-                base: 12,
+                base: 10,
                 sm: 4,
               }}
             >
@@ -225,7 +225,7 @@ const FlightSearch: FC<{
             </Grid.Col>
             <Grid.Col
               span={{
-                base: 12,
+                base: 10,
                 sm: 2,
               }}
             >

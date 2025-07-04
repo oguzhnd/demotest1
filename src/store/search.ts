@@ -1,7 +1,7 @@
 import { FlightSearchFormProps } from "@/components/SearchArea/Contents/Flight";
 import { HotelSearchFormProps } from "@/components/SearchArea/Contents/Hotel";
 import { RentalSearchForm } from "@/components/SearchArea/Contents/Rental";
-import { removeUserToken, setAccessToken, xiorInstance } from "@/utils/xior";
+import { TourSearchForm } from "@/components/SearchArea/Contents/Tour";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -9,10 +9,15 @@ export interface SearchStore {
   flightSearch: FlightSearchFormProps;
   hotelSearch: HotelSearchFormProps;
   rentalSearch: RentalSearchForm;
+  tourSearch: TourSearchForm;
 
   setSearch: (
-    type: "flightSearch" | "hotelSearch" | "rentalSearch",
-    data: FlightSearchFormProps | HotelSearchFormProps | RentalSearchForm
+    type: "flightSearch" | "hotelSearch" | "rentalSearch" | "tourSearch",
+    data:
+      | FlightSearchFormProps
+      | HotelSearchFormProps
+      | RentalSearchForm
+      | TourSearchForm
   ) => void;
 }
 
@@ -62,6 +67,15 @@ export const useSearchStore = create(
         pickupTime: "10:00",
         deliveryDate: new Date(),
         deliveryTime: "10:00",
+      },
+      tourSearch: {
+        tour: undefined,
+        date: new Date(),
+        passengers: {
+          adult: 1,
+          child: 0,
+          baby: 0,
+        },
       },
 
       setSearch: (type, data) => {

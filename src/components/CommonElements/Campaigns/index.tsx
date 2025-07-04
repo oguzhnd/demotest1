@@ -143,7 +143,7 @@ export const campaigns: Record<CampaignTypes, CampaignCardProps[]> = {
 };
 
 const Campaigns: FC<{ tabs?: CampaignTypes[]; seeAll?: boolean }> = ({
-  tabs = ["hotel", "flight", "rental"],
+  tabs = ["hotel", "flight", "rental", "tour"],
   seeAll = false,
 }) => {
   const t = useTranslations();

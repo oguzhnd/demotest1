@@ -13,7 +13,7 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { IconBuilding, IconSearch } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import React, { useCallback, useRef, useState } from "react";
 import { IMaskInput } from "react-imask";
@@ -39,7 +39,7 @@ const QueryTransactionModal = () => {
     >
       <Stack gap={8}>
         <Tabs
-          variant="outline"
+          variant="default"
           value={activeTab}
           onChange={(tab) => {
             setActiveTab(tab);
@@ -47,9 +47,12 @@ const QueryTransactionModal = () => {
           }}
         >
           <Tabs.List mb={8}>
-            <Tabs.Tab value="hotel">{t("Hotel")}</Tabs.Tab>
+            <Tabs.Tab value="hotel" leftSection={<IconBuilding size={16} />}>
+              {t("Hotel")}
+            </Tabs.Tab>
             <Tabs.Tab value="flight">{t("Flight")}</Tabs.Tab>
             <Tabs.Tab value="rental">{t("Car Rental")}</Tabs.Tab>
+            <Tabs.Tab value="tour">{t("Tour")}</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="hotel">
             <TextInput
@@ -66,6 +69,13 @@ const QueryTransactionModal = () => {
             />
           </Tabs.Panel>
           <Tabs.Panel value="rental">
+            <TextInput
+              label={t("Reservation Number")}
+              value={value}
+              onChange={(e) => setValue(e.currentTarget.value)}
+            />
+          </Tabs.Panel>
+          <Tabs.Panel value="tour">
             <TextInput
               label={t("Reservation Number")}
               value={value}
