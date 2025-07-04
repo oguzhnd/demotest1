@@ -17,6 +17,7 @@
 
 .tourListCard {
   transition: box-shadow 0.2s ease;
+  overflow: hidden;
 
   &:hover {
     box-shadow: var(--mantine-shadow-md);
