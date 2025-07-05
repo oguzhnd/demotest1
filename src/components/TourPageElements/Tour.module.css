@@ -29,3 +29,23 @@
   user-select: none;
   transition: width 0.2s ease;
 }
+
+.cityCard {
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.hotel {
+  cursor: pointer;
+  transition: background-color .2s ease;
+  border: 1px solid transparent;
+
+  &:hover {
+    border-color: var(--mantine-color-gray-3);
+  }
+
+  &[data-active="true"] {
+    background: var(--mantine-color-blue-0) !important;
+    border-color: var(--mantine-color-blue-3);
+  }
+}

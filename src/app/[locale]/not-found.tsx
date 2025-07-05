@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "@/i18n/navigation";
-import { Button, Center, Image, Stack, Text, ThemeIcon } from "@mantine/core";
+import { Button, Center, Image, Stack, Text } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import React from "react";
 

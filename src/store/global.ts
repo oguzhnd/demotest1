@@ -20,7 +20,7 @@ export interface GlobalStore {
 
 export const useGlobalStore = create(
   persist<GlobalStore>(
-    (set) => ({
+    (set, get) => ({
       isAuthenticated: false,
       token: undefined,
 
@@ -34,6 +34,8 @@ export const useGlobalStore = create(
           });
 
           setAccessToken(res.data.accessToken);
+        } else {
+          get().makeSignout();
         }
       },
       makeSignout: async () => {
@@ -42,7 +44,7 @@ export const useGlobalStore = create(
           token: undefined,
         });
 
-        removeUserToken()
+        removeUserToken();
       },
 
       currency: "TRY",

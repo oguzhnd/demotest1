@@ -17,7 +17,7 @@ import React, { FC, useState } from "react";
 import classes from "../SearchArea.module.css";
 import { useLocale, useTranslations } from "next-intl";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, MonthPicker } from "@mantine/dates";
 import { locale } from "dayjs";
 import { getValidDate } from "@/utils/tools";
 import { UseFormReturnType } from "@mantine/form";
@@ -92,9 +92,7 @@ const TourDatePicker: FC<{
   );
 
   const Content = (
-    <DatePicker
-      numberOfColumns={matchesSm ? 1 : 2}
-      type="default"
+    <MonthPicker
       minDate={new Date()}
       value={form.getValues().date}
       onChange={(date) => {

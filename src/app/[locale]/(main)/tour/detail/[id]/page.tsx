@@ -5,6 +5,12 @@
 // import Rooms from "@/components/TourPageElements/TourDetails/Rooms";
 // import TourMapDetail from "@/components/TourPageElements/TourMapDetail";
 import SearchArea from "@/components/SearchArea";
+import TourCities from "@/components/TourPageElements/TourDetails/TourCities/page";
+import TourGeneralInformations from "@/components/TourPageElements/TourDetails/TourGeneralInformations/page";
+import TourImages from "@/components/TourPageElements/TourDetails/TourImages";
+import TourPricesAndDates from "@/components/TourPageElements/TourDetails/TourPricesAndDates/page";
+import TourProgram from "@/components/TourPageElements/TourDetails/TourProgram/page";
+import TourReservation from "@/components/TourPageElements/TourDetails/TourReservation/page";
 import { useModalManager } from "@/store/managers/modal";
 import { useSearchStore } from "@/store/search";
 import { useLoading } from "@/utils/hooks/useLoading";
@@ -29,7 +35,11 @@ import {
   useMediaQuery,
   useScrollIntoView,
 } from "@mantine/hooks";
-import { IconSwimming } from "@tabler/icons-react";
+import {
+  IconMapPin,
+  IconMapPinFilled,
+  IconSwimming,
+} from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 import Head from "next/head";
 import { useParams } from "next/navigation";
@@ -57,18 +67,28 @@ const TourDetail = () => {
     useScrollIntoView<HTMLDivElement>({
       offset: 60,
     });
-  const { scrollIntoView: scrollToRooms, targetRef: roomsTarget } =
+  const { scrollIntoView: scrollToReservation, targetRef: reservationTarget } =
     useScrollIntoView<HTMLDivElement>({
       offset: 60,
     });
-  const { scrollIntoView: scrollToDetails, targetRef: detailsTarget } =
+  const { scrollIntoView: scrollToProgram, targetRef: programTarget } =
     useScrollIntoView<HTMLDivElement>({
       offset: 60,
     });
-  const { scrollIntoView: scrollToAmenities, targetRef: amenitiesTarget } =
+  const { scrollIntoView: scrollToPrices, targetRef: pricesTarget } =
     useScrollIntoView<HTMLDivElement>({
       offset: 60,
     });
+  const { scrollIntoView: scrollToCities, targetRef: citiesTarget } =
+    useScrollIntoView<HTMLDivElement>({
+      offset: 60,
+    });
+  const {
+    scrollIntoView: scrollToInformations,
+    targetRef: informationsTarget,
+  } = useScrollIntoView<HTMLDivElement>({
+    offset: 60,
+  });
 
   const getTourDetails = useCallback(async () => {
     if (loading) {
@@ -105,7 +125,7 @@ const TourDetail = () => {
 
       {/* <TourMapDetail /> */}
 
-      <SearchArea type="hotel" />
+      <SearchArea type="tour" />
       <Container w="100%" size="xl" py={20}>
         <Stack gap="xs">
           <Group justify="space-between">
@@ -113,20 +133,8 @@ const TourDetail = () => {
               <Stack gap={0}>
                 <Group>
                   <Text size="xl" fw={500}>
-                    {hotelDetails?.name}
+                    Antalya’dan Direkt Sefer İle Büyük Balkan Turu Rotası
                   </Text>
-                  {/* <Text
-                    size="sm"
-                    c="white"
-                    fw={500}
-                    bg="green.9"
-                    px="xs"
-                    py={6}
-                    lh={1}
-                    style={{ borderRadius: 8 }}
-                  >
-                    {hotelDetails?.rating}
-                  </Text> */}
                   <Rating
                     size="xs"
                     fractions={2}
@@ -135,28 +143,40 @@ const TourDetail = () => {
                     readOnly
                   />
                 </Group>
-                <Text size="xs" c="gray">
-                  {hotelDetails?.address}
-                </Text>
+                <Group gap={4} wrap="nowrap" align="flex-start">
+                  <IconMapPinFilled
+                    size={16}
+                    color="var(--mantine-color-red-7)"
+                    style={{ flexShrink: 0 }}
+                  />
+                  <Text size="sm" c="gray.7" lh={1}>
+                    Trebinje - Saraybosna - Üsküp - Ohrid - Belgrad - Mostar -
+                    Tiran - Budva - Kotor
+                  </Text>
+                </Group>
               </Stack>
               <Group gap="xs"></Group>
             </Stack>
-            <Button radius="xl" mb="xs" onClick={() => scrollToRooms()}>
-              Tekliflere Bak
+            <Button radius="xl" mb="xs" onClick={() => scrollToReservation()}>
+              {t("Make a reservation")}
             </Button>
           </Group>
 
           <Tabs
-            defaultValue="Ana Sayfa"
+            defaultValue="Home Page"
             onChange={(value) => {
-              if (value === "Ana Sayfa") {
+              if (value === "Home Page") {
                 scrollToHome();
-              } else if (value === "Odalar") {
-                scrollToRooms();
-              } else if (value === "Detaylar") {
-                scrollToDetails();
-              } else if (value === "Olanaklar") {
-                scrollToAmenities();
+              } else if (value === "Reservation") {
+                scrollToReservation();
+              } else if (value === "Tour Program") {
+                scrollToProgram();
+              } else if (value === "Prices and Dates") {
+                scrollToPrices();
+              } else if (value === "Cities") {
+                scrollToCities();
+              } else if (value === "General Informations") {
+                scrollToInformations();
               }
             }}
           >
@@ -168,20 +188,25 @@ const TourDetail = () => {
               >
                 <ScrollArea scrollbarSize={7}>
                   <Group gap={0} wrap="nowrap">
-                    {["Ana Sayfa", "Odalar", "Detaylar", "Olanaklar"].map(
-                      (tab, i) => (
-                        <Tabs.Tab
-                          key={`tab-${i}`}
-                          value={tab}
-                          py="sm"
-                          px="lg"
-                          fw={500}
-                          style={{ borderBottomWidth: 3 }}
-                        >
-                          {tab}
-                        </Tabs.Tab>
-                      )
-                    )}
+                    {[
+                      "Home Page",
+                      "Reservation",
+                      "Tour Program",
+                      "Prices and Dates",
+                      "General Informations",
+                      "Cities",
+                    ].map((tab, i) => (
+                      <Tabs.Tab
+                        key={`tab-${i}`}
+                        value={tab}
+                        py="sm"
+                        px="lg"
+                        fw={500}
+                        style={{ borderBottomWidth: 3 }}
+                      >
+                        {t(tab)}
+                      </Tabs.Tab>
+                    ))}
                   </Group>
                 </ScrollArea>
               </Parent>
@@ -189,109 +214,27 @@ const TourDetail = () => {
           </Tabs>
 
           <Stack ref={homeTarget} gap="xl">
-            {/* <TourImages hotelDetails={hotelDetails} /> */}
+            <TourImages tourDetails={undefined} />
 
-            <Box ref={roomsTarget}>
-              {/* <Rooms hotelName={hotelDetails?.name} /> */}
+            <Box ref={reservationTarget}>
+              <TourReservation />
             </Box>
 
-            <Stack ref={detailsTarget}>
-              {hotelDetails?.description_struct.map(
-                (
-                  struct: {
-                    title: string;
-                    paragraphs: string[];
-                  },
-                  i: number
-                ) => (
-                  <Stack key={`struct-${i}`} gap={8}>
-                    <Text size="lg" fw={500}>
-                      {struct.title}
-                    </Text>
-                    {struct.paragraphs.map((paragraph: string, j: number) => (
-                      <Text key={`paragraph-${j}`} size="sm" c="gray.7">
-                        {paragraph}
-                      </Text>
-                    ))}
-                  </Stack>
-                )
-              )}
-            </Stack>
+            <Box ref={programTarget}>
+              <TourProgram />
+            </Box>
 
-            <Stack ref={amenitiesTarget} gap={8}>
-              <Text size="lg" fw={500}>
-                Olanaklar
-              </Text>
+            <Box ref={pricesTarget}>
+              <TourPricesAndDates />
+            </Box>
 
-              <Box
-                style={{
-                  columnCount: matchesXs ? 1 : matchesSm ? 2 : 3,
-                  gap: 30,
-                }}
-              >
-                {hotelDetails?.amenity_groups.map(
-                  (
-                    group: {
-                      group_name: string;
-                      amenities: string[];
-                      non_free_amenities: string[];
-                    },
-                    i: number
-                  ) => (
-                    <Stack
-                      gap="xs"
-                      key={`group-${i}`}
-                      style={{ overflow: "hidden" }}
-                      mb={30}
-                    >
-                      <Text size="sm" fw={500}>
-                        {group.group_name}
-                      </Text>
+            <Box ref={informationsTarget}>
+              <TourGeneralInformations />
+            </Box>
 
-                      <SimpleGrid
-                        cols={{
-                          base: 3,
-                          sm: 4,
-                        }}
-                        spacing={4}
-                      >
-                        {group.non_free_amenities?.map((e, j) => (
-                          <Tooltip key={`item-${j}`} label={t("Paid")}>
-                            <Paper
-                              withBorder
-                              p="xs"
-                              style={{
-                                borderColor: "var(--mantine-color-orange-3)",
-                              }}
-                              bg="orange.0"
-                            >
-                              <Stack gap={4} align="center ">
-                                <IconSwimming size={20} />
-                                <Text size="xs" fw={500} ta="center">
-                                  {e}
-                                </Text>
-                              </Stack>
-                            </Paper>
-                          </Tooltip>
-                        ))}
-                        {group.amenities?.map((e, j) => (
-                          <Paper key={`item-${j}`} withBorder p="xs">
-                            <Stack gap={4} align="center ">
-                              <IconSwimming size={20} />
-                              <Text size="xs" fw={500} ta="center">
-                                {e}
-                              </Text>
-                            </Stack>
-                          </Paper>
-                        ))}
-                      </SimpleGrid>
-                    </Stack>
-                  )
-                )}
-              </Box>
-            </Stack>
-
-            {/* {matchesSm && <TourMapView hotelDetails={hotelDetails} />} */}
+            <Box ref={citiesTarget}>
+              <TourCities />
+            </Box>
           </Stack>
         </Stack>
       </Container>

@@ -5,13 +5,18 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 import { setAcceptLanguage, setAccessToken } from "../xior";
 import { useGlobalStore } from "@/store/global";
 import { Center, Loader } from "@mantine/core";
+import Navigate from "@/components/Navigate";
+import { usePathname } from "next/navigation";
+import Maintenance from "@/app/[locale]/maintenance/page";
 
 const AppGuardProvider: FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const locale = useLocale();
 
-  const { token, makeSignin } = useGlobalStore();
+  const { isAuthenticated, token, makeSignin } = useGlobalStore();
+
+  const pathname = usePathname();
 
   const [initialized, setInitialized] = useState(false);
 
@@ -33,10 +38,14 @@ const AppGuardProvider: FC<{
 
   useEffect(() => {
     handleLogin();
-  }, [token,]);
+  }, [token]);
 
   return initialized ? (
-    children
+    isAuthenticated ? (
+      children
+    ) : (
+      <Maintenance />
+    )
   ) : (
     <Center h="100vh">
       <Loader />
